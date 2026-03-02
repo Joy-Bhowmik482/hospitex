@@ -75,20 +75,7 @@
                         <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Address</p>
                         <p class="text-base text-slate-800">{{ $patient->address ?? 'N/A' }}</p>
                     </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div>
-                            <p class="text-xs text-slate-600 font-semibold uppercase mb-1">City</p>
-                            <p class="text-base text-slate-800">{{ $patient->city ?? 'N/A' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-600 font-semibold uppercase mb-1">State</p>
-                            <p class="text-base text-slate-800">{{ $patient->state ?? 'N/A' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Postal Code</p>
-                            <p class="text-base text-slate-800">{{ $patient->postal_code ?? 'N/A' }}</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -126,6 +113,13 @@
                     @endif
                 </div>
             </div>
+
+            @if($patient->notes)
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Notes</h3>
+                    <p class="text-base text-slate-800 whitespace-pre-line">{{ $patient->notes }}</p>
+                </div>
+            @endif
         </div>
 
         <!-- Right Column - Status & Emergency Contact -->
@@ -176,28 +170,7 @@
                 </div>
             @endif
 
-            <!-- Insurance Card -->
-            @if ($patient->insurance_provider || $patient->insurance_id)
-                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                    <div class="bg-gradient-to-r from-purple-50 to-purple-100 border-b border-slate-200 p-6">
-                        <h3 class="text-lg font-bold text-slate-800">Insurance Information</h3>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        @if ($patient->insurance_provider)
-                            <div>
-                                <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Provider</p>
-                                <p class="text-base text-slate-800">{{ $patient->insurance_provider }}</p>
-                            </div>
-                        @endif
-                        @if ($patient->insurance_id)
-                            <div>
-                                <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Policy ID</p>
-                                <p class="text-base text-slate-800 font-mono">{{ $patient->insurance_id }}</p>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            @endif
+
 
             <!-- Metadata Card -->
             <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">

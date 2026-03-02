@@ -117,29 +117,7 @@
                             placeholder="123 Main Street">{{ old('address') }}</textarea>
                     </div>
 
-                    <!-- City -->
-                    <div>
-                        <label for="city" class="block text-sm font-semibold text-slate-700 mb-2">City</label>
-                        <input type="text" id="city" name="city" value="{{ old('city') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                            placeholder="New York">
-                    </div>
 
-                    <!-- State -->
-                    <div>
-                        <label for="state" class="block text-sm font-semibold text-slate-700 mb-2">State</label>
-                        <input type="text" id="state" name="state" value="{{ old('state') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                            placeholder="NY">
-                    </div>
-
-                    <!-- Postal Code -->
-                    <div>
-                        <label for="postal_code" class="block text-sm font-semibold text-slate-700 mb-2">Postal Code</label>
-                        <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                            placeholder="10001">
-                    </div>
                 </div>
             </div>
 
@@ -224,22 +202,14 @@
                             placeholder="(123) 456-7890">
                     </div>
 
-                    <!-- Insurance Provider -->
-                    <div>
-                        <label for="insurance_provider" class="block text-sm font-semibold text-slate-700 mb-2">Insurance Provider</label>
-                        <input type="text" id="insurance_provider" name="insurance_provider" value="{{ old('insurance_provider') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                            placeholder="Insurance Company Name">
-                    </div>
 
-                    <!-- Insurance ID -->
-                    <div>
-                        <label for="insurance_id" class="block text-sm font-semibold text-slate-700 mb-2">Insurance ID</label>
-                        <input type="text" id="insurance_id" name="insurance_id" value="{{ old('insurance_id') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                            placeholder="Insurance ID Number">
-                    </div>
                 </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="pb-6">
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Notes</h3>
+                <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Additional notes about the patient">{{ old('notes') }}</textarea>
             </div>
 
             <!-- Buttons -->

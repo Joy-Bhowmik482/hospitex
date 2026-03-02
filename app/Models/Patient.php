@@ -19,18 +19,14 @@ class Patient extends Model
         'date_of_birth',
         'gender',
         'address',
-        'city',
-        'state',
-        'postal_code',
         'blood_type',
         'allergies',
         'medical_conditions',
         'emergency_contact_name',
         'emergency_contact_phone',
-        'insurance_provider',
-        'insurance_id',
         'date_admitted',
         'status',
+        'notes',
     ];
 
     protected $casts = [
@@ -38,5 +34,22 @@ class Patient extends Model
         'date_admitted' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'notes' => 'string',
     ];
+
+    /**
+     * Get all documents for this patient.
+     */
+    public function documents()
+    {
+        return $this->hasMany(PatientDocument::class);
+    }
+
+    /**
+     * Get all visits for this patient.
+     */
+    public function visits()
+    {
+        return $this->hasMany(PatientVisit::class);
+    }
 }

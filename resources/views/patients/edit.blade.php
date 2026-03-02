@@ -116,26 +116,7 @@
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">{{ old('address', $patient->address) }}</textarea>
                     </div>
 
-                    <!-- City -->
-                    <div>
-                        <label for="city" class="block text-sm font-semibold text-slate-700 mb-2">City</label>
-                        <input type="text" id="city" name="city" value="{{ old('city', $patient->city) }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                    </div>
 
-                    <!-- State -->
-                    <div>
-                        <label for="state" class="block text-sm font-semibold text-slate-700 mb-2">State</label>
-                        <input type="text" id="state" name="state" value="{{ old('state', $patient->state) }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                    </div>
-
-                    <!-- Postal Code -->
-                    <div>
-                        <label for="postal_code" class="block text-sm font-semibold text-slate-700 mb-2">Postal Code</label>
-                        <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $patient->postal_code) }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                    </div>
                 </div>
             </div>
 
@@ -204,20 +185,14 @@
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
                     </div>
 
-                    <!-- Insurance Provider -->
-                    <div>
-                        <label for="insurance_provider" class="block text-sm font-semibold text-slate-700 mb-2">Insurance Provider</label>
-                        <input type="text" id="insurance_provider" name="insurance_provider" value="{{ old('insurance_provider', $patient->insurance_provider) }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                    </div>
 
-                    <!-- Insurance ID -->
-                    <div>
-                        <label for="insurance_id" class="block text-sm font-semibold text-slate-700 mb-2">Insurance ID</label>
-                        <input type="text" id="insurance_id" name="insurance_id" value="{{ old('insurance_id', $patient->insurance_id) }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                    </div>
                 </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="pb-6">
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Notes</h3>
+                <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition" placeholder="Additional notes about the patient">{{ old('notes', $patient->notes) }}</textarea>
             </div>
 
             <!-- Buttons -->

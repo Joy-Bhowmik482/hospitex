@@ -37,18 +37,14 @@ class PatientController extends Controller
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:Male,Female,Other',
             'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'postal_code' => 'nullable|string|max:20',
             'blood_type' => 'nullable|string|max:5',
             'allergies' => 'nullable|string',
             'medical_conditions' => 'nullable|string',
             'emergency_contact_name' => 'nullable|string|max:255',
             'emergency_contact_phone' => 'nullable|string|max:20',
-            'insurance_provider' => 'nullable|string|max:255',
-            'insurance_id' => 'nullable|string|max:255',
             'date_admitted' => 'nullable|date',
             'status' => 'nullable|in:In,Out,Discharged',
+            'notes' => 'nullable|string',
         ]);
 
         Patient::create($validated);
@@ -86,18 +82,14 @@ class PatientController extends Controller
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:Male,Female,Other',
             'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'postal_code' => 'nullable|string|max:20',
             'blood_type' => 'nullable|string|max:5',
             'allergies' => 'nullable|string',
             'medical_conditions' => 'nullable|string',
             'emergency_contact_name' => 'nullable|string|max:255',
             'emergency_contact_phone' => 'nullable|string|max:20',
-            'insurance_provider' => 'nullable|string|max:255',
-            'insurance_id' => 'nullable|string|max:255',
             'date_admitted' => 'nullable|date',
             'status' => 'nullable|in:In,Out,Discharged',
+            'notes' => 'nullable|string',
         ]);
 
         $patient->update($validated);
