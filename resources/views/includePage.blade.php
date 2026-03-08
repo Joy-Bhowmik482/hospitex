@@ -99,10 +99,10 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctors Directory</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Departments</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctor Schedule</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Staff Management</a>
+                <a href="{{ route('doctors.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctors Directory</a>
+                <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Departments</a>
+                <a href="{{ route('doctor-schedules.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctor Schedule</a>
+                <a href="{{ route('staff.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Staff Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Duty Roster</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Roles & Permissions</a>
             </div>
