@@ -9,6 +9,15 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorScheduleController;
+use App\Http\Controllers\WardController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\BedController;
+use App\Http\Controllers\AdmissionController;
+use App\Http\Controllers\BedAllocationController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InsuranceProviderController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -27,4 +36,17 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('staff', StaffController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('doctor-schedules', DoctorScheduleController::class);
+
+// Ward Management Routes
+Route::resource('wards', WardController::class);
+Route::resource('rooms', RoomController::class);
+Route::resource('beds', BedController::class);
+Route::resource('admissions', AdmissionController::class);
+Route::resource('bed-allocations', BedAllocationController::class);
+
+// Patient Billing Routes
+Route::resource('services', ServiceController::class);
+Route::resource('invoices', InvoiceController::class);
+Route::resource('payments', PaymentController::class);
+Route::resource('insurance-providers', InsuranceProviderController::class);
 
