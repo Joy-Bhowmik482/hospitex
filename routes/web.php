@@ -18,6 +18,9 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InsuranceProviderController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\InventoryItemController;
+use App\Http\Controllers\InventoryMovementController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -49,4 +52,10 @@ Route::resource('services', ServiceController::class);
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
 Route::resource('insurance-providers', InsuranceProviderController::class);
+
+// Inventory & Assets Routes
+Route::resource('assets', AssetController::class);
+Route::resource('inventory-items', InventoryItemController::class);
+Route::resource('inventory-movements', InventoryMovementController::class);
+Route::post('inventory-items/{inventoryItem}/add-movement', [InventoryItemController::class, 'addMovement'])->name('inventory-items.add-movement');
 
