@@ -9,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorScheduleController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BedController;
@@ -39,6 +40,11 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('staff', StaffController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('doctor-schedules', DoctorScheduleController::class);
+
+// Appointments & Queue Management Routes
+Route::resource('appointments', AppointmentController::class);
+Route::get('appointments-queue', [AppointmentController::class, 'queue'])->name('appointments.queue');
+Route::post('appointments/{appointment}/change-status', [AppointmentController::class, 'changeStatus'])->name('appointments.changeStatus');
 
 // Ward Management Routes
 Route::resource('wards', WardController::class);

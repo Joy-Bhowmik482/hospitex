@@ -130,9 +130,9 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Book Appointment</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Appointment Calendar</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Queue Management</a>
+                <a href="{{ route('appointments.create') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Book Appointment</a>
+                <a href="{{ route('appointments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">All Appointments</a>
+                <a href="{{ route('appointments.queue') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Queue Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">OPD Appointments</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Follow-up Appointments</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Appointment Status</a>
