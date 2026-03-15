@@ -4,7 +4,7 @@
 <div class="w-full max-w-2xl mx-auto">
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-green-600 to-green-800 px-8 py-6">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-6">
             <h3 class="text-2xl font-bold text-white">Create New Appointment</h3>
         </div>
 
@@ -135,14 +135,14 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="flex gap-3 pt-6 border-t border-gray-200">
-                    <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition">
-                        ✓ Create Appointment
-                    </button>
-                    <a href="{{ route('appointments.index') }}" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition text-center">
-                        ✕ Cancel
-                    </a>
-                </div>
+                <div class="flex gap-4 pt-6 border-t border-slate-200">
+                <button type="submit" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition duration-200">
+                    Add Appointment
+                </button>
+                <a href="{{ route('appointments.index') }}" class="flex-1 bg-slate-200 text-slate-800 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 transition text-center">
+                    Cancel
+                </a>
+            </div>
             </form>
         </div>
     </div>
