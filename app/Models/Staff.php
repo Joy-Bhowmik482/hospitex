@@ -12,7 +12,7 @@ class Staff extends Model
     protected $table = 'staff';
 
     protected $fillable = [
-        'user_id', 'department_id', 'designation', 'joining_date', 'salary', 'is_active',
+        'name', 'department_id', 'designation', 'joining_date', 'salary', 'is_active',
     ];
 
     protected $casts = [

@@ -99,10 +99,10 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctors Directory</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Departments</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctor Schedule</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Staff Management</a>
+                <a href="{{ route('doctors.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctors Directory</a>
+                <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Departments</a>
+                <a href="{{ route('doctor-schedules.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Doctor Schedule</a>
+                <a href="{{ route('staff.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Staff Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Duty Roster</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Roles & Permissions</a>
             </div>
@@ -130,9 +130,9 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Book Appointment</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Appointment Calendar</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Queue Management</a>
+                <a href="{{ route('appointments.create') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Book Appointment</a>
+                <a href="{{ route('appointments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">All Appointments</a>
+                <a href="{{ route('appointments.queue') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Queue Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">OPD Appointments</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Follow-up Appointments</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Appointment Status</a>
@@ -146,12 +146,12 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Ward Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Room Types</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Bed Allocation</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Bed Availability</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Transfer Patient</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Discharge Summary</a>
+                <a href="{{ route('wards.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Ward Management</a>
+                <a href="{{ route('rooms.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Room Types</a>
+                <a href="{{ route('beds.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Bed Availability</a>
+                <a href="{{ route('admissions.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Admissions</a>
+                <a href="{{ route('bed-allocations.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Bed Allocation</a>
+                <a href="{{ route('bed-allocations.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Transfer Patient</a>
             </div>
         </details>
 
@@ -162,12 +162,12 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Patient Billing</a>
+                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Services Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">OPD / IPD Billing</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Invoices</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Payments</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Insurance / Corporate Billing</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Discounts & Taxes</a>
+                <a href="{{ route('invoices.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Invoices</a>
+                <a href="{{ route('payments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Payments</a>
+                <a href="{{ route('insurance-providers.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Insurance / Corporate Billing</a>
+                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Service Rates & Taxes</a>
             </div>
         </details>
 
@@ -178,10 +178,9 @@
                 <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
             </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Medical Equipment</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Consumables</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Stock In / Out</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Asset Tracking</a>
+                <a href="{{ route('assets.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Asset Tracking</a>
+                <a href="{{ route('inventory-items.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Consumables</a>
+                <a href="{{ route('inventory-movements.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Stock Movements</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">Maintenance Schedule</a>
             </div>
         </details>

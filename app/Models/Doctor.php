@@ -10,7 +10,7 @@ class Doctor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'department_id', 'reg_no', 'specialization', 'fee', 'is_active',
+        'name', 'department_id', 'reg_no', 'specialization', 'fee', 'is_active',
     ];
 
     protected $casts = [
@@ -31,5 +31,10 @@ class Doctor extends Model
     public function schedules()
     {
         return $this->hasMany(DoctorSchedule::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 }

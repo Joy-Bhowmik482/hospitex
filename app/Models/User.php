@@ -24,13 +24,8 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
     ];
 
-    public function staff()
+    public function roles()
     {
-        return $this->hasOne(Staff::class);
-    }
-
-    public function doctor()
-    {
-        return $this->hasOne(Doctor::class);
+        return $this->belongsToMany(Role::class);
     }
 }

@@ -52,4 +52,12 @@ class Patient extends Model
     {
         return $this->hasMany(PatientVisit::class);
     }
+
+    /**
+     * Get all appointments for this patient.
+     */
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }
