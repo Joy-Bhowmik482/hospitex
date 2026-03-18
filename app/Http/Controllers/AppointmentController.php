@@ -17,7 +17,7 @@ class AppointmentController extends Controller
     public function index()
     {
         $appointments = Appointment::with(['patient', 'doctor', 'department'])
-            ->orderBy('appointment_date', 'desc')
+            ->orderBy('appointment_date', 'appointment_time', 'desc')
             ->paginate(15);
         
         return view('appointments.list', compact('appointments'));
