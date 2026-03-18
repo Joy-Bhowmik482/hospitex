@@ -17,7 +17,8 @@ class AppointmentController extends Controller
     public function index()
     {
         $appointments = Appointment::with(['patient', 'doctor', 'department'])
-            ->orderBy('appointment_date', 'appointment_time', 'desc')
+            ->orderBy( 'appointment_time', 'desc')
+            ->orderBy('appointment_date',  'desc')
             ->paginate(15);
         
         return view('appointments.list', compact('appointments'));
@@ -62,7 +63,7 @@ class AppointmentController extends Controller
             'appointment_time' => $validated['appointment_time'],
             'status' => $validated['status'],
             'notes' => $validated['notes'] ?? null,
-            'created_by' => Auth::id(),
+            'created_by' => Auth::id()  ?? 1, // Default to 1 if no authenticated user
         ]);
 
         return redirect()->route('appointments.show', $appointment)

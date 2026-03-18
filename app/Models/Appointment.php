@@ -24,7 +24,7 @@ class Appointment extends Model
 
     protected $casts = [
         'appointment_date' => 'datetime',
-        'appointment_time' => 'time',
+        'appointment_time' => 'datetime',
     ];
 
     public function patient()
