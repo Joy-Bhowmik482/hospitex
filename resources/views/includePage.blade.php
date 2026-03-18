@@ -44,6 +44,8 @@
     details[open] summary span {
         transform: rotate(90deg);
     }
+
+    
 </style>
 </head>
 <body class="bg-slate-100 font-sans">
@@ -64,7 +66,8 @@
 <div class="flex pt-16">
 
 <!-- Sidebar -->
-<aside class="w-64 bg-gradient-to-b from-blue-800 via-blue-900 to-indigo-900 min-h-screen shadow-lg fixed text-white">
+<aside class="w-64 bg-gradient-to-b from-blue-800 via-blue-900 to-indigo-900 h-screen overflow-y-auto shadow-lg fixed text-white
+ [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-slate-800 [&::-webkit-scrollbar-thumb]:bg-gradient-to-b [&::-webkit-scrollbar-thumb]:from-blue-500 [&::-webkit-scrollbar-thumb]:to-indigo-500 [&::-webkit-scrollbar-thumb]:rounded-full">
 
     <!-- Brand / Logo -->
     <div class="p-6 text-center text-2xl font-bold tracking-wide border-b border-white/20">
