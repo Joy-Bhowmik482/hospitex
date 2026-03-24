@@ -15,11 +15,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // keep a single test user (create without factory to match DB schema)
+        \Illuminate\Support\Facades\Hash::make('password');
+        if (! User::where('email', 'test@example.com')->exists()) {
+            User::create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'is_active' => true,
+            ]);
+        }
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Core data
+        $this->call([
+            DepartmentsSeeder::class,
+            WardsSeeder::class,
+            RoomsSeeder::class,
+            BedsSeeder::class,
+            StaffSeeder::class,
+            DoctorsSeeder::class,
+            DoctorSchedulesSeeder::class,
+            ServicesSeeder::class,
+            PatientsSeeder::class,
+            PatientDocumentsSeeder::class,
+            PatientVisitsSeeder::class,
+            AppointmentsSeeder::class,
+            AdmissionsSeeder::class,
+            BedAllocationsSeeder::class,
+            InvoicesSeeder::class,
+            AssetsSeeder::class,
+            InventorySeeder::class,
+            InsuranceProvidersSeeder::class,
+            RolesPermissionsSeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }
