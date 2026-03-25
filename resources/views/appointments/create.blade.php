@@ -107,6 +107,7 @@
                 </div>
 
                 <!-- Status -->
+                 
                 <div>
                     <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">
                         Status <span class="text-red-500">*</span>
