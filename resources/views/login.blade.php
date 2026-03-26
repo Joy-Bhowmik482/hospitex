@@ -146,9 +146,28 @@
 <div class="login-wrapper">
     <div class="login-card">
 
-        <div class="card-header">
-            User Login
-        </div>
+        <div class="card-header flex items-center gap-3 bg-gradient-to-r from-blue-800 to-blue-500 text-white px-5 py-3 rounded-t-xl shadow-md">
+    
+    <div class="bg-white/10 p-2 rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="h-5 w-5 text-white" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke="currentColor">
+             
+            <!-- User + Shield -->
+            <path stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2"
+                  d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zm0 2c-4 0-7 2-7 5v1h8m4-6l3 1v4c0 2.5-1.5 4-3 5-1.5-1-3-2.5-3-5v-4l3-1z"/>
+        </svg>
+    </div>
+
+    <span class="font-semibold text-lg tracking-wide">
+        Admin Login
+    </span>
+
+</div>
 
         <div class="card-body">
 

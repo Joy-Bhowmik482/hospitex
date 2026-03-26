@@ -159,9 +159,29 @@
 
 <div class="register-wrapper">
     <div class="card register-card">
-        <div class="card-header">
-            User Registration
-        </div>
+        <div class="card-header flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-t-lg">
+    
+    <!-- Logo -->
+    <div class="bg-white/10 p-2 rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="h-5 w-5 text-white" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke="currentColor">
+             
+            <path stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  d="M18 9v6m3-3h-6M12 14c-3.866 0-7 2.239-7 5v1h14v-1c0-2.761-3.134-5-7-5zm0-2a4 4 0 100-8 4 4 0 000 8z"/>
+        </svg>
+    </div>
+
+    <!-- Title -->
+    <span class="font-semibold text-lg tracking-wide">
+        User Registration
+    </span>
+
+</div>
 
         <div class="card-body">
 
