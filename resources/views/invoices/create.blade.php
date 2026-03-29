@@ -2,121 +2,170 @@
 
 @section('content')
 
-<div class="max-w-2xl mx-auto">
-    <!-- Page Header -->
-    <div class="mb-8">
-        <h2 class="text-3xl font-bold text-slate-800">Create Invoice</h2>
-        <p class="text-slate-500 mt-1">Create a new patient billing invoice</p>
-    </div>
+<div class="min-h-screen bg-gray-100 py-10 px-4">
 
-    <!-- Form -->
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-10">
+
         <form action="{{ route('invoices.store') }}" method="POST">
             @csrf
 
-            <!-- Invoice No -->
-            <div class="mb-4">
-                <label for="invoice_no" class="block text-sm font-medium text-slate-700 mb-2">Invoice No *</label>
-                <input type="text" id="invoice_no" name="invoice_no" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('invoice_no') border-red-500 @enderror" value="{{ old('invoice_no') }}" placeholder="INV-2026-001">
-                @error('invoice_no') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <!-- Header -->
+            <div class="flex justify-between items-start border-b pb-6 mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">INVOICE</h1>
+                    <p class="text-sm text-gray-500 mt-1">Hospital Billing System</p>
+                </div>
+
+                <div class="text-right">
+                    <label class="text-sm text-gray-500">Invoice No</label>
+                    <input type="text" name="invoice_no" required
+                        value="{{ old('invoice_no') }}"
+                        class="block border-b border-gray-300 focus:outline-none text-right font-semibold text-gray-800">
+
+                    <label class="text-sm text-gray-500 mt-2 block">Date</label>
+                    <input type="date" name="invoice_date" required
+                        value="{{ old('invoice_date', now()->format('Y-m-d')) }}"
+                        class="block border-b border-gray-300 focus:outline-none text-right">
+                </div>
             </div>
 
-            <!-- Patient -->
-            <div class="mb-4">
-                <label for="patient_id" class="block text-sm font-medium text-slate-700 mb-2">Patient *</label>
-                <select id="patient_id" name="patient_id" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('patient_id') border-red-500 @enderror">
-                    <option value="">Select Patient</option>
-                    @foreach($patients as $patient)
-                        <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>{{ $patient->first_name }} {{ $patient->last_name }}</option>
-                    @endforeach
-                </select>
-                @error('patient_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <!-- Patient Info -->
+            <div class="grid grid-cols-2 gap-6 mb-6">
+
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-2">Bill To</h3>
+                    <select name="patient_id" required
+                        class="w-full border-b border-gray-300 focus:outline-none py-1">
+                        <option value="">Select Patient</option>
+                        @foreach($patients as $patient)
+                            <option value="{{ $patient->id }}">
+                                {{ $patient->first_name }} {{ $patient->last_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="text-right">
+                    <h3 class="text-sm font-semibold text-gray-500 mb-2">Created By</h3>
+                    <select name="created_by" required
+                        class="w-full border-b border-gray-300 focus:outline-none py-1 text-right">
+                        <option value="">Select User</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
 
             <!-- Admission -->
-            <div class="mb-4">
-                <label for="admission_id" class="block text-sm font-medium text-slate-700 mb-2">Admission (Optional)</label>
-                <select id="admission_id" name="admission_id" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="mb-6">
+                <label class="text-sm text-gray-500">Admission</label>
+                <select name="admission_id"
+                    class="w-full border-b border-gray-300 focus:outline-none py-1">
                     <option value="">Select Admission</option>
                     @foreach($admissions as $admission)
-                        <option value="{{ $admission->id }}" {{ old('admission_id') == $admission->id ? 'selected' : '' }}>{{ $admission->admission_no }}</option>
+                        <option value="{{ $admission->id }}">{{ $admission->admission_no }}</option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- Invoice Date -->
-            <div class="mb-4">
-                <label for="invoice_date" class="block text-sm font-medium text-slate-700 mb-2">Invoice Date *</label>
-                <input type="date" id="invoice_date" name="invoice_date" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('invoice_date') border-red-500 @enderror" value="{{ old('invoice_date', now()->format('Y-m-d')) }}">
-                @error('invoice_date') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <!-- Billing Table -->
+            <div class="mb-6">
+                <table class="w-full text-sm border">
+                    <thead class="bg-gray-100 text-gray-600">
+                        <tr>
+                            <th class="p-2 text-left">Description</th>
+                            <th class="p-2 text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-2">Subtotal</td>
+                            <td class="p-2 text-right">
+                                <input type="number" id="subtotal" name="subtotal" step="0.01"
+                                    class="text-right w-32 border-b focus:outline-none calc">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">Discount</td>
+                            <td class="p-2 text-right">
+                                <input type="number" id="discount" name="discount" step="0.01"
+                                    value="0"
+                                    class="text-right w-32 border-b focus:outline-none calc">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">Tax</td>
+                            <td class="p-2 text-right">
+                                <input type="number" id="tax" name="tax" step="0.01"
+                                    value="0"
+                                    class="text-right w-32 border-b focus:outline-none calc">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Status -->
-            <div class="mb-4">
-                <label for="status" class="block text-sm font-medium text-slate-700 mb-2">Status *</label>
-                <select id="status" name="status" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="Unpaid" {{ old('status') === 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
-                    <option value="Partial" {{ old('status') === 'Partial' ? 'selected' : '' }}>Partial</option>
-                    <option value="Paid" {{ old('status') === 'Paid' ? 'selected' : '' }}>Paid</option>
-                    <option value="Cancelled" {{ old('status') === 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
-                </select>
-            </div>
+            <!-- Total Section -->
+            <div class="flex justify-end mb-6">
+                <div class="w-64">
+                    <div class="flex justify-between py-2 border-t">
+                        <span class="font-semibold">Net Total</span>
+                        <input type="number" id="net_total" name="net_total" readonly
+                            class="text-right font-bold text-lg border-b focus:outline-none w-32">
+                    </div>
 
-            <!-- Subtotal -->
-            <div class="mb-4">
-                <label for="subtotal" class="block text-sm font-medium text-slate-700 mb-2">Subtotal *</label>
-                <input type="number" id="subtotal" name="subtotal" required step="0.01" min="0" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('subtotal') border-red-500 @enderror" value="{{ old('subtotal') }}">
-                @error('subtotal') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            <!-- Discount -->
-            <div class="mb-4">
-                <label for="discount" class="block text-sm font-medium text-slate-700 mb-2">Discount</label>
-                <input type="number" id="discount" name="discount" step="0.01" min="0" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ old('discount', 0) }}">
-            </div>
-
-            <!-- Tax -->
-            <div class="mb-4">
-                <label for="tax" class="block text-sm font-medium text-slate-700 mb-2">Tax</label>
-                <input type="number" id="tax" name="tax" step="0.01" min="0" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ old('tax', 0) }}">
-            </div>
-
-            <!-- Net Total -->
-            <div class="mb-4">
-                <label for="net_total" class="block text-sm font-medium text-slate-700 mb-2">Net Total *</label>
-                <input type="number" id="net_total" name="net_total" required step="0.01" min="0" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('net_total') border-red-500 @enderror" value="{{ old('net_total') }}">
-                @error('net_total') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    <div class="mt-4">
+                        <label class="text-sm text-gray-500">Status</label>
+                        <select name="status"
+                            class="w-full border-b border-gray-300 focus:outline-none">
+                            <option value="Unpaid">Unpaid</option>
+                            <option value="Partial">Partial</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <!-- Notes -->
             <div class="mb-6">
-                <label for="notes" class="block text-sm font-medium text-slate-700 mb-2">Notes</label>
-                <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('notes') }}</textarea>
+                <label class="text-sm text-gray-500">Notes</label>
+                <textarea name="notes" rows="2"
+                    class="w-full border border-gray-300 rounded p-2 focus:outline-none"></textarea>
             </div>
 
-            <!-- Created By -->
-            <div class="mb-6">
-                <label for="created_by" class="block text-sm font-medium text-slate-700 mb-2">Created By *</label>
-                <select id="created_by" name="created_by" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('created_by') border-red-500 @enderror">
-                    <option value="">Select User</option>
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ old('created_by') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                    @endforeach
-                </select>
-                @error('created_by') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
+            <!-- Footer -->
+            <div class="flex justify-between items-center border-t pt-6">
+                <a href="{{ route('invoices.index') }}"
+                   class="text-gray-600 hover:underline">Cancel</a>
 
-            <!-- Buttons -->
-            <div class="flex gap-4">
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition">
-                    Create Invoice
+                <button type="submit"
+                    class="bg-gray-800 hover:bg-black text-white px-6 py-2 rounded shadow">
+                    Save Invoice
                 </button>
-                <a href="{{ route('invoices.index') }}" class="bg-slate-300 hover:bg-slate-400 text-slate-800 font-medium py-2 px-6 rounded-lg transition">
-                    Cancel
-                </a>
             </div>
+
         </form>
     </div>
 </div>
+
+<!-- Auto Calculation -->
+<script>
+    const inputs = document.querySelectorAll('.calc');
+    const netTotal = document.getElementById('net_total');
+
+    function calc() {
+        let subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+        let discount = parseFloat(document.getElementById('discount').value) || 0;
+        let tax = parseFloat(document.getElementById('tax').value) || 0;
+
+        netTotal.value = (subtotal - discount + tax).toFixed(2);
+    }
+
+    inputs.forEach(i => i.addEventListener('input', calc));
+    window.onload = calc;
+</script>
 
 @endsection
