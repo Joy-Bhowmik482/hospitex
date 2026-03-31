@@ -8,6 +8,7 @@ use App\Models\Admission;
 use App\Models\Appointment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -23,13 +24,13 @@ class InvoiceController extends Controller
         $admissions = Admission::where('status', 'Admitted')->get();
         $appointments = Appointment::get();
         $users = User::where('is_active', true)->get();
+
         return view('invoices.create', compact('patients', 'admissions', 'appointments', 'users'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'invoice_no' => 'required|string|unique:invoices,invoice_no',
             'patient_id' => 'required|exists:patients,id',
             'admission_id' => 'nullable|exists:admissions,id',
             'appointment_id' => 'nullable|exists:appointments,id',
@@ -43,8 +44,36 @@ class InvoiceController extends Controller
             'created_by' => 'required|exists:users,id',
         ]);
 
-        Invoice::create($validated);
-        return redirect()->route('invoices.index')->with('success', 'Invoice created successfully');
+        // ✅ USE TRANSACTION FOR SAFETY
+        DB::beginTransaction();
+
+        try {
+            // 🔒 Lock last row to avoid duplicate numbers
+            $lastInvoice = Invoice::lockForUpdate()->orderBy('id', 'desc')->first();
+
+            if ($lastInvoice) {
+                $lastNumber = (int) str_replace('INV-', '', $lastInvoice->invoice_no);
+                $newNumber = $lastNumber + 1;
+            } else {
+                $newNumber = 1;
+            }
+
+            $invoiceNo = 'INV-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+            $validated['invoice_no'] = $invoiceNo;
+
+            Invoice::create($validated);
+
+            DB::commit();
+
+            return redirect()->route('invoices.index')
+                ->with('success', 'Invoice created successfully');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('error', 'Something went wrong. Try again.');
+        }
     }
 
     public function show(Invoice $invoice)
@@ -56,9 +85,10 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice)
     {
         $patients = Patient::all();
-        $admissions = Admission::get();
-        $appointments = Appointment::get();
+        $admissions = Admission::all();
+        $appointments = Appointment::all();
         $users = User::where('is_active', true)->get();
+
         return view('invoices.edit', compact('invoice', 'patients', 'admissions', 'appointments', 'users'));
     }
 
@@ -80,12 +110,16 @@ class InvoiceController extends Controller
         ]);
 
         $invoice->update($validated);
-        return redirect()->route('invoices.index')->with('success', 'Invoice updated successfully');
+
+        return redirect()->route('invoices.index')
+            ->with('success', 'Invoice updated successfully');
     }
 
     public function destroy(Invoice $invoice)
     {
         $invoice->delete();
-        return redirect()->route('invoices.index')->with('success', 'Invoice deleted successfully');
+
+        return redirect()->route('invoices.index')
+            ->with('success', 'Invoice deleted successfully');
     }
 }
