@@ -66,8 +66,21 @@
 <div class="flex pt-16">
 
 <!-- Sidebar -->
-<aside class="w-64 bg-gradient-to-b from-blue-800 via-blue-900 to-indigo-900 h-screen overflow-y-auto shadow-lg fixed text-white
- [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-slate-800 [&::-webkit-scrollbar-thumb]:bg-gradient-to-b [&::-webkit-scrollbar-thumb]:from-blue-500 [&::-webkit-scrollbar-thumb]:to-indigo-500 [&::-webkit-scrollbar-thumb]:rounded-full">
+<aside class="w-64 bg-gradient-to-b from-blue-800 via-blue-900 to-indigo-900 
+h-screen shadow-lg fixed text-white flex flex-col">
+
+    <!-- Scrollable content -->
+    <div class="flex-1 overflow-y-auto
+    [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-slate-800 
+    [&::-webkit-scrollbar-thumb]:bg-gradient-to-b 
+    [&::-webkit-scrollbar-thumb]:from-blue-500 
+    [&::-webkit-scrollbar-thumb]:to-indigo-500 
+    [&::-webkit-scrollbar-thumb]:rounded-full">
+
+        <!-- Your sidebar items here -->
+
+  
+
 
     <!-- Brand / Logo -->
     <div class="p-6 text-center text-2xl font-bold tracking-wide border-b border-white/20">
@@ -288,7 +301,14 @@
         </details>
 
     </nav>
+ 
+
+    <!-- Bottom margin (VISIBLE now) -->
+    <nav class="mt-20 px-2 space-y-1 pb-10"></div>
+    </div>
+
 </aside>
+
 
 <!-- Main Content -->
 <main class="ml-64 flex-1 p-8">
