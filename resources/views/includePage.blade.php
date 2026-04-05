@@ -267,12 +267,12 @@ h-screen shadow-lg fixed text-white flex flex-col">
     <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
 </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Daily / Monthly Reports</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Patient Reports</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Financial Reports</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Lab Reports</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Pharmacy Reports</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Export (PDF / Excel)</a>
+                <a href="{{ route('reports.create-patient') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Patient Reports</a>
+                <a href="{{ route('reports.create-financial') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Financial Reports</a>
+                <a href="{{ route('reports.create-daily') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Daily Reports</a>
+                <a href="{{ route('reports.create-lab') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Lab Reports</a>
+                <a href="{{ route('reports.create-pharmacy') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Pharmacy Reports</a>
+                <a href="{{ route('reports.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- View All Reports</a>
             </div>
         </details>
 
