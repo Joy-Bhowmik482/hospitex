@@ -2,24 +2,40 @@
 
 @section('content')
 
-<div class="min-h-screen bg-slate-100 py-10 px-4">
-    <div class="max-w-4xl mx-auto space-y-6">
-        <div class="bg-white shadow-xl rounded-3xl overflow-hidden">
-            <div class="bg-indigo-900 px-10 py-8 text-white">
-                <div class="flex flex-col gap-4">
+<div class="min-h-screen bg-slate-100 py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+
+        <!-- MAIN CARD -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
+
+            <!-- HEADER -->
+            <div class="px-10 py-8 border-b border-slate-200 bg-white">
+                <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.3em] text-indigo-300">Laboratory Reports</p>
-                        <h1 class="mt-3 text-3xl font-bold tracking-tight">Generate Laboratory Report</h1>
-                        <p class="mt-3 max-w-2xl text-indigo-100">Track and analyze laboratory test results, sample processing, and diagnostic data from your pathology and lab departments.</p>
+                        <h1 class="text-2xl font-semibold text-slate-800">
+                            Laboratory Report Generator
+                        </h1>
+                        <p class="mt-1 text-sm text-slate-500 max-w-xl">
+                            Create structured laboratory reports including diagnostic results,
+                            specimen tracking, and operational performance insights.
+                        </p>
                     </div>
+
+                    <!-- Badge -->
+                    <span class="px-4 py-1 text-xs font-medium bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">
+                        LAB MODULE
+                    </span>
                 </div>
             </div>
 
-            <div class="px-10 py-8 bg-indigo-50 border-b border-indigo-200">
+            <!-- BODY -->
+            <div class="px-10 py-10">
+
+                <!-- ERROR -->
                 @if($errors->any())
-                    <div class="rounded-3xl border border-red-200 bg-red-50 p-5 mb-6 text-sm text-red-700">
-                        <p class="font-semibold">Please fix the following errors:</p>
-                        <ul class="mt-3 list-disc list-inside space-y-1">
+                    <div class="mb-8 border border-red-200 bg-red-50 rounded-xl p-4 text-sm text-red-700">
+                        <p class="font-medium mb-2">Validation Errors</p>
+                        <ul class="list-disc list-inside space-y-1">
                             @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -27,58 +43,117 @@
                     </div>
                 @endif
 
-                <div class="rounded-3xl border border-indigo-200 bg-white p-6 shadow-sm">
-                    <p class="text-xs uppercase tracking-[0.3em] text-indigo-600 font-semibold">Laboratory Metrics</p>
-                    <ul class="mt-4 space-y-2 text-sm text-slate-700">
-                        <li>✓ Complete diagnostic test results</li>
-                        <li>✓ Sample analysis and quality metrics</li>
-                        <li>✓ Turnaround time statistics</li>
-                        <li>✓ Test categories breakdown</li>
-                        <li>✓ Patient specimen tracking</li>
-                    </ul>
-                </div>
-            </div>
+                <!-- FORM -->
+                <form action="{{ route('reports.store') }}" method="POST" class="space-y-10">
+                    @csrf
+                    <input type="hidden" name="type" value="lab">
 
-            <form action="{{ route('reports.store') }}" method="POST" class="px-10 py-8 bg-white">
-                @csrf
-                <input type="hidden" name="type" value="lab">
-
-                <div class="grid gap-6">
+                    <!-- SECTION: BASIC INFO -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Report Name</label>
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500" placeholder="Example: Lab Tests Summary - Q4 2024" required>
+                        <h2 class="text-sm font-semibold text-slate-700 mb-4 uppercase tracking-wide">
+                            Report Details
+                        </h2>
+
+                        <div class="grid gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-600 mb-2">
+                                    Report Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="name"
+                                    value="{{ old('name') }}"
+                                    placeholder="e.g. Monthly Lab Performance Report"
+                                    class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                                    required
+                                >
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grid gap-6 md:grid-cols-2">
-                        <div>
-                            <label for="start_date" class="block text-sm font-medium text-slate-700 mb-2">Start Date (Optional)</label>
-                            <input type="date" name="start_date" id="start_date" value="{{ old('start_date') }}" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500">
-                            <p class="mt-1 text-xs text-slate-500">Beginning of test period</p>
+                    <!-- SECTION: DATE FILTER -->
+                    <div>
+                        <h2 class="text-sm font-semibold text-slate-700 mb-4 uppercase tracking-wide">
+                            Date Range (Optional)
+                        </h2>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-slate-600 mb-2">Start Date</label>
+                                <input 
+                                    type="date" 
+                                    name="start_date"
+                                    value="{{ old('start_date') }}"
+                                    class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                >
+                            </div>
+
+                            <div>
+                                <label class="block text-sm text-slate-600 mb-2">End Date</label>
+                                <input 
+                                    type="date" 
+                                    name="end_date"
+                                    value="{{ old('end_date') }}"
+                                    class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: INFO PANELS -->
+                    <div class="grid md:grid-cols-2 gap-6">
+
+                        <!-- LEFT -->
+                        <div class="border border-slate-200 rounded-xl p-6 bg-slate-50">
+                            <h3 class="text-sm font-semibold text-slate-700 mb-3">
+                                Included Metrics
+                            </h3>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li>• Diagnostic test results overview</li>
+                                <li>• Sample collection & processing logs</li>
+                                <li>• Turnaround time analytics</li>
+                                <li>• Department performance indicators</li>
+                            </ul>
                         </div>
 
-                        <div>
-                            <label for="end_date" class="block text-sm font-medium text-slate-700 mb-2">End Date (Optional)</label>
-                            <input type="date" name="end_date" id="end_date" value="{{ old('end_date') }}" class="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-indigo-500 focus:ring-indigo-500">
-                            <p class="mt-1 text-xs text-slate-500">End of test period</p>
+                        <!-- RIGHT -->
+                        <div class="border border-slate-200 rounded-xl p-6 bg-slate-50">
+                            <h3 class="text-sm font-semibold text-slate-700 mb-3">
+                                Usage Notes
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Use date filters to narrow report scope. Leaving fields empty
+                                will generate a complete dataset across all available laboratory records.
+                            </p>
                         </div>
+
                     </div>
 
-                    <div class="rounded-3xl border border-indigo-200 bg-indigo-50 p-5">
-                        <p class="text-sm font-semibold text-indigo-900">Laboratory Report Information</p>
-                        <p class="mt-2 text-sm text-indigo-800">This report provides comprehensive analysis of laboratory operations including test volumes, turnaround times, and quality metrics. Useful for departmental reviews and process improvement.</p>
+                    <!-- FOOTER ACTIONS -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-200">
+
+                        <a href="{{ route('reports.index') }}"
+                           class="text-sm text-slate-600 hover:text-slate-800 font-medium">
+                            ← Back to Reports
+                        </a>
+
+                        <div class="flex gap-3">
+                            <a href="{{ route('reports.index') }}"
+                               class="px-5 py-2.5 text-sm font-medium border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 transition">
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                class="px-6 py-2.5 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-sm transition">
+                                Generate Report
+                            </button>
+                        </div>
+
                     </div>
 
-                    <div class="rounded-3xl border border-blue-200 bg-blue-50 p-5">
-                        <p class="text-sm font-semibold text-blue-900">Optional Date Filter</p>
-                        <p class="mt-2 text-sm text-blue-800">You can filter by date range to focus on specific periods, or leave blank to see all-time laboratory data.</p>
-                    </div>
-                </div>
+                </form>
 
-                <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
-                    <a href="{{ route('reports.index') }}" class="inline-flex items-center justify-center rounded-3xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50">Cancel</a>
-                    <button type="submit" class="inline-flex items-center justify-center rounded-3xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">Generate Lab Report</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
