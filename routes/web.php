@@ -22,6 +22,7 @@ use App\Http\Controllers\InsuranceProviderController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\InventoryMovementController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -81,5 +82,14 @@ Route::resource('assets', AssetController::class);
 Route::resource('inventory-items', InventoryItemController::class);
 Route::resource('inventory-movements', InventoryMovementController::class);
 Route::post('inventory-items/{inventoryItem}/add-movement', [InventoryItemController::class, 'addMovement'])->name('inventory-items.add-movement');
+
+// Reports Routes (Custom routes must come BEFORE resource route)
+Route::get('reports/create-patient', [ReportController::class, 'createPatient'])->name('reports.create-patient');
+Route::get('reports/create-financial', [ReportController::class, 'createFinancial'])->name('reports.create-financial');
+Route::get('reports/create-daily', [ReportController::class, 'createDaily'])->name('reports.create-daily');
+Route::get('reports/create-lab', [ReportController::class, 'createLab'])->name('reports.create-lab');
+Route::get('reports/create-pharmacy', [ReportController::class, 'createPharmacy'])->name('reports.create-pharmacy');
+Route::get('reports/{report}/export', [ReportController::class, 'export'])->name('reports.export');
+Route::resource('reports', ReportController::class);
 
 });
