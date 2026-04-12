@@ -35,11 +35,11 @@
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Start Time</p>
-                <p class="text-base text-slate-800">{{ \\Carbon\\Carbon::createFromFormat('H:i:s',$doctorSchedule->start_time)->format('g:i A') }}</p>
+                <p class="text-base text-slate-800">{{ \Carbon\Carbon::createFromFormat('H:i:s',$doctorSchedule->start_time)->format('g:i A') }}</p>
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">End Time</p>
-                <p class="text-base text-slate-800">{{ \\Carbon\\Carbon::createFromFormat('H:i:s',$doctorSchedule->end_time)->format('g:i A') }}</p>
+                <p class="text-base text-slate-800">{{ \Carbon\Carbon::createFromFormat('H:i:s',$doctorSchedule->end_time)->format('g:i A') }}</p>
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Room</p>
