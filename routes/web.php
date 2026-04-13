@@ -23,6 +23,7 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -91,5 +92,8 @@ Route::get('reports/create-lab', [ReportController::class, 'createLab'])->name('
 Route::get('reports/create-pharmacy', [ReportController::class, 'createPharmacy'])->name('reports.create-pharmacy');
 Route::get('reports/{report}/export', [ReportController::class, 'export'])->name('reports.export');
 Route::resource('reports', ReportController::class);
+
+Route::get('settings/hospital-profile', [SettingController::class, 'hospitalProfile'])->name('settings.hospital-profile');
+Route::resource('settings', SettingController::class)->only(['index', 'create', 'store', 'edit', 'update']);
 
 });

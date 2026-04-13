@@ -290,13 +290,13 @@ h-screen shadow-lg fixed text-white flex flex-col">
     <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
 </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Hospital Profile</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Departments Setup</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Service Charges</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Tax Settings</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Payment Gateways</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- SMS / Email Config</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Theme & Branding</a>
+                        <a href="{{ route('settings.hospital-profile') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Hospital Profile</a>
+                <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Departments Setup</a>
+                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Service Charges</a>
+                <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Tax Settings</a>
+                <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Payment Gateways</a>
+                <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- SMS / Email Config</a>
+                <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Theme & Branding</a>
             </div>
         </details>
 
