@@ -27,6 +27,7 @@ class DoctorsSeeder extends Seeder
 
             if (! Doctor::where('user_id', $user->id)->exists()) {
                 Doctor::create([
+                    'name' => $user->name,
                     'user_id' => $user->id,
                     'department_id' => $departments->random()->id,
                     'reg_no' => 'REG' . rand(1000,9999),

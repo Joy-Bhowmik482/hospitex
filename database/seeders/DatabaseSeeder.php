@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
             InsuranceProvidersSeeder::class,
             RolesPermissionsSeeder::class,
             SettingsSeeder::class,
+            ActivityLogsSeeder::class,
         ]);
     }
 }
