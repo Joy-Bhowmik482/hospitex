@@ -1,5 +1,23 @@
 @extends('includePage')
 
+@php
+function formatScheduleTime($time) {
+    if (!$time) return 'N/A';
+    try {
+        // Try H:i:s format first (with seconds)
+        return \Carbon\Carbon::createFromFormat('H:i:s', $time)->format('g:i A');
+    } catch (\Exception $e) {
+        try {
+            // Try H:i format (without seconds)
+            return \Carbon\Carbon::createFromFormat('H:i', $time)->format('g:i A');
+        } catch (\Exception $e) {
+            // Fallback to raw time if parsing fails
+            return $time;
+        }
+    }
+}
+@endphp
+
 @section('content')
 
 <div class="max-w-4xl mx-auto">
@@ -35,11 +53,11 @@
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Start Time</p>
-                <p class="text-base text-slate-800">{{ \Carbon\Carbon::createFromFormat('H:i:s',$doctorSchedule->start_time)->format('g:i A') }}</p>
+                <p class="text-base text-slate-800">{{ formatScheduleTime($doctorSchedule->start_time) }}</p>
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">End Time</p>
-                <p class="text-base text-slate-800">{{ \Carbon\Carbon::createFromFormat('H:i:s',$doctorSchedule->end_time)->format('g:i A') }}</p>
+                <p class="text-base text-slate-800">{{ formatScheduleTime($doctorSchedule->end_time) }}</p>
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Room</p>

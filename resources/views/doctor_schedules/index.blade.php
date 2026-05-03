@@ -6,8 +6,8 @@
     <!-- Page Header -->
     <div class="mb-8 flex items-center justify-between">
         <div>
-            <h2 class="text-3xl font-bold text-slate-800 mb-2">Doctor Schedules</h2>
-            <p class="text-slate-600">Manage doctor working schedules and availability.</p>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Doctor Schedules <span class="text-sm text-blue-600">(Updated: {{ now()->format('H:i:s') }})</span></h2>
+            <p class="text-slate-600">Manage your doctor's schedules and availability.</p>
         </div>
         <a href="{{ route('doctor-schedules.create') }}" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition duration-200">
             + Add New Schedule
@@ -37,6 +37,26 @@
         <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
+                    @php
+                        if (! function_exists('formatScheduleTime')) {
+                            function formatScheduleTime($time)
+                            {
+                                if (! $time) {
+                                    return 'N/A';
+                                }
+
+                                try {
+                                    return \Carbon\Carbon::createFromFormat('H:i', $time)->format('g:i A');
+                                } catch (\Throwable $e) {
+                                    try {
+                                        return \Carbon\Carbon::createFromFormat('H:i:s', $time)->format('g:i A');
+                                    } catch (\Throwable $e) {
+                                        return $time;
+                                    }
+                                }
+                            }
+                        }
+                    @endphp
                     <!-- Table Header -->
                     <thead>
                         <tr class="bg-gradient-to-r from-blue-50 to-blue-100 border-b border-slate-200">
@@ -67,8 +87,8 @@
                                             {{ strtoupper(substr($schedule->doctor->name ?? 'D', 0, 1)) }}
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-slate-800">{{ $schedule->doctor->name }}</p>
-                                            <p class="text-xs text-slate-600">{{ $schedule->doctor->specialization }}</p>
+                                            <p class="text-sm font-semibold text-slate-800">{{ optional($schedule->doctor)->name ?? 'Unknown Doctor' }}</p>
+                                            <p class="text-xs text-slate-600">{{ optional($schedule->doctor)->specialization ?? 'No specialization set' }}</p>
                                         </div>
                                     </div>
                                 </td>
@@ -76,18 +96,18 @@
                                 <!-- Day -->
                                 <td class="px-6 py-4">
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800">
-                                        {{ ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][$schedule->day_of_week] }}
+                                        {{ ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][$schedule->day_of_week] ?? 'Unknown' }}
                                     </span>
                                 </td>
 
                                 <!-- Start Time -->
                                 <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-700">{{ \Carbon\Carbon::createFromFormat('H:i:s', $schedule->start_time)->format('g:i A') }}</p>
+                                    <p class="text-sm text-slate-700">{{ formatScheduleTime($schedule->start_time) }}</p>
                                 </td>
 
                                 <!-- End Time -->
                                 <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-700">{{ \Carbon\Carbon::createFromFormat('H:i:s', $schedule->end_time)->format('g:i A') }}</p>
+                                    <p class="text-sm text-slate-700">{{ formatScheduleTime($schedule->end_time) }}</p>
                                 </td>
 
                                 <!-- Room -->

@@ -24,16 +24,43 @@ class DoctorScheduleController extends Controller
     {
         $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
-            'day_of_week' => 'required|integer|between:0,6',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'days' => 'required|array|min:1',
+            'days.*' => 'integer|between:0,6',
+            'time_slots' => 'required|array|min:1',
+            'time_slots.*' => 'required|array|min:1',
+            'time_slots.*.*.start_time' => 'required|date_format:H:i',
+            'time_slots.*.*.end_time' => 'required|date_format:H:i',
             'room_no' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
-        DoctorSchedule::create($request->all());
+        foreach ($request->time_slots as $day => $slots) {
+            foreach ($slots as $index => $timeSlot) {
+                if (strtotime($timeSlot['end_time']) <= strtotime($timeSlot['start_time'])) {
+                    return back()->withErrors(["time_slots.{$day}.{$index}.end_time" => 'End time must be after start time.'])->withInput();
+                }
+            }
+        }
 
-        return redirect()->route('doctor-schedules.index')->with('success', 'Doctor schedule created successfully.');
+        $createdCount = 0;
+        foreach ($request->days as $day) {
+            if (! isset($request->time_slots[$day])) {
+                continue;
+            }
+            foreach ($request->time_slots[$day] as $timeSlot) {
+                DoctorSchedule::create([
+                    'doctor_id' => $request->doctor_id,
+                    'day_of_week' => $day,
+                    'start_time' => $timeSlot['start_time'],
+                    'end_time' => $timeSlot['end_time'],
+                    'room_no' => $request->room_no,
+                    'is_active' => $request->is_active ?? true,
+                ]);
+                $createdCount++;
+            }
+        }
+
+        return redirect()->route('doctor-schedules.index')->with('success', "Doctor schedule created successfully. {$createdCount} schedule entries added.");
     }
 
     public function show(DoctorSchedule $doctorSchedule)
