@@ -14,6 +14,7 @@ class Service extends Model
         'code',
         'department_id',
         'price',
+        'description',
         'is_active',
     ];
 

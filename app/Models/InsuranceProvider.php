@@ -11,10 +11,15 @@ class InsuranceProvider extends Model
 
     protected $fillable = [
         'name',
+        'code',
+        'contact',
+        'email',
         'policy_rules',
+        'is_active',
     ];
 
     protected $casts = [
         'policy_rules' => 'array',
+        'is_active' => 'boolean',
     ];
 }
