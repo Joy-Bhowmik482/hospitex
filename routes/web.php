@@ -5,10 +5,13 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorScheduleController;
+use App\Http\Controllers\DutyRosterController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\RoomController;
@@ -53,12 +56,14 @@ Route::get('/', function () {
 Route::resource('patients', PatientController::class);
 
 // Doctor & Staff Management Routes
+Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('permissions', PermissionController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('staff', StaffController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('doctor-schedules', DoctorScheduleController::class);
+Route::get('duty-roster', [DutyRosterController::class, 'index'])->name('duty-roster.index');
 
 // Appointments & Queue Management Routes
 Route::resource('appointments', AppointmentController::class);
@@ -77,6 +82,18 @@ Route::resource('services', ServiceController::class);
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
 Route::resource('insurance-providers', InsuranceProviderController::class);
+Route::resource('activity-logs', ActivityLogController::class)->only(['index', 'show']);
+Route::get('activity-logs/login-history', [ActivityLogController::class, 'loginHistory'])->name('activity-logs.login-history');
+Route::get('activity-logs/audit-trail', [ActivityLogController::class, 'auditTrail'])->name('activity-logs.audit-trail');
+Route::get('security/rbac', function () {
+    return view('security.rbac');
+})->name('security.rbac');
+Route::get('security/roles', function () {
+    return view('security.roles');
+})->name('security.roles');
+Route::get('security/permissions', function () {
+    return view('security.permissions');
+})->name('security.permissions');
 
 // Inventory & Assets Routes
 Route::resource('assets', AssetController::class);

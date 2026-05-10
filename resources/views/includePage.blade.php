@@ -136,8 +136,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Departments</a>
                 <a href="{{ route('doctor-schedules.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Doctor Schedule</a>
                 <a href="{{ route('staff.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Staff Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Duty Roster</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Roles & Permissions</a>
+                <a href="{{ route('duty-roster.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Duty Roster</a>
             </div>
         </details>
 
@@ -157,11 +156,11 @@ h-screen shadow-lg fixed text-white flex flex-col">
     <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
 </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- User Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Role Based Access Control (RBAC)</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Activity Logs</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Login History</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Audit Trail</a>
+                <a href="{{ route('users.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- User Management</a>
+                <a href="{{ route('security.rbac') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Role Based Access Control (RBAC)</a>
+                <a href="{{ route('activity-logs.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Activity Logs</a>
+                <a href="{{ route('activity-logs.login-history') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Login History</a>
+                <a href="{{ route('activity-logs.audit-trail') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Audit Trail</a>
             </div>
         </details>
 
