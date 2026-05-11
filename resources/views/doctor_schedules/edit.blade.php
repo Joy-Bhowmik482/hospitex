@@ -50,6 +50,24 @@
                         @enderror
                     </div>
 
+                    <!-- Support Staff -->
+                    <div>
+                        <label for="staff_id" class="block text-sm font-semibold text-slate-700 mb-2">Support Staff</label>
+                        <select id="staff_id" name="staff_id"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition @error('staff_id') border-red-500 @enderror">
+                            <option value="">Select Support Staff (optional)</option>
+                            @foreach ($staff as $member)
+                                <option value="{{ $member->id }}" {{ old('staff_id', $doctorSchedule->staff_id) == $member->id ? 'selected' : '' }}>
+                                    {{ $member->name }}@if($member->designation) - {{ $member->designation }}@endif
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('staff_id')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                        <p class="text-xs text-slate-500 mt-1">Optional staff assigned to assist with this shift.</p>
+                    </div>
+
                     <!-- Day of Week -->
                     <div>
                         <label for="day_of_week" class="block text-sm font-semibold text-slate-700 mb-2">Day of Week *</label>
@@ -206,6 +224,18 @@
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                         @enderror
                         <p class="text-xs text-slate-500 mt-1">Optional room or clinic designation</p>
+                    </div>
+
+                    <!-- Task Description -->
+                    <div class="md:col-span-2">
+                        <label for="task_description" class="block text-sm font-semibold text-slate-700 mb-2">Assigned Task</label>
+                        <input type="text" id="task_description" name="task_description" value="{{ old('task_description', $doctorSchedule->task_description) }}"
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('task_description') border-red-500 @enderror"
+                            placeholder="e.g., Emergency triage, rounds, documentation">
+                        @error('task_description')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                        <p class="text-xs text-slate-500 mt-1">Optional task / assigned duty for this schedule entry.</p>
                     </div>
 
                     <!-- Is Active -->

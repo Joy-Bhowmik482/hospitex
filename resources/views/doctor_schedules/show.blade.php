@@ -52,12 +52,20 @@ function formatScheduleTime($time) {
                 <p class="text-base text-slate-800">{{ ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][$doctorSchedule->day_of_week] }}</p>
             </div>
             <div>
+                <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Support Staff</p>
+                <p class="text-base text-slate-800">{{ optional($doctorSchedule->staff)->name ?? 'None' }}</p>
+            </div>
+            <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Start Time</p>
                 <p class="text-base text-slate-800">{{ formatScheduleTime($doctorSchedule->start_time) }}</p>
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">End Time</p>
                 <p class="text-base text-slate-800">{{ formatScheduleTime($doctorSchedule->end_time) }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Task</p>
+                <p class="text-base text-slate-800">{{ $doctorSchedule->task_description ?? 'General shift duties' }}</p>
             </div>
             <div>
                 <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Room</p>

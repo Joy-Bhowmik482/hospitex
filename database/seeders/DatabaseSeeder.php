@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentsSeeder::class,              // 15 departments
             DoctorsSeeder::class,                  // 20 doctors with specializations
+            ShiftsSeeder::class,                   // Default shifts (Morning, Evening, Night)
         ]);
 
         // Create patients with users

@@ -53,33 +53,63 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Doctor -->
-                    <div class="space-y-2">
-                        <label for="doctor_id" class="block text-sm font-semibold text-slate-700 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            Doctor
-                        </label>
-                        <select id="doctor_id" name="doctor_id"
-                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white hover:border-slate-400 @error('doctor_id') border-red-500 @enderror"
-                            required>
-                            <option value="">Select a doctor...</option>
-                            @foreach ($doctors as $doctor)
-                                <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
-                                    {{ $doctor->name }} @if($doctor->specialization) - {{ $doctor->specialization }}@endif
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('doctor_id')
-                            <span class="text-red-500 text-sm flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    <div class="space-y-6">
+                        <!-- Doctor -->
+                        <div class="space-y-2">
+                            <label for="doctor_id" class="block text-sm font-semibold text-slate-700 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                {{ $message }}
-                            </span>
-                        @enderror
-                        <p class="text-xs text-slate-500">Choose the doctor for this schedule</p>
+                                Doctor
+                            </label>
+                            <select id="doctor_id" name="doctor_id"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white hover:border-slate-400 @error('doctor_id') border-red-500 @enderror"
+                                required>
+                                <option value="">Select a doctor...</option>
+                                @foreach ($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                        {{ $doctor->name }} @if($doctor->specialization) - {{ $doctor->specialization }}@endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('doctor_id')
+                                <span class="text-red-500 text-sm flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    </svg>
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                            <p class="text-xs text-slate-500">Choose the doctor for this schedule</p>
+                        </div>
+
+                        <!-- Staff -->
+                        <div class="space-y-2">
+                            <label for="staff_id" class="block text-sm font-semibold text-slate-700 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5V9a2 2 0 00-2-2h-3M9 20H4V9a2 2 0 012-2h3m3 4a4 4 0 11-8 0 4 4 0 018 0zm0 4h8m-4-4v4"></path>
+                                </svg>
+                                Support Staff
+                            </label>
+                            <select id="staff_id" name="staff_id"
+                                class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200 bg-white hover:border-slate-400 @error('staff_id') border-red-500 @enderror">
+                                <option value="">Select supporting staff (optional)</option>
+                                @foreach ($staff as $member)
+                                    <option value="{{ $member->id }}" {{ old('staff_id') == $member->id ? 'selected' : '' }}>
+                                        {{ $member->name }} @if($member->designation) - {{ $member->designation }}@endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('staff_id')
+                                <span class="text-red-500 text-sm flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    </svg>
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                            <p class="text-xs text-slate-500">Optional staff member assigned to help with the shift.</p>
+                        </div>
                     </div>
 
                     <!-- Days of Week -->
@@ -206,7 +236,7 @@
                             }
                         }
 
-                        function addSlot(day, startTime = '09:00', endTime = '17:00') {
+                        function addSlot(day, startTime = '09:00', endTime = '17:00', taskDescription = '') {
                             const slotContainer = document.getElementById(`slot-container-${day}`);
                             if (!slotContainer) {
                                 return;
@@ -214,7 +244,7 @@
 
                             const index = daySlotCounts[day] ?? 0;
                             const slotDiv = document.createElement('div');
-                            slotDiv.className = 'grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end p-4 bg-white rounded-2xl border border-slate-200 shadow-sm';
+                            slotDiv.className = 'grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end p-4 bg-white rounded-2xl border border-slate-200 shadow-sm';
                             slotDiv.innerHTML = `
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-slate-700">Start Time</label>
@@ -227,6 +257,12 @@
                                     <input type="time" name="time_slots[${day}][${index}][end_time]" value="${endTime}"
                                         class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
                                         required>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-slate-700">Task</label>
+                                    <input type="text" name="time_slots[${day}][${index}][task_description]" value="${taskDescription || ''}"
+                                        class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+                                        placeholder="e.g., Triage, patient follow-up">
                                 </div>
                                 <button type="button" class="remove-slot bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 px-5 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 whitespace-nowrap" data-day="${day}" data-index="${index}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +319,7 @@
                                 createDayPanel(day, false);
                                 if (oldTimeSlots[day] && oldTimeSlots[day].length > 0) {
                                     oldTimeSlots[day].forEach((slot) => {
-                                        addSlot(day, slot.start_time || '09:00', slot.end_time || '17:00');
+                                        addSlot(day, slot.start_time || '09:00', slot.end_time || '17:00', slot.task_description || '');
                                     });
                                 } else {
                                     addSlot(day);

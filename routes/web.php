@@ -43,7 +43,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //----Protected Routes----
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'activity.logger']], function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -63,7 +63,11 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('staff', StaffController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('doctor-schedules', DoctorScheduleController::class);
-Route::get('duty-roster', [DutyRosterController::class, 'index'])->name('duty-roster.index');
+Route::get('duty-roster', [DutyRosterController::class, 'weekly'])->name('duty-roster.index');
+Route::get('duty-rosters/available', [DutyRosterController::class, 'available'])->name('duty-rosters.available');
+Route::get('duty-rosters/print', [DutyRosterController::class, 'print'])->name('duty-rosters.print');
+Route::get('duty-rosters/export-pdf', [DutyRosterController::class, 'exportPdf'])->name('duty-rosters.export-pdf');
+Route::resource('duty-rosters', DutyRosterController::class);
 
 // Appointments & Queue Management Routes
 Route::resource('appointments', AppointmentController::class);
@@ -82,9 +86,9 @@ Route::resource('services', ServiceController::class);
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
 Route::resource('insurance-providers', InsuranceProviderController::class);
-Route::resource('activity-logs', ActivityLogController::class)->only(['index', 'show']);
 Route::get('activity-logs/login-history', [ActivityLogController::class, 'loginHistory'])->name('activity-logs.login-history');
 Route::get('activity-logs/audit-trail', [ActivityLogController::class, 'auditTrail'])->name('activity-logs.audit-trail');
+Route::resource('activity-logs', ActivityLogController::class)->only(['index', 'show']);
 Route::get('security/rbac', function () {
     return view('security.rbac');
 })->name('security.rbac');

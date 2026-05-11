@@ -19,8 +19,8 @@
         </div>
         <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
             <div class="text-5xl mb-4">👨‍⚕️</div>
-            <h3 class="text-xl font-semibold text-slate-800 mb-2">Doctor Coverage</h3>
-            <p class="text-slate-600">See which doctors are assigned to each shift and department.</p>
+            <h3 class="text-xl font-semibold text-slate-800 mb-2">Team Coverage</h3>
+            <p class="text-slate-600">See which doctors and support staff are assigned to each shift.</p>
         </div>
         <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
             <div class="text-5xl mb-4">🗂️</div>
@@ -54,9 +54,11 @@
                                 <thead class="bg-slate-50">
                                     <tr>
                                         <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Doctor</th>
+                                        <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Staff</th>
                                         <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Department</th>
                                         <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Shift</th>
                                         <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Room</th>
+                                        <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Task</th>
                                         <th class="px-6 py-4 text-xs font-semibold uppercase text-slate-700">Status</th>
                                     </tr>
                                 </thead>
@@ -64,9 +66,11 @@
                                     @foreach ($schedules[$dayIndex] as $schedule)
                                         <tr class="hover:bg-slate-50 transition duration-150">
                                             <td class="px-6 py-4 text-slate-800 font-semibold">{{ $schedule->doctor->name ?? 'Unknown Doctor' }}</td>
+                                            <td class="px-6 py-4 text-slate-700">{{ optional($schedule->staff)->name ?? 'None' }}</td>
                                             <td class="px-6 py-4 text-slate-700">{{ $schedule->doctor->department->name ?? 'General' }}</td>
                                             <td class="px-6 py-4 text-slate-700">{{ date('g:i A', strtotime($schedule->start_time)) }} - {{ date('g:i A', strtotime($schedule->end_time)) }}</td>
                                             <td class="px-6 py-4 text-slate-700">{{ $schedule->room_no ?? 'TBD' }}</td>
+                                            <td class="px-6 py-4 text-slate-700">{{ $schedule->task_description ?? 'General duties' }}</td>
                                             <td class="px-6 py-4">
                                                 <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {{ $schedule->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                                     {{ $schedule->is_active ? 'Active' : 'Inactive' }}
