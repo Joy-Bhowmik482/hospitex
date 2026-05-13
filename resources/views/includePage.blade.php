@@ -248,7 +248,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('assets.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Asset Tracking</a>
                 <a href="{{ route('inventory-items.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Consumables</a>
                 <a href="{{ route('inventory-movements.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Stock Movements</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Maintenance Schedule</a>
+                <a href="{{ route('maintenance-schedules.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Maintenance Schedule</a>
             </div>
         </details>
 

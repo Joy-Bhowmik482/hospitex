@@ -25,6 +25,7 @@ use App\Http\Controllers\InsuranceProviderController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\InventoryMovementController;
+use App\Http\Controllers\MaintenanceScheduleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -103,6 +104,8 @@ Route::get('security/permissions', function () {
 Route::resource('assets', AssetController::class);
 Route::resource('inventory-items', InventoryItemController::class);
 Route::resource('inventory-movements', InventoryMovementController::class);
+Route::resource('maintenance-schedules', MaintenanceScheduleController::class);
+Route::post('maintenance-schedules/{maintenanceSchedule}/complete', [MaintenanceScheduleController::class, 'complete'])->name('maintenance-schedules.complete');
 Route::post('inventory-items/{inventoryItem}/add-movement', [InventoryItemController::class, 'addMovement'])->name('inventory-items.add-movement');
 
 // Reports Routes (Custom routes must come BEFORE resource route)

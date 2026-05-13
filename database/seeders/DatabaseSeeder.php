@@ -78,6 +78,7 @@ class DatabaseSeeder extends Seeder
             PatientVisitsSeeder::class,
             BedAllocationsSeeder::class,
             AssetsSeeder::class,
+            MaintenanceSchedulesSeeder::class,
             RolesPermissionsSeeder::class,
             SettingsSeeder::class,
         ]);
