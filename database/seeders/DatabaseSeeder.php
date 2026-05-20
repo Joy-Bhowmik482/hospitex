@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
 
         // Services and insurance
         $this->call([
-            EnhancedServicesSeeder::class,         // 15 services
+            EnhancedServicesSeeder::class,
             EnhancedInsuranceProvidersSeeder::class, // 10 insurance providers
         ]);
 
@@ -64,7 +64,6 @@ class DatabaseSeeder extends Seeder
         // Financial
         $this->call([
             EnhancedInvoicesSeeder::class,         // 50 invoices with items
-            EnhancedPaymentsSeeder::class,         // Payments for invoices
         ]);
 
         // Inventory

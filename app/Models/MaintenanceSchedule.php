@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class MaintenanceSchedule extends Model
+class MaintenanceSchedule extends BaseModel
 {
     use HasFactory;
 
@@ -71,3 +71,5 @@ class MaintenanceSchedule extends Model
         return $query->whereBetween('scheduled_date', [now()->startOfMonth(), now()->endOfMonth()]);
     }
 }
+
+

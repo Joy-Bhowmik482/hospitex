@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class DutyRoster extends Model
+class DutyRoster extends BaseModel
 {
     use HasFactory;
 
@@ -58,3 +58,5 @@ class DutyRoster extends Model
         return $this->belongsTo(Shift::class);
     }
 }
+
+

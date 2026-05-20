@@ -149,20 +149,8 @@
 
                     <!-- Created By -->
                     <div>
-                        <label for="created_by" class="block text-sm font-semibold text-slate-700 mb-2">Created By *</label>
-                        <select id="created_by" name="created_by" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('created_by') border-red-500 @enderror"
-                            required>
-                            <option value="">Select User</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('created_by') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('created_by')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                        @enderror
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Created By</label>
+                        <p class="text-sm text-slate-700">{{ auth()->user()->name ?? 'Unknown user' }}</p>
                     </div>
 
                     <!-- Diagnosis -->

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Invoice extends Model
+class Invoice extends BaseModel
 {
     use HasFactory;
 
@@ -52,3 +52,5 @@ class Invoice extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 }
+
+

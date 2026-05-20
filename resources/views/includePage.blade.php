@@ -50,6 +50,8 @@
 </head>
 <body class="bg-slate-100 font-sans">
 
+@include('components.notifications')
+
 <!-- Top Navbar -->
 <nav class="fixed top-0 left-0 right-0 bg-darknav text-white shadow-md z-50">
     <div class="flex justify-between items-center px-6 py-4">
@@ -226,9 +228,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Services Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- OPD / IPD Billing</a>
                 <a href="{{ route('invoices.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Invoices</a>
-                <a href="{{ route('payments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Payments</a>
                 <a href="{{ route('insurance-providers.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Insurance / Corporate Billing</a>
-                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Service Rates & Taxes</a>
             </div>
         </details>
 
@@ -291,7 +291,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
             <div class="pl-4 mt-1 space-y-1">
                         <a href="{{ route('settings.hospital-profile') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Hospital Profile</a>
                 <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Departments Setup</a>
-                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Service Charges</a>
+                <!-- Service Charges removed -->
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Tax Settings</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Payment Gateways</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- SMS / Email Config</a>

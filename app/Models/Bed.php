@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Bed extends Model
+class Bed extends BaseModel
 {
     use HasFactory;
 
@@ -25,3 +25,5 @@ class Bed extends Model
         return $this->hasMany(BedAllocation::class);
     }
 }
+
+

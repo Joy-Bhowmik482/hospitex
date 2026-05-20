@@ -18,9 +18,8 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BedController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\BedAllocationController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\InsuranceProviderController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\InventoryItemController;
@@ -53,6 +52,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // Patient Management Routes
 Route::resource('patients', PatientController::class);
 
@@ -83,9 +83,8 @@ Route::resource('admissions', AdmissionController::class);
 Route::resource('bed-allocations', BedAllocationController::class);
 
 // Patient Billing Routes
-Route::resource('services', ServiceController::class);
 Route::resource('invoices', InvoiceController::class);
-Route::resource('payments', PaymentController::class);
+Route::resource('services', ServiceController::class);
 Route::resource('insurance-providers', InsuranceProviderController::class);
 Route::get('activity-logs/login-history', [ActivityLogController::class, 'loginHistory'])->name('activity-logs.login-history');
 Route::get('activity-logs/audit-trail', [ActivityLogController::class, 'auditTrail'])->name('activity-logs.audit-trail');

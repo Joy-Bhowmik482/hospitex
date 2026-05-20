@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ActivityLog extends Model
+class ActivityLog extends BaseModel
 {
     use HasFactory;
 
@@ -34,3 +34,5 @@ class ActivityLog extends Model
         return $this->belongsTo(User::class);
     }
 }
+
+

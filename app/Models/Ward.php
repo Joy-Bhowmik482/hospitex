@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Ward extends Model
+class Ward extends BaseModel
 {
     use HasFactory;
 
@@ -21,3 +21,5 @@ class Ward extends Model
         return $this->hasMany(Room::class);
     }
 }
+
+

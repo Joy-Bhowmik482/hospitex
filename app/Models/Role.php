@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Role extends Model
+class Role extends BaseModel
 {
     use HasFactory;
 
@@ -21,3 +21,4 @@ class Role extends Model
         return $this->belongsToMany(Permission::class);
     }
 }
+

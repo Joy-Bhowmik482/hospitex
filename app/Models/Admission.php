@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Admission extends Model
+class Admission extends BaseModel
 {
     use HasFactory;
 
@@ -52,3 +52,5 @@ class Admission extends Model
         return $this->hasMany(BedAllocation::class);
     }
 }
+
+

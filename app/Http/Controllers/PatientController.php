@@ -34,7 +34,7 @@ class PatientController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:patients',
             'phone' => 'required|string|max:20',
-            'date_of_birth' => 'required|date',
+            'age' => 'nullable|string|max:10',
             'gender' => 'required|in:Male,Female,Other',
             'address' => 'nullable|string',
             'blood_type' => 'nullable|string|max:5',
@@ -47,7 +47,11 @@ class PatientController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        Patient::create($validated);
+        $patient = Patient::create($validated);
+
+        if ($request->input('back_to') === 'appointments.create') {
+            return redirect()->route('appointments.create', ['selected_patient_id' => $patient->id]);
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Patient added successfully!');
@@ -79,7 +83,7 @@ class PatientController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:patients,email,' . $patient->id,
             'phone' => 'required|string|max:20',
-            'date_of_birth' => 'required|date',
+            'age' => 'nullable|string|max:10',
             'gender' => 'required|in:Male,Female,Other',
             'address' => 'nullable|string',
             'blood_type' => 'nullable|string|max:5',

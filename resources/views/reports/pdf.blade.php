@@ -114,29 +114,7 @@
                 </table>
             </div>
 
-            <div class="section">
-                <p class="section-title">Payments</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Invoice ID</th>
-                            <th>Amount</th>
-                            <th>Method</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($report->data['payments'] as $payment)
-                            <tr>
-                                <td>{{ $payment['id'] }}</td>
-                                <td>{{ $payment['invoice_id'] }}</td>
-                                <td>${{ number_format($payment['amount'], 2) }}</td>
-                                <td>{{ $payment['payment_method'] }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            <!-- Payments section removed from PDF -->
         @elseif($report->type == 'daily')
             <div class="section">
                 <p class="section-title">Daily Metrics</p>

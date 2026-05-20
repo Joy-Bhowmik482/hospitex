@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Shift extends Model
+class Shift extends BaseModel
 {
     use HasFactory;
 
@@ -25,3 +25,5 @@ class Shift extends Model
         return $this->hasMany(DutyRoster::class);
     }
 }
+
+

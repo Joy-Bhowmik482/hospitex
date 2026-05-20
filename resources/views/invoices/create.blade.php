@@ -126,13 +126,7 @@
 
                     <div class="text-right">
                         <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Created By</h3>
-                        <select name="created_by" required
-                            class="w-full border-b border-gray-300 focus:outline-none py-2 text-right text-gray-800">
-                            <option value="">Select User</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
+                        <p class="text-sm text-slate-700">{{ auth()->user()->name ?? 'Unknown user' }}</p>
                     </div>
                 </div>
 

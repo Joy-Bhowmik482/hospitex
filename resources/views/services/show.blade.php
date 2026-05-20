@@ -1,78 +1,42 @@
 @extends('includePage')
 
 @section('content')
-
-<div class="max-w-4xl mx-auto">
-    <!-- Page Header -->
-    <div class="mb-8 flex items-center justify-between">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h2 class="text-3xl font-bold text-slate-800">Service Details</h2>
-            <p class="text-slate-500 mt-1">View service information</p>
+            <h1 class="text-3xl font-bold text-slate-900">{{ $service->name }}</h1>
+            <p class="text-slate-500 mt-1">Details for this billing service.</p>
         </div>
-        <div class="flex gap-2">
-            <a href="{{ route('services.edit', $service) }}" class="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition">
-                ✏️ Edit
-            </a>
-            <a href="{{ route('services.index') }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition">
-                ← Back
-            </a>
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ route('services.edit', $service) }}" class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">Edit Service</a>
+            <a href="{{ route('services.index') }}" class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Back to Services</a>
         </div>
     </div>
 
-    <!-- Details Card -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Name -->
-            <div>
-                <p class="text-sm text-slate-600 font-medium">Service Name</p>
-                <p class="text-lg text-slate-800 font-semibold mt-1">{{ $service->name }}</p>
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="grid gap-6 sm:grid-cols-2">
+            <div class="space-y-3">
+                <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Code</p>
+                <p class="text-lg font-medium text-slate-900">{{ $service->code }}</p>
             </div>
-
-            <!-- Code -->
-            <div>
-                <p class="text-sm text-slate-600 font-medium">Service Code</p>
-                <p class="text-lg text-slate-800 font-semibold mt-1">{{ $service->code }}</p>
+            <div class="space-y-3">
+                <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Price</p>
+                <p class="text-lg font-medium text-slate-900">{{ number_format($service->price, 2) }}</p>
             </div>
-
-            <!-- Department -->
-            <div>
-                <p class="text-sm text-slate-600 font-medium">Department</p>
-                <p class="text-lg text-slate-800 font-semibold mt-1">{{ $service->department?->name ?? 'N/A' }}</p>
+            <div class="space-y-3">
+                <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Department</p>
+                <p class="text-lg font-medium text-slate-900">{{ optional($service->department)->name ?? 'Unassigned' }}</p>
             </div>
-
-            <!-- Price -->
-            <div>
-                <p class="text-sm text-slate-600 font-medium">Price</p>
-                <p class="text-lg text-slate-800 font-semibold mt-1">{{ number_format($service->price, 2) }}</p>
-            </div>
-
-            <!-- Status -->
-            <div>
-                <p class="text-sm text-slate-600 font-medium">Status</p>
-                <p class="mt-1">
-                    <span class="px-3 py-1 rounded-full text-xs font-medium {{ $service->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                        {{ $service->is_active ? 'Active' : 'Inactive' }}
-                    </span>
-                </p>
-            </div>
-
-            <!-- Created Date -->
-            <div>
-                <p class="text-sm text-slate-600 font-medium">Created Date</p>
-                <p class="text-lg text-slate-800 font-semibold mt-1">{{ $service->created_at->format('d M Y H:i') }}</p>
+            <div class="space-y-3">
+                <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Status</p>
+                <span class="inline-flex rounded-full px-3 py-1 text-sm font-semibold {{ $service->is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600' }}">{{ $service->is_active ? 'Active' : 'Inactive' }}</span>
             </div>
         </div>
-    </div>
 
-    <!-- Delete Button -->
-    <div class="mt-6">
-        <form action="{{ route('services.destroy', $service) }}" method="POST">
-            @csrf @method('DELETE')
-            <button type="submit" onclick="return confirm('Are you sure you want to delete this service?')" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition">
-                🗑️ Delete Service
-            </button>
-        </form>
+        <div class="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-6">
+            <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Description</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-700">{{ $service->description ?? 'No description was provided for this service.' }}</p>
+        </div>
     </div>
 </div>
-
 @endsection

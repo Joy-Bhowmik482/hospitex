@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class InventoryMovement extends Model
+class InventoryMovement extends BaseModel
 {
     use HasFactory;
 
@@ -33,3 +33,5 @@ class InventoryMovement extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 }
+
+

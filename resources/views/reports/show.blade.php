@@ -149,29 +149,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Payments</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach(array_slice($report->data['payments'], 0, 5) as $payment)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-4 py-3 text-sm text-gray-900">{{ $payment['id'] }}</td>
-                                            <td class="px-4 py-3 text-sm text-gray-500">{{ $payment['invoice_id'] }}</td>
-                                            <td class="px-4 py-3 text-sm text-gray-500">${{ number_format($payment['amount'], 2) }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <!-- Recent Payments removed -->
                 </div>
 
                 <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">

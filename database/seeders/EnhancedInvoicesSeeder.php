@@ -6,14 +6,14 @@ use Illuminate\Database\Seeder;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Patient;
-use App\Models\Service;
 
 class EnhancedInvoicesSeeder extends Seeder
 {
     public function run(): void
     {
         $patients = Patient::all();
-        $services = Service::all();
+        // Services removed: use fallback defaults when no services available
+        $services = collect();
         
         $numInvoices = min(50, $patients->count());
         
@@ -36,14 +36,14 @@ class EnhancedInvoicesSeeder extends Seeder
             // Add 2-5 items per invoice
             $numItems = rand(2, 5);
             for ($j = 0; $j < $numItems; $j++) {
-                $service = $services->random();
+                $service = $services->isNotEmpty() ? $services->random() : (object) ['id' => null, 'price' => 500];
                 $quantity = rand(1, 3);
                 $itemAmount = ($service->price ?? 500) * $quantity;
                 $amount += $itemAmount;
                 
                 InvoiceItem::firstOrCreate([
                     'invoice_id' => $invoice->id,
-                    'service_id' => $service->id,
+                    'service_id' => $service->id ?? null,
                 ], [
                     'quantity' => $quantity,
                     'unit_price' => $service->price ?? 500,

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class InvoiceItem extends Model
+class InvoiceItem extends BaseModel
 {
     use HasFactory;
 
@@ -30,3 +30,5 @@ class InvoiceItem extends Model
         return $this->belongsTo(Invoice::class);
     }
 }
+
+

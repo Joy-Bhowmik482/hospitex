@@ -17,7 +17,7 @@ A comprehensive patient management system built with Laravel that includes patie
 ### 2. **Add/Edit Patient**
 - Comprehensive patient registration form
 - Fields include:
-  - Personal Information (Name, Email, Phone, DOB, Gender)
+  - Personal Information (Name, Email, Phone, Age, Gender)
   - Contact Details (Address, City, State, Postal Code, Country)
   - Medical Information (Blood Type, Allergies, Medical Conditions)
   - Emergency Contact Information
@@ -127,7 +127,7 @@ A comprehensive patient management system built with Laravel that includes patie
 - id (primary key)
 - first_name, last_name
 - email (unique), phone
-- date_of_birth, gender
+- age, gender
 - address, city, state, postal_code, country
 - blood_type, allergies, medical_conditions
 - emergency_contact_name, emergency_contact_phone
@@ -175,7 +175,7 @@ A comprehensive patient management system built with Laravel that includes patie
   - `documents()` - One-to-Many
 - Accessors:
   - `full_name` - Combined first and last name
-  - `age` - Calculated from date_of_birth
+  - `age` - Stored directly in the `age` column
 
 ### MedicalHistory Model (`app/Models/MedicalHistory.php`)
 - Relationship:
@@ -313,7 +313,7 @@ FILESYSTEM_DISK=local
 ### Patient Creation/Update
 - first_name, last_name: Required, string, max 255
 - email: Required, unique, must be email
-- date_of_birth: Required, must be before today
+- age: Optional, string, max 10
 - gender: Required, in (Male, Female, Other)
 - patient_status: Required, in (In-patient, Out-patient)
 

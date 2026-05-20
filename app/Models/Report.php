@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 
-class Report extends Model
+class Report extends BaseModel
 {
     protected $fillable = [
         'name',
@@ -26,3 +26,5 @@ class Report extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 }
+
+

@@ -46,7 +46,7 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-slate-700">Phone</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-slate-700">Age</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase text-slate-700">Blood Type</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase text-slate-700">Status</th>
+                            
                             <th class="px-6 py-4 text-center text-xs font-semibold uppercase text-slate-700">Actions</th>
                         </tr>
                     </thead>
@@ -84,7 +84,7 @@
 
                                 <!-- Age -->
                                 <td class="px-6 py-4">
-                                    <p class="text-sm text-slate-700">{{ \Carbon\Carbon::parse($patient->date_of_birth)->age }} yrs</p>
+                                    <p class="text-sm text-slate-700">{{ $patient->age ?? 'N/A' }}</p>
                                 </td>
 
                                 <!-- Blood Type -->
@@ -94,12 +94,7 @@
                                     </span>
                                 </td>
 
-                                <!-- Status -->
-                                <td class="px-6 py-4 text-center">
-                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $patient->status === 'In' ? 'bg-green-100 text-green-800' : ($patient->status === 'Out' ? 'bg-yellow-100 text-yellow-800' : 'bg-slate-100 text-slate-800') }}">
-                                        {{ $patient->status }}
-                                    </span>
-                                </td>
+                                
 
                                 <!-- Actions -->
                                 <td class="px-6 py-4">

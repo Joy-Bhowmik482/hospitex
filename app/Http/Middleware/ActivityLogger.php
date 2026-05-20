@@ -103,7 +103,6 @@ class ActivityLogger
             'staff.show',
             'users.show',
             'invoices.show',
-            'payments.show',
         ];
 
         return in_array($routeName, $sensitiveRoutes);
@@ -159,7 +158,7 @@ class ActivityLogger
             'beds' => 'bed',
             'appointments' => 'appointment',
             'invoices' => 'invoice',
-            'payments' => 'payment',
+            // payments removed
             'users' => 'user',
             'roles' => 'role',
             'permissions' => 'permission',

@@ -25,6 +25,11 @@
 
         <form action="{{ route('patients.store') }}" method="POST" class="space-y-6">
             @csrf
+            <input type="hidden" name="back_to" value="{{ old('back_to', request('back_to')) }}">
+
+            @if(request('back_to') === 'appointments.create')
+                
+            @endif
 
             <!-- Personal Information Section -->
             <div class="border-b border-slate-200 pb-6">
@@ -75,13 +80,13 @@
                         @enderror
                     </div>
 
-                    <!-- Date of Birth -->
+                    <!-- Age -->
                     <div>
-                        <label for="date_of_birth" class="block text-sm font-semibold text-slate-700 mb-2">Date of Birth *</label>
-                        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('date_of_birth') border-red-500 @enderror"
-                            required>
-                        @error('date_of_birth')
+                        <label for="age" class="block text-sm font-semibold text-slate-700 mb-2">Age</label>
+                        <input type="text" id="age" name="age" value="{{ old('age') }}" 
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('age') border-red-500 @enderror"
+                            placeholder="e.g. 34">
+                        @error('age')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                         @enderror
                     </div>
@@ -145,12 +150,6 @@
     </select>
 </div>
 
-                    <!-- Date Admitted -->
-                    <div>
-                        <label for="date_admitted" class="block text-sm font-semibold text-slate-700 mb-2">Date Admitted</label>
-                        <input type="date" id="date_admitted" name="date_admitted" value="{{ old('date_admitted') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                    </div>
 
                     <!-- Allergies -->
                     <div class="md:col-span-2">
@@ -166,17 +165,6 @@
                         <textarea id="medical_conditions" name="medical_conditions" rows="2" 
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                             placeholder="Any existing medical conditions">{{ old('medical_conditions') }}</textarea>
-                    </div>
-
-                    <!-- Status -->
-                    <div>
-                        <label for="status" class="block text-sm font-semibold text-slate-700 mb-2">Status</label>
-                        <select id="status" name="status" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                            <option value="In" {{ old('status') === 'In' ? 'selected' : '' }}>In</option>
-                            <option value="Out" {{ old('status') === 'Out' ? 'selected' : '' }}>Out</option>
-                            <option value="Discharged" {{ old('status') === 'Discharged' ? 'selected' : '' }}>Discharged</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -217,7 +205,7 @@
                 <button type="submit" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition duration-200">
                     Add Patient
                 </button>
-                <a href="{{ route('patients.index') }}" class="flex-1 bg-slate-200 text-slate-800 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 transition text-center">
+                <a href="{{ request('back_to') === 'appointments.create' ? route('appointments.create') : route('patients.index') }}" class="flex-1 bg-slate-200 text-slate-800 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 transition text-center">
                     Cancel
                 </a>
             </div>

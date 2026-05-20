@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\Patient;
 use App\Models\Invoice;
-use App\Models\Payment;
 use App\Models\Appointment;
 use App\Models\Admission;
 use Illuminate\Http\Request;
@@ -148,12 +147,12 @@ class ReportController extends Controller
                 return $query->get()->toArray();
             case 'financial':
                 $invoices = Invoice::with('patient')->whereBetween('created_at', [$startDate ?? '1900-01-01', $endDate ?? now()])->get();
-                $payments = Payment::with('invoice.patient')->whereBetween('created_at', [$startDate ?? '1900-01-01', $endDate ?? now()])->get();
+                // Payments removed: return invoices and compute totals from invoices only
                 return [
                     'invoices' => $invoices->toArray(),
-                    'payments' => $payments->toArray(),
+                    'payments' => [],
                     'total_invoiced' => $invoices->sum('total_amount'),
-                    'total_paid' => $payments->sum('amount'),
+                    'total_paid' => 0,
                 ];
             case 'daily':
                 $date = $startDate ?? now()->toDateString();

@@ -58,7 +58,7 @@ class PatientsSeeder extends Seeder
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'phone' => $phone,
-                'date_of_birth' => $faker->dateTimeBetween('-80 years', '-5 years')->format('Y-m-d'),
+                'age' => (string) rand(5, 90),
                 'gender' => $genders[array_rand($genders)],
                 'address' => $faker->streetAddress,
                 'blood_type' => $bloodGroups[array_rand($bloodGroups)],

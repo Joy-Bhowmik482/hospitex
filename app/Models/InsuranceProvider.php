@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class InsuranceProvider extends Model
+class InsuranceProvider extends BaseModel
 {
     use HasFactory;
 
@@ -23,3 +23,5 @@ class InsuranceProvider extends Model
         'is_active' => 'boolean',
     ];
 }
+
+

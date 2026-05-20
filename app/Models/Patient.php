@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Patient extends Model
+class Patient extends BaseModel
 {
     use HasFactory;
 
@@ -16,7 +16,7 @@ class Patient extends Model
         'last_name',
         'email',
         'phone',
-        'date_of_birth',
+        'age',
         'gender',
         'address',
         'blood_type',
@@ -30,7 +30,6 @@ class Patient extends Model
     ];
 
     protected $casts = [
-        'date_of_birth' => 'date',
         'date_admitted' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -61,3 +60,5 @@ class Patient extends Model
         return $this->hasMany(Appointment::class);
     }
 }
+
+

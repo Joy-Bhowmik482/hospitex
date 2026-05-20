@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class Service extends BaseModel
 {
     use HasFactory;
 
@@ -14,22 +13,17 @@ class Service extends Model
         'code',
         'department_id',
         'price',
-        'description',
         'is_active',
+        'description',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'price' => 'float',
         'is_active' => 'boolean',
     ];
 
     public function department()
     {
         return $this->belongsTo(Department::class);
-    }
-
-    public function invoiceItems()
-    {
-        return $this->hasMany(InvoiceItem::class);
     }
 }

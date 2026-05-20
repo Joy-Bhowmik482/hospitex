@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class InventoryItem extends Model
+class InventoryItem extends BaseModel
 {
     use HasFactory;
 
@@ -27,3 +27,5 @@ class InventoryItem extends Model
         return $this->hasMany(InventoryMovement::class);
     }
 }
+
+
