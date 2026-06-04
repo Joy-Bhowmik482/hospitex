@@ -5,23 +5,26 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorScheduleController;
+use App\Http\Controllers\DutyRosterController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BedController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\BedAllocationController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\InsuranceProviderController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\InventoryMovementController;
+use App\Http\Controllers\MaintenanceScheduleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -40,7 +43,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //----Protected Routes----
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'activity.logger']], function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -49,16 +52,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // Patient Management Routes
 Route::resource('patients', PatientController::class);
 
 // Doctor & Staff Management Routes
+Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('permissions', PermissionController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('staff', StaffController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('doctor-schedules', DoctorScheduleController::class);
+Route::get('duty-roster', [DutyRosterController::class, 'weekly'])->name('duty-roster.index');
+Route::get('duty-rosters/available', [DutyRosterController::class, 'available'])->name('duty-rosters.available');
+Route::get('duty-rosters/print', [DutyRosterController::class, 'print'])->name('duty-rosters.print');
+Route::get('duty-rosters/export-pdf', [DutyRosterController::class, 'exportPdf'])->name('duty-rosters.export-pdf');
+Route::resource('duty-rosters', DutyRosterController::class);
 
 // Appointments & Queue Management Routes
 Route::resource('appointments', AppointmentController::class);
@@ -73,24 +83,48 @@ Route::resource('admissions', AdmissionController::class);
 Route::resource('bed-allocations', BedAllocationController::class);
 
 // Patient Billing Routes
-Route::resource('services', ServiceController::class);
 Route::resource('invoices', InvoiceController::class);
-Route::resource('payments', PaymentController::class);
+Route::resource('services', ServiceController::class);
 Route::resource('insurance-providers', InsuranceProviderController::class);
+Route::get('activity-logs/login-history', [ActivityLogController::class, 'loginHistory'])->name('activity-logs.login-history');
+Route::get('activity-logs/audit-trail', [ActivityLogController::class, 'auditTrail'])->name('activity-logs.audit-trail');
+Route::resource('activity-logs', ActivityLogController::class)->only(['index', 'show']);
+Route::get('security/rbac', function () {
+    return view('security.rbac');
+})->name('security.rbac');
+Route::get('security/roles', function () {
+    return view('security.roles');
+})->name('security.roles');
+Route::get('security/permissions', function () {
+    return view('security.permissions');
+})->name('security.permissions');
 
 // Inventory & Assets Routes
 Route::resource('assets', AssetController::class);
 Route::resource('inventory-items', InventoryItemController::class);
 Route::resource('inventory-movements', InventoryMovementController::class);
+Route::resource('maintenance-schedules', MaintenanceScheduleController::class);
+Route::post('maintenance-schedules/{maintenanceSchedule}/complete', [MaintenanceScheduleController::class, 'complete'])->name('maintenance-schedules.complete');
 Route::post('inventory-items/{inventoryItem}/add-movement', [InventoryItemController::class, 'addMovement'])->name('inventory-items.add-movement');
 
 // Reports Routes (Custom routes must come BEFORE resource route)
+Route::get('reports/patient', [ReportController::class, 'patientReports'])->name('reports.patient');
+Route::get('reports/financial', [ReportController::class, 'financialReports'])->name('reports.financial');
+Route::get('reports/daily', [ReportController::class, 'dailyReports'])->name('reports.daily');
+Route::get('reports/lab', [ReportController::class, 'labReports'])->name('reports.lab');
+Route::get('reports/pharmacy', [ReportController::class, 'pharmacyReports'])->name('reports.pharmacy');
 Route::get('reports/create-patient', [ReportController::class, 'createPatient'])->name('reports.create-patient');
 Route::get('reports/create-financial', [ReportController::class, 'createFinancial'])->name('reports.create-financial');
 Route::get('reports/create-daily', [ReportController::class, 'createDaily'])->name('reports.create-daily');
 Route::get('reports/create-lab', [ReportController::class, 'createLab'])->name('reports.create-lab');
 Route::get('reports/create-pharmacy', [ReportController::class, 'createPharmacy'])->name('reports.create-pharmacy');
 Route::get('reports/{report}/export', [ReportController::class, 'export'])->name('reports.export');
+Route::post('reports/{report}/toggle-favorite', [ReportController::class, 'toggleFavorite'])->name('reports.toggle-favorite');
+Route::get('reports/export/patient-pdf', [ReportController::class, 'exportPatientPdf'])->name('reports.export-patient-pdf');
+Route::get('reports/export/financial-pdf', [ReportController::class, 'exportFinancialPdf'])->name('reports.export-financial-pdf');
+Route::get('reports/export/daily-pdf', [ReportController::class, 'exportDailyPdf'])->name('reports.export-daily-pdf');
+Route::get('reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export-excel');
+Route::get('reports/print/{type}', [ReportController::class, 'print'])->name('reports.print');
 Route::resource('reports', ReportController::class);
 
 Route::get('settings/hospital-profile', [SettingController::class, 'hospitalProfile'])->name('settings.hospital-profile');

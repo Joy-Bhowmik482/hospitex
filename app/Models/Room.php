@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Room extends Model
+class Room extends BaseModel
 {
     use HasFactory;
 
@@ -32,3 +32,5 @@ class Room extends Model
         return $this->hasMany(Bed::class);
     }
 }
+
+

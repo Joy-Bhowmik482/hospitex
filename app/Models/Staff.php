@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Staff extends Model
+class Staff extends BaseModel
 {
     use HasFactory;
 
@@ -31,3 +31,5 @@ class Staff extends Model
         return $this->belongsTo(Department::class);
     }
 }
+
+

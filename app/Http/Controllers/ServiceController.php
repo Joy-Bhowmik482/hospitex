@@ -16,7 +16,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        $departments = Department::where('is_active', true)->get();
+        $departments = Department::all();
         return view('services.create', compact('departments'));
     }
 
@@ -26,8 +26,9 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:services,code',
             'department_id' => 'nullable|exists:departments,id',
-            'price' => 'required|numeric|min:0',
-            'is_active' => 'boolean',
+            'price' => 'nullable|numeric',
+            'is_active' => 'nullable|boolean',
+            'description' => 'nullable|string',
         ]);
 
         Service::create($validated);
@@ -42,7 +43,7 @@ class ServiceController extends Controller
 
     public function edit(Service $service)
     {
-        $departments = Department::where('is_active', true)->get();
+        $departments = Department::all();
         return view('services.edit', compact('service', 'departments'));
     }
 
@@ -52,8 +53,9 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:services,code,' . $service->id,
             'department_id' => 'nullable|exists:departments,id',
-            'price' => 'required|numeric|min:0',
-            'is_active' => 'boolean',
+            'price' => 'nullable|numeric',
+            'is_active' => 'nullable|boolean',
+            'description' => 'nullable|string',
         ]);
 
         $service->update($validated);

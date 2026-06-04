@@ -3,20 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ActivityLog extends Model
+class ActivityLog extends BaseModel
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
         'action',
+        'description',
+        'route',
         'module',
         'record_type',
         'record_id',
-        'ip',
+        'ip_address',
         'user_agent',
+        'login_time',
+        'logout_time',
+        'status',
         'meta',
     ];
 
@@ -29,3 +34,5 @@ class ActivityLog extends Model
         return $this->belongsTo(User::class);
     }
 }
+
+

@@ -28,12 +28,11 @@ class AdmissionController extends Controller
         $patients = Patient::all();
         $doctors = Doctor::all();
         $departments = Department::all();
-        $users = User::all();
         
         // Generate unique admission number
         $admissionNo = 'ADM' . date('Ymd') . str_pad(Admission::count() + 1, 5, '0', STR_PAD_LEFT);
         
-        return view('admissions.create', compact('patients', 'doctors', 'departments', 'users', 'admissionNo'));
+        return view('admissions.create', compact('patients', 'doctors', 'departments', 'admissionNo'));
     }
 
     /**
@@ -51,7 +50,6 @@ class AdmissionController extends Controller
             'status' => 'required|in:Admitted,Discharged,Cancelled',
             'diagnosis' => 'nullable|string',
             'remarks' => 'nullable|string',
-            'created_by' => 'required|exists:users,id',
         ]);
 
         Admission::create($validated);
@@ -77,9 +75,8 @@ class AdmissionController extends Controller
         $patients = Patient::all();
         $doctors = Doctor::all();
         $departments = Department::all();
-        $users = User::all();
         
-        return view('admissions.edit', compact('admission', 'patients', 'doctors', 'departments', 'users'));
+        return view('admissions.edit', compact('admission', 'patients', 'doctors', 'departments'));
     }
 
     /**
@@ -97,7 +94,6 @@ class AdmissionController extends Controller
             'status' => 'required|in:Admitted,Discharged,Cancelled',
             'diagnosis' => 'nullable|string',
             'remarks' => 'nullable|string',
-            'created_by' => 'required|exists:users,id',
         ]);
 
         $admission->update($validated);

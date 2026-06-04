@@ -9,7 +9,6 @@ use App\Models\Room;
 use App\Models\Bed;
 use App\Models\Admission;
 use App\Models\Invoice;
-use App\Models\Payment;
 use App\Models\Service;
 
 class DashboardController extends Controller
@@ -28,9 +27,9 @@ class DashboardController extends Controller
         $totalInvoices = Invoice::count();
         $unpaidInvoices = Invoice::where('status', 'Unpaid')->count();
         $paidInvoices = Invoice::where('status', 'Paid')->count();
-        $totalServices = Service::where('is_active', true)->count();
-        $totalPayments = Payment::count();
-        $totalPaidAmount = Payment::sum('amount');
+        $totalServices = Service::count();
+        $totalPayments = 0;
+        $totalPaidAmount = 0;
 
         return view('dashboard', [
             'totalPatients' => $totalPatients,

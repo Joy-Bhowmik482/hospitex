@@ -5,10 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
-use App\Models\Payment;
 use App\Models\Patient;
 use App\Models\Admission;
-use App\Models\Service;
+// Services removed: use defaults when seeding invoices
 
 class InvoicesSeeder extends Seeder
 {
@@ -16,9 +15,9 @@ class InvoicesSeeder extends Seeder
     {
         $patient = Patient::first();
         $admission = Admission::first();
-        $service = Service::first();
+        $service = null;
 
-        if ($patient && $service) {
+        if ($patient) {
             $invoice = Invoice::firstOrCreate([
                 'invoice_no' => 'INV-' . now()->format('Ymd') . '-1'
             ], [
@@ -26,10 +25,10 @@ class InvoicesSeeder extends Seeder
                 'admission_id' => $admission?->id,
                 'invoice_date' => now()->toDateString(),
                 'status' => 'unpaid',
-                'subtotal' => $service->price ?? 100,
+                'subtotal' => $service?->price ?? 100,
                 'discount' => 0,
                 'tax' => 0,
-                'net_total' => $service->price ?? 100,
+                'net_total' => $service?->price ?? 100,
                 'created_by' => $patient->id,
             ]);
 
@@ -38,33 +37,13 @@ class InvoicesSeeder extends Seeder
                 'ref_id' => $service?->id,
             ], [
                 'item_type' => 'service',
-                'description' => $service->name ?? 'Service',
+                'description' => $service?->name ?? 'Service',
                 'qty' => 1,
-                'rate' => $service->price ?? 100,
-                'subtotal' => $service->price ?? 100,
+                'rate' => $service?->price ?? 100,
+                'subtotal' => $service?->price ?? 100,
             ]);
 
-            // ensure there's a user to record who received the payment
-            $receivedBy = \App\Models\User::first()?->id;
-            if (! $receivedBy) {
-                $receivedBy = \App\Models\User::create([
-                    'name' => 'Seeder User',
-                    'email' => 'seeder@localhost',
-                    'password' => bcrypt('password'),
-                    'is_active' => true,
-                ])->id;
-            }
-
-            Payment::firstOrCreate([
-                'invoice_id' => $invoice->id,
-            ], [
-                'paid_at' => now(),
-                'amount' => 0,
-                'method' => 'Cash',
-                'trx_id' => null,
-                'received_by' => $receivedBy,
-                'notes' => null,
-            ]);
+            // Payments removed from seeder
         }
     }
 }

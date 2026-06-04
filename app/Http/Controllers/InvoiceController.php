@@ -23,9 +23,8 @@ class InvoiceController extends Controller
         $patients = Patient::all();
         $admissions = Admission::where('status', 'Admitted')->get();
         $appointments = Appointment::get();
-        $users = User::where('is_active', true)->get();
 
-        return view('invoices.create', compact('patients', 'admissions', 'appointments', 'users'));
+        return view('invoices.create', compact('patients', 'admissions', 'appointments'));
     }
 
     public function store(Request $request)
@@ -41,7 +40,6 @@ class InvoiceController extends Controller
             'tax' => 'nullable|numeric|min:0',
             'net_total' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
-            'created_by' => 'required|exists:users,id',
         ]);
 
         // ✅ USE TRANSACTION FOR SAFETY
@@ -87,9 +85,8 @@ class InvoiceController extends Controller
         $patients = Patient::all();
         $admissions = Admission::all();
         $appointments = Appointment::all();
-        $users = User::where('is_active', true)->get();
 
-        return view('invoices.edit', compact('invoice', 'patients', 'admissions', 'appointments', 'users'));
+        return view('invoices.edit', compact('invoice', 'patients', 'admissions', 'appointments'));
     }
 
     public function update(Request $request, Invoice $invoice)
@@ -106,7 +103,6 @@ class InvoiceController extends Controller
             'tax' => 'nullable|numeric|min:0',
             'net_total' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
-            'created_by' => 'required|exists:users,id',
         ]);
 
         $invoice->update($validated);

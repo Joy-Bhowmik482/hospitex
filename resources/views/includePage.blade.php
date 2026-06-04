@@ -50,6 +50,8 @@
 </head>
 <body class="bg-slate-100 font-sans">
 
+@include('components.notifications')
+
 <!-- Top Navbar -->
 <nav class="fixed top-0 left-0 right-0 bg-darknav text-white shadow-md z-50">
     <div class="flex justify-between items-center px-6 py-4">
@@ -136,8 +138,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Departments</a>
                 <a href="{{ route('doctor-schedules.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Doctor Schedule</a>
                 <a href="{{ route('staff.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Staff Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Duty Roster</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Roles & Permissions</a>
+                <a href="{{ route('duty-roster.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Duty Roster</a>
             </div>
         </details>
 
@@ -157,11 +158,11 @@ h-screen shadow-lg fixed text-white flex flex-col">
     <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
 </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- User Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Role Based Access Control (RBAC)</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Activity Logs</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Login History</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Audit Trail</a>
+                <a href="{{ route('users.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- User Management</a>
+                <a href="{{ route('security.rbac') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Role Based Access Control (RBAC)</a>
+                <a href="{{ route('activity-logs.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Activity Logs</a>
+                <a href="{{ route('activity-logs.login-history') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Login History</a>
+                <a href="{{ route('activity-logs.audit-trail') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Audit Trail</a>
             </div>
         </details>
 
@@ -227,9 +228,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Services Management</a>
                 <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- OPD / IPD Billing</a>
                 <a href="{{ route('invoices.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Invoices</a>
-                <a href="{{ route('payments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Payments</a>
                 <a href="{{ route('insurance-providers.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Insurance / Corporate Billing</a>
-                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Service Rates & Taxes</a>
             </div>
         </details>
 
@@ -249,7 +248,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('assets.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Asset Tracking</a>
                 <a href="{{ route('inventory-items.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Consumables</a>
                 <a href="{{ route('inventory-movements.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Stock Movements</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Maintenance Schedule</a>
+                <a href="{{ route('maintenance-schedules.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Maintenance Schedule</a>
             </div>
         </details>
 
@@ -267,12 +266,13 @@ h-screen shadow-lg fixed text-white flex flex-col">
     <span class="transition-transform duration-200 group-open:rotate-90">➤</span>
 </summary>
             <div class="pl-4 mt-1 space-y-1">
-                <a href="{{ route('reports.create-patient') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Patient Reports</a>
-                <a href="{{ route('reports.create-financial') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Financial Reports</a>
-                <a href="{{ route('reports.create-daily') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Daily Reports</a>
-                <a href="{{ route('reports.create-lab') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Lab Reports</a>
-                <a href="{{ route('reports.create-pharmacy') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Pharmacy Reports</a>
-                <a href="{{ route('reports.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- View All Reports</a>
+                <a href="{{ route('reports.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Reports Center</a>
+                <a href="{{ route('reports.patient') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Patient Reports</a>
+                <a href="{{ route('reports.financial') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Financial Reports</a>
+                <a href="{{ route('reports.daily') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Daily Reports</a>
+                <a href="{{ route('reports.lab') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Lab Reports</a>
+                <a href="{{ route('reports.pharmacy') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Pharmacy Reports</a>
+                <a href="{{ route('reports.create') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Generate Custom Report</a>
             </div>
         </details>
 
@@ -292,7 +292,7 @@ h-screen shadow-lg fixed text-white flex flex-col">
             <div class="pl-4 mt-1 space-y-1">
                         <a href="{{ route('settings.hospital-profile') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Hospital Profile</a>
                 <a href="{{ route('departments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Departments Setup</a>
-                <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Service Charges</a>
+                <!-- Service Charges removed -->
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Tax Settings</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Payment Gateways</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- SMS / Email Config</a>
@@ -361,5 +361,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<!-- Chart.js for report charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
 </body>
 </html>

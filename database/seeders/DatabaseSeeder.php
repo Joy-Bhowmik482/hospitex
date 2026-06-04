@@ -26,26 +26,58 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Core data
+        // Core entities with enhanced data
         $this->call([
-            DepartmentsSeeder::class,
-            WardsSeeder::class,
-            RoomsSeeder::class,
-            BedsSeeder::class,
-            StaffSeeder::class,
-            DoctorsSeeder::class,
-            DoctorSchedulesSeeder::class,
-            ServicesSeeder::class,
-            PatientsSeeder::class,
+            DepartmentsSeeder::class,              // 15 departments
+            DoctorsSeeder::class,                  // 20 doctors with specializations
+            ShiftsSeeder::class,                   // Default shifts (Morning, Evening, Night)
+        ]);
+
+        // Create patients with users
+        $this->call([
+            PatientsSeeder::class,                 // 50 patients
+        ]);
+
+        // Services and insurance
+        $this->call([
+            EnhancedServicesSeeder::class,
+            EnhancedInsuranceProvidersSeeder::class, // 10 insurance providers
+        ]);
+
+        // Infrastructure
+        $this->call([
+            EnhancedWardsRoomsBedsSeder::class,    // 8 wards with rooms and beds
+            EnhancedStaffSeeder::class,            // 15 staff members
+        ]);
+
+        // Schedule and appointments
+        $this->call([
+            EnhancedDoctorSchedulesSeeder::class,  // Weekly schedules for doctors
+            EnhancedAppointmentsSeeder::class,     // 100 appointments
+        ]);
+
+        // Patient care
+        $this->call([
+            EnhancedAdmissionsSeeder::class,       // 30 admissions
+        ]);
+
+        // Financial
+        $this->call([
+            EnhancedInvoicesSeeder::class,         // 50 invoices with items
+        ]);
+
+        // Inventory
+        $this->call([
+            EnhancedInventoryItemsSeeder::class,   // 20 inventory items
+        ]);
+
+        // Legacy seeders (if still needed)
+        $this->call([
             PatientDocumentsSeeder::class,
             PatientVisitsSeeder::class,
-            AppointmentsSeeder::class,
-            AdmissionsSeeder::class,
             BedAllocationsSeeder::class,
-            InvoicesSeeder::class,
             AssetsSeeder::class,
-            InventorySeeder::class,
-            InsuranceProvidersSeeder::class,
+            MaintenanceSchedulesSeeder::class,
             RolesPermissionsSeeder::class,
             SettingsSeeder::class,
             ActivityLogsSeeder::class,

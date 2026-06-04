@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PatientDocument extends Model
+class PatientDocument extends BaseModel
 {
     use HasFactory;
 
@@ -33,3 +33,5 @@ class PatientDocument extends Model
         return $this->belongsTo(User::class, 'uploaded_by');
     }
 }
+
+

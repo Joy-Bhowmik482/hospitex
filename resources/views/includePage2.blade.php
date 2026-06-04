@@ -49,6 +49,7 @@
 </style>
 </head>
 <body class="bg-slate-100 font-sans">
+@include('components.notifications')
 <!-- Sidebar -->
 <!-- Main Content -->
 <main class="ml-6 flex-1 p-24">

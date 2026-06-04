@@ -40,12 +40,8 @@
                             <p class="text-base text-slate-800 font-semibold">{{ $patient->last_name }}</p>
                         </div>
                         <div>
-                            <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Date of Birth</p>
-                            <p class="text-base text-slate-800">{{ $patient->date_of_birth->format('d M Y') }}</p>
-                        </div>
-                        <div>
                             <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Age</p>
-                            <p class="text-base text-slate-800">{{ $patient->date_of_birth->age }} years</p>
+                            <p class="text-base text-slate-800">{{ $patient->age ?? 'N/A' }}</p>
                         </div>
                         <div>
                             <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Gender</p>
@@ -90,10 +86,6 @@
                             <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Blood Type</p>
                             <p class="text-base text-slate-800 font-semibold">{{ $patient->blood_type ?? 'N/A' }}</p>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-600 font-semibold uppercase mb-1">Date Admitted</p>
-                            <p class="text-base text-slate-800">{{ $patient->date_admitted?->format('d M Y') ?? 'N/A' }}</p>
-                        </div>
                     </div>
                     @if ($patient->allergies)
                         <div>
@@ -124,19 +116,6 @@
 
         <!-- Right Column - Status & Emergency Contact -->
         <div class="space-y-6">
-            
-            <!-- Status Card -->
-            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-                <h3 class="text-lg font-bold text-slate-800 mb-4">Patient Status</h3>
-                <div class="space-y-2">
-                    <div class="text-center">
-                        <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold {{ $patient->status === 'In' ? 'bg-green-100 text-green-800' : ($patient->status === 'Out' ? 'bg-yellow-100 text-yellow-800' : 'bg-slate-100 text-slate-800') }}">
-                            {{ $patient->status }}
-                        </span>
-                    </div>
-                    <p class="text-xs text-slate-600 font-semibold uppercase text-center">Current Status</p>
-                </div>
-            </div>
 
             <!-- Patient ID Card -->
             <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">

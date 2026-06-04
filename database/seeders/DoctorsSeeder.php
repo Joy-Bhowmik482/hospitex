@@ -12,27 +12,71 @@ class DoctorsSeeder extends Seeder
     public function run(): void
     {
         $departments = Department::all();
+        $specializations = [
+            'GEN' => ['General Practitioner', 'Family Medicine Specialist'],
+            'PED' => ['Pediatrician', 'Child Specialist', 'Neonatologist'],
+            'OBG' => ['Gynecologist', 'Obstetrician', 'Maternal Health Specialist'],
+            'CAR' => ['Cardiologist', 'Interventional Cardiologist'],
+            'ORT' => ['Orthopedic Surgeon', 'Spine Specialist', 'Joint Replacement Specialist'],
+            'NEU' => ['Neurologist', 'Neurosurgeon'],
+            'PSY' => ['Psychiatrist', 'Clinical Psychologist'],
+            'DER' => ['Dermatologist', 'Cosmetic Surgeon'],
+            'ENT' => ['ENT Specialist', 'Otolaryngologist'],
+            'OPH' => ['Ophthalmologist', 'Eye Specialist'],
+            'GAS' => ['Gastroenterologist', 'Hepatologist'],
+            'PUL' => ['Pulmonologist', 'Respiratory Specialist'],
+            'URO' => ['Urologist', 'Urological Surgeon'],
+            'SUR' => ['General Surgeon', 'Trauma Surgeon'],
+            'EMR' => ['Emergency Medicine Specialist', 'Trauma Specialist'],
+        ];
 
-        for ($i = 1; $i <= 4; $i++) {
-            $email = "doctor{$i}@example.com";
+        $doctorNames = [
+            'Dr. Rajesh Kumar',
+            'Dr. Priya Sharma',
+            'Dr. Amit Patel',
+            'Dr. Neha Singh',
+            'Dr. Vikram Reddy',
+            'Dr. Anjali Gupta',
+            'Dr. Rohan Chopra',
+            'Dr. Meera Verma',
+            'Dr. Arun Nair',
+            'Dr. Deepika Iyer',
+            'Dr. Sanjay Malhotra',
+            'Dr. Pooja Desai',
+            'Dr. Arjun Bhatt',
+            'Dr. Sneha Kapoor',
+            'Dr. Nikhil Saxena',
+            'Dr. Ritika Bhat',
+            'Dr. Mohit Joshi',
+            'Dr. Ishita Agrawal',
+            'Dr. Harsh Pandey',
+            'Dr. Varun Kumar',
+        ];
+
+        foreach ($doctorNames as $index => $name) {
+            $email = 'doctor' . ($index + 1) . '@hospitex.com';
             $user = User::where('email', $email)->first();
-            if (! $user) {
+            
+            if (!$user) {
                 $user = User::create([
-                    'name' => "Dr. Doctor $i",
+                    'name' => $name,
                     'email' => $email,
-                    'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                    'password' => bcrypt('password123'),
                     'is_active' => true,
                 ]);
             }
 
-            if (! Doctor::where('user_id', $user->id)->exists()) {
+            if (!Doctor::where('user_id', $user->id)->exists()) {
+                $dept = $departments->random();
+                $specs = $specializations[$dept->code] ?? ['Specialist'];
+                
                 Doctor::create([
                     'name' => $user->name,
                     'user_id' => $user->id,
-                    'department_id' => $departments->random()->id,
-                    'reg_no' => 'REG' . rand(1000,9999),
-                    'specialization' => 'General Practice',
-                    'fee' => 50 + rand(0,150),
+                    'department_id' => $dept->id,
+                    'reg_no' => 'REG' . str_pad($index + 1, 4, '0', STR_PAD_LEFT),
+                    'specialization' => $specs[array_rand($specs)],
+                    'fee' => rand(500, 2000),
                     'is_active' => true,
                 ]);
             }

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Doctor extends Model
+class Doctor extends BaseModel
 {
     use HasFactory;
 
@@ -38,3 +38,5 @@ class Doctor extends Model
         return $this->hasMany(Appointment::class);
     }
 }
+
+

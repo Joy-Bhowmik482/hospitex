@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->foreignId('department_id')->nullable()->constrained('departments')->nullableOnDelete();
-            $table->decimal('price', 10, 2);
+            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
+            $table->decimal('price', 10, 2)->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

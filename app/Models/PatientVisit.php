@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PatientVisit extends Model
+class PatientVisit extends BaseModel
 {
     use HasFactory;
 
@@ -50,3 +50,5 @@ class PatientVisit extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 }
+
+
