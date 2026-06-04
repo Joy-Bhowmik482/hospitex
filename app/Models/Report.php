@@ -14,6 +14,7 @@ class Report extends BaseModel
         'parameters',
         'data',
         'created_by',
+        'is_favorite',
     ];
 
     protected $casts = [

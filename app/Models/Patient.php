@@ -59,6 +59,14 @@ class Patient extends BaseModel
     {
         return $this->hasMany(Appointment::class);
     }
+
+    /**
+     * Get all admissions for this patient.
+     */
+    public function admissions()
+    {
+        return $this->hasMany(Admission::class);
+    }
 }
 
 

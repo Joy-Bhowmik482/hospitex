@@ -108,12 +108,23 @@ Route::post('maintenance-schedules/{maintenanceSchedule}/complete', [Maintenance
 Route::post('inventory-items/{inventoryItem}/add-movement', [InventoryItemController::class, 'addMovement'])->name('inventory-items.add-movement');
 
 // Reports Routes (Custom routes must come BEFORE resource route)
+Route::get('reports/patient', [ReportController::class, 'patientReports'])->name('reports.patient');
+Route::get('reports/financial', [ReportController::class, 'financialReports'])->name('reports.financial');
+Route::get('reports/daily', [ReportController::class, 'dailyReports'])->name('reports.daily');
+Route::get('reports/lab', [ReportController::class, 'labReports'])->name('reports.lab');
+Route::get('reports/pharmacy', [ReportController::class, 'pharmacyReports'])->name('reports.pharmacy');
 Route::get('reports/create-patient', [ReportController::class, 'createPatient'])->name('reports.create-patient');
 Route::get('reports/create-financial', [ReportController::class, 'createFinancial'])->name('reports.create-financial');
 Route::get('reports/create-daily', [ReportController::class, 'createDaily'])->name('reports.create-daily');
 Route::get('reports/create-lab', [ReportController::class, 'createLab'])->name('reports.create-lab');
 Route::get('reports/create-pharmacy', [ReportController::class, 'createPharmacy'])->name('reports.create-pharmacy');
 Route::get('reports/{report}/export', [ReportController::class, 'export'])->name('reports.export');
+Route::post('reports/{report}/toggle-favorite', [ReportController::class, 'toggleFavorite'])->name('reports.toggle-favorite');
+Route::get('reports/export/patient-pdf', [ReportController::class, 'exportPatientPdf'])->name('reports.export-patient-pdf');
+Route::get('reports/export/financial-pdf', [ReportController::class, 'exportFinancialPdf'])->name('reports.export-financial-pdf');
+Route::get('reports/export/daily-pdf', [ReportController::class, 'exportDailyPdf'])->name('reports.export-daily-pdf');
+Route::get('reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export-excel');
+Route::get('reports/print/{type}', [ReportController::class, 'print'])->name('reports.print');
 Route::resource('reports', ReportController::class);
 
 Route::get('settings/hospital-profile', [SettingController::class, 'hospitalProfile'])->name('settings.hospital-profile');

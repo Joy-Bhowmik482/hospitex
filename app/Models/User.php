@@ -33,4 +33,33 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole($roleName)
+    {
+        return $this->roles()->where('slug', $roleName)->exists();
+    }
+
+    /**
+     * Check if user has a specific permission
+     */
+    public function hasPermission($permissionSlug)
+    {
+        return $this->roles()
+            ->with('permissions')
+            ->get()
+            ->flatMap->permissions
+            ->where('slug', $permissionSlug)
+            ->count() > 0;
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
 }

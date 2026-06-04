@@ -4,26 +4,182 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\Patient;
+use App\Models\Doctor;
+use App\Models\Department;
+use App\Models\Ward;
 use App\Models\Invoice;
 use App\Models\Appointment;
 use App\Models\Admission;
+use App\Services\PatientReportService;
+use App\Services\FinancialReportService;
+use App\Services\DailyReportService;
+use App\Services\LabReportService;
+use App\Services\PharmacyReportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon;
 
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display centralized report center
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reports = Report::with('creator')->latest()->paginate(10);
+        $search = $request->get('search');
+        $reports = Report::with('creator');
+
+        if ($search) {
+            $reports->where('name', 'like', "%{$search}%")
+                ->orWhere('type', 'like', "%{$search}%");
+        }
+
+        $reports = $reports->latest()->paginate(15);
+        
         $reportStats = Report::selectRaw('type, count(*) as total')
             ->groupBy('type')
             ->pluck('total', 'type');
 
-        return view('reports.index', compact('reports', 'reportStats'));
+        $recentReports = Report::latest()->limit(5)->get();
+        $favoriteReports = Report::where('is_favorite', true)->limit(5)->get();
+
+        return view('reports.index', compact('reports', 'reportStats', 'recentReports', 'favoriteReports', 'search'));
+    }
+
+    /**
+     * Patient Reports Page
+     */
+    public function patientReports(Request $request)
+    {
+        $user = auth()->user();
+        // Allow access if user has permission or is admin, otherwise allow authenticated users for now
+        if ($user && !($user->hasPermission('view-patient-reports') || $user->hasRole('admin') || $user->roles->isEmpty())) {
+            abort(403, 'Unauthorized');
+        }
+
+        $service = new PatientReportService();
+
+        // Apply filters
+        if ($request->filled('date_range')) {
+            $service->applyQuickFilter($request->get('date_range'));
+        } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+            $service->setDateRange($request->get('start_date'), $request->get('end_date'));
+        }
+
+        if ($request->filled('doctor_id')) {
+            $service->filterByDoctor($request->get('doctor_id'));
+        }
+        if ($request->filled('department_id')) {
+            $service->filterByDepartment($request->get('department_id'));
+        }
+        if ($request->filled('ward_id')) {
+            $service->filterByWard($request->get('ward_id'));
+        }
+
+        $report = $service->generate();
+
+        $doctors = Doctor::select('id', 'name')->get();
+        $departments = Department::select('id', 'name')->get();
+        $wards = Ward::select('id', 'name')->get();
+
+        return view('reports.patient-report', compact('report', 'doctors', 'departments', 'wards'));
+    }
+
+    /**
+     * Financial Reports Page
+     */
+    public function financialReports(Request $request)
+    {
+        $user = auth()->user();
+        // Allow access if user has permission or is admin, otherwise allow authenticated users for now
+        if ($user && !($user->hasPermission('view-financial-reports') || $user->hasRole('admin') || $user->roles->isEmpty())) {
+            abort(403, 'Unauthorized');
+        }
+
+        $service = new FinancialReportService();
+
+        // Apply filters
+        if ($request->filled('date_range')) {
+            $service->applyQuickFilter($request->get('date_range'));
+        } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+            $service->setDateRange($request->get('start_date'), $request->get('end_date'));
+        }
+
+        if ($request->filled('department_id')) {
+            $service->filterByDepartment($request->get('department_id'));
+        }
+
+        $report = $service->generate();
+
+        $departments = Department::select('id', 'name')->get();
+
+        return view('reports.financial-report', compact('report', 'departments'));
+    }
+
+    /**
+     * Daily Reports Dashboard
+     */
+    public function dailyReports(Request $request)
+    {
+        $user = auth()->user();
+        // Allow access if user has permission or is admin, otherwise allow authenticated users for now
+        if ($user && !($user->hasPermission('view-daily-reports') || $user->hasRole('admin') || $user->roles->isEmpty())) {
+            abort(403, 'Unauthorized');
+        }
+
+        $service = new DailyReportService();
+        $report = $service->generate();
+
+        return view('reports.daily-report', compact('report'));
+    }
+
+    /**
+     * Lab Reports Page
+     */
+    public function labReports(Request $request)
+    {
+        $user = auth()->user();
+        // Allow access if user has permission or is admin, otherwise allow authenticated users for now
+        if ($user && !($user->hasPermission('view-lab-reports') || $user->hasRole('admin') || $user->roles->isEmpty())) {
+            abort(403, 'Unauthorized');
+        }
+
+        $service = new LabReportService();
+
+        if ($request->filled('date_range')) {
+            $service->applyQuickFilter($request->get('date_range'));
+        } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+            $service->setDateRange($request->get('start_date'), $request->get('end_date'));
+        }
+
+        $report = $service->generate();
+
+        return view('reports.lab-report', compact('report'));
+    }
+
+    /**
+     * Pharmacy Reports Page
+     */
+    public function pharmacyReports(Request $request)
+    {
+        $user = auth()->user();
+        // Allow access if user has permission or is admin, otherwise allow authenticated users for now
+        if ($user && !($user->hasPermission('view-pharmacy-reports') || $user->hasRole('admin') || $user->roles->isEmpty())) {
+            abort(403, 'Unauthorized');
+        }
+
+        $service = new PharmacyReportService();
+
+        if ($request->filled('date_range')) {
+            $service->applyQuickFilter($request->get('date_range'));
+        } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+            $service->setDateRange($request->get('start_date'), $request->get('end_date'));
+        }
+
+        $report = $service->generate();
+
+        return view('reports.pharmacy-report', compact('report'));
     }
 
     /**
@@ -111,28 +267,102 @@ class ReportController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Report $report)
     {
+        $this->authorize('delete-reports');
+        
         $report->delete();
         return redirect()->route('reports.index')->with('success', 'Report deleted successfully.');
+    }
+
+    /**
+     * Toggle favorite status
+     */
+    public function toggleFavorite(Report $report)
+    {
+        $report->update(['is_favorite' => !$report->is_favorite]);
+        return response()->json(['status' => 'success', 'is_favorite' => $report->is_favorite]);
+    }
+
+    /**
+     * Export patient report to PDF
+     */
+    public function exportPatientPdf(Request $request)
+    {
+        $service = new PatientReportService();
+
+        if ($request->filled('date_range')) {
+            $service->applyQuickFilter($request->get('date_range'));
+        } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+            $service->setDateRange($request->get('start_date'), $request->get('end_date'));
+        }
+
+        $report = $service->generate();
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.exports.patient-pdf', compact('report'))
+            ->setPaper('a4');
+        
+        return $pdf->download('patient-report-' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Export financial report to PDF
+     */
+    public function exportFinancialPdf(Request $request)
+    {
+        $service = new FinancialReportService();
+
+        if ($request->filled('date_range')) {
+            $service->applyQuickFilter($request->get('date_range'));
+        } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+            $service->setDateRange($request->get('start_date'), $request->get('end_date'));
+        }
+
+        $report = $service->generate();
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.exports.financial-pdf', compact('report'))
+            ->setPaper('a4');
+        
+        return $pdf->download('financial-report-' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Export daily report to PDF
+     */
+    public function exportDailyPdf()
+    {
+        $service = new DailyReportService();
+        $report = $service->generate();
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.exports.daily-pdf', compact('report'))
+            ->setPaper('a4');
+        
+        return $pdf->download('daily-report-' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Export to Excel
+     */
+    public function exportExcel(Request $request)
+    {
+        // Excel export requires Maatwebsite\Excel package
+        // To enable: composer require maatwebsite/excel
+        // For now, return PDF or CSV as alternative
+        
+        $type = $request->get('type', 'patient');
+        return redirect()->back()->with('info', 'Excel export requires additional configuration. Please use PDF export instead.');
+    }
+
+    /**
+     * Print report
+     */
+    public function print(Request $request)
+    {
+        $type = $request->get('type', 'patient');
+        
+        return view("reports.print.{$type}-report", ['type' => $type]);
     }
 
     private function generateReportData($type, $startDate, $endDate)
@@ -147,7 +377,6 @@ class ReportController extends Controller
                 return $query->get()->toArray();
             case 'financial':
                 $invoices = Invoice::with('patient')->whereBetween('created_at', [$startDate ?? '1900-01-01', $endDate ?? now()])->get();
-                // Payments removed: return invoices and compute totals from invoices only
                 return [
                     'invoices' => $invoices->toArray(),
                     'payments' => [],
@@ -166,10 +395,8 @@ class ReportController extends Controller
                     'discharges' => $discharges,
                 ];
             case 'lab':
-                // Assuming no lab model, return empty or placeholder
                 return ['message' => 'Lab reports not implemented yet.'];
             case 'pharmacy':
-                // Assuming no pharmacy, return empty
                 return ['message' => 'Pharmacy reports not implemented yet.'];
             default:
                 return [];
