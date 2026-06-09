@@ -226,7 +226,6 @@ h-screen shadow-lg fixed text-white flex flex-col">
 </summary>
             <div class="pl-4 mt-1 space-y-1">
                 <a href="{{ route('services.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Services Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- OPD / IPD Billing</a>
                 <a href="{{ route('invoices.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Invoices</a>
                 <a href="{{ route('insurance-providers.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Insurance / Corporate Billing</a>
             </div>
