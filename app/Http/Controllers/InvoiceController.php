@@ -6,7 +6,7 @@ use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Admission;
 use App\Models\Appointment;
-use App\Models\User;
+use App\Models\Service; // ✅ ADD THIS
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,8 +23,14 @@ class InvoiceController extends Controller
         $patients = Patient::all();
         $admissions = Admission::where('status', 'Admitted')->get();
         $appointments = Appointment::get();
+        $services = Service::all(); // ✅ ADD THIS
 
-        return view('invoices.create', compact('patients', 'admissions', 'appointments'));
+        return view('invoices.create', compact(
+            'patients',
+            'admissions',
+            'appointments',
+            'services' // ✅ PASS TO BLADE
+        ));
     }
 
     public function store(Request $request)
@@ -42,23 +48,16 @@ class InvoiceController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        // ✅ USE TRANSACTION FOR SAFETY
         DB::beginTransaction();
 
         try {
-            // 🔒 Lock last row to avoid duplicate numbers
             $lastInvoice = Invoice::lockForUpdate()->orderBy('id', 'desc')->first();
 
-            if ($lastInvoice) {
-                $lastNumber = (int) str_replace('INV-', '', $lastInvoice->invoice_no);
-                $newNumber = $lastNumber + 1;
-            } else {
-                $newNumber = 1;
-            }
+            $newNumber = $lastInvoice
+                ? ((int) str_replace('INV-', '', $lastInvoice->invoice_no)) + 1
+                : 1;
 
-            $invoiceNo = 'INV-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
-
-            $validated['invoice_no'] = $invoiceNo;
+            $validated['invoice_no'] = 'INV-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
             Invoice::create($validated);
 
@@ -70,7 +69,7 @@ class InvoiceController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Something went wrong. Try again.');
+            return back()->with('error', 'Something went wrong.');
         }
     }
 
@@ -86,7 +85,12 @@ class InvoiceController extends Controller
         $admissions = Admission::all();
         $appointments = Appointment::all();
 
-        return view('invoices.edit', compact('invoice', 'patients', 'admissions', 'appointments'));
+        return view('invoices.edit', compact(
+            'invoice',
+            'patients',
+            'admissions',
+            'appointments'
+        ));
     }
 
     public function update(Request $request, Invoice $invoice)

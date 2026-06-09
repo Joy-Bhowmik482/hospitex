@@ -2,262 +2,419 @@
 
 @section('content')
 
-<!-- STYLE -->
 <style>
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background: #f1f5f9;
+}
+
+/* PRINT */
 @media print {
-    @page { size: A4; margin: 20mm; }
-    
+    @page { size: A4; margin: 18mm; }
+
     body {
-        margin:0;
-        padding:0;
-        background:#fff !important;
-        color:#000 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        background: #fff !important;
+        color: #000 !important;
     }
 
-    /* Hide everything */
-    body * {
-        visibility: hidden;
-    }
+    body * { visibility: hidden; }
 
-    /* Show only invoice */
     #invoiceArea, #invoiceArea * {
         visibility: visible;
     }
 
-    /* Position invoice */
     #invoiceArea {
         position: absolute;
         left: 0;
         top: 0;
         width: 100%;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
         background: #fff !important;
     }
 
-    /* ✅ FORCE HEADER COLORS (FIX) */
-    #invoiceArea .bg-slate-900 {
-        background: #0f172a !important;
-        color: #fff !important;
-    }
+    button, a { display: none !important; }
 
-    #invoiceArea .bg-slate-900 input {
-        color: #fff !important;
-        border-color: #cbd5f5 !important;
-    }
-
-    #invoiceArea .bg-slate-900 p {
-        color: #cbd5f5 !important;
-    }
-
-    /* Table styling */
-    table { width: 100%; border-collapse: collapse; }
-    table, th, td { border: 1px solid #000 !important; }
-    thead { background: #000 !important; color: #fff !important; }
-    th, td { padding: 8px !important; text-align: left; }
-
-    /* Hide buttons */
-    button, a {
-        display: none !important;
-    }
-
-    /* Inputs → text */
-    input, textarea, select {
+    input, select, textarea {
         border: none !important;
         background: transparent !important;
-        pointer-events: none;
-        font-weight: 500;
-        appearance: none;
-        color: #000;
     }
 
-    /* ✅ Keep header inputs WHITE (override above rule) */
-    #invoiceArea .bg-slate-900 input {
-        color: #fff !important;
+    table, th, td {
+        border: 1px solid #000 !important;
     }
+}
+
+/* MAIN CARD */
+#invoiceArea {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background: #fff;
+}
+
+/* HEADER */
+.invoice-header {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #fff;
+    padding: 24px 32px;
+}
+
+/* INPUT GLOBAL */
+input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+/* HEADER INPUT FIX */
+.header-box input {
+    height: 40px;
+    text-align: right;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    border-radius: 10px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+thead {
+    background: #f8fafc;
+}
+
+th {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #64748b;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* BUTTONS */
+.btn-add {
+    background: #16a34a;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.btn-remove {
+    background: #ef4444;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background: #0f172a;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+}
+
+.btn-blue {
+    background: #2563eb;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+}
+
+/* BILL BOX */
+.bill-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 18px;
+    border-radius: 14px;
+}
+
+.bill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.bill-row span {
+    font-size: 14px;
+    color: #475569;
+}
+
+.bill-row input {
+    width: 140px;
+    height: 40px;
+    text-align: right;
 }
 </style>
 
-<!-- PAGE CONTENT -->
 <div class="min-h-screen bg-slate-100 py-10 px-4">
-    <div id="invoiceArea" class="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        <form action="{{ route('invoices.store') }}" method="POST">
-            @csrf
 
-            <!-- HEADER -->
-            <div class="flex justify-between items-center bg-slate-900 text-white px-10 py-6">
-                <div>
-                    <h1 class="text-2xl font-bold tracking-wide">HOSPITAL INVOICE</h1>
-                    <p class="text-sm text-slate-300">Premium Healthcare Billing</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-sm text-slate-400">Invoice No</p>
-                    <input type="text" id="invoice_no" name="invoice_no" readonly
-                        class="bg-transparent border-b border-slate-500 text-right font-semibold focus:outline-none">
+<div id="invoiceArea" class="max-w-5xl mx-auto">
 
-                    <p class="text-sm text-slate-400 mt-2">Date</p>
-                    <input type="date" name="invoice_date" value="{{ now()->format('Y-m-d') }}"
-                        class="bg-transparent border-b border-slate-500 text-right focus:outline-none">
-                </div>
-            </div>
+<form action="{{ route('invoices.store') }}" method="POST">
+@csrf
 
-            <!-- BODY -->
-            <div class="p-10">
+<!-- HEADER -->
+<div class="invoice-header flex justify-between items-center">
 
-                <!-- Patient + Staff -->
-                <div class="grid grid-cols-2 gap-10 mb-10">
-                    <div>
-                        <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Bill To</h3>
-                        <select name="patient_id" required
-                            class="w-full border-b border-gray-300 focus:outline-none py-2 text-gray-800">
-                            <option value="">Select Patient</option>
-                            @foreach($patients as $patient)
-                                <option value="{{ $patient->id }}">
-                                    {{ $patient->first_name }} {{ $patient->last_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="text-right">
-                        <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Created By</h3>
-                        <p class="text-sm text-slate-700">{{ auth()->user()->name ?? 'Unknown user' }}</p>
-                    </div>
-                </div>
-
-                <!-- Admission -->
-                <div class="mb-10">
-                    <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Admission</h3>
-                    <select name="admission_id"
-                        class="w-full border-b border-gray-300 focus:outline-none py-2 text-gray-800">
-                        <option value="">Select Admission</option>
-                        @foreach($admissions as $admission)
-                            <option value="{{ $admission->id }}">{{ $admission->admission_no }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Billing Table -->
-                <div class="mb-10">
-                    <table class="w-full text-sm border border-gray-200">
-                        <thead>
-                            <tr class="border-b text-gray-500 uppercase text-xs tracking-wider">
-                                <th class="py-3 text-left">Description</th>
-                                <th class="py-3 text-right">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-800">
-                            <tr class="border-b">
-                                <td class="py-3">Subtotal</td>
-                                <td class="py-3 text-right">
-                                    <input type="number" id="subtotal" name="subtotal"
-                                        class="w-32 text-right border-b focus:outline-none calc">
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="py-3">Discount</td>
-                                <td class="py-3 text-right">
-                                    <input type="number" id="discount" name="discount" value="0"
-                                        class="w-32 text-right border-b focus:outline-none calc">
-                                </td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="py-3">Tax</td>
-                                <td class="py-3 text-right">
-                                    <input type="number" id="tax" name="tax" value="0"
-                                        class="w-32 text-right border-b focus:outline-none calc">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Total -->
-                <div class="flex justify-end mb-10">
-                    <div class="w-72 border-t pt-4">
-                        <div class="flex justify-between items-center text-lg font-semibold">
-                            <span>Total</span>
-                            <input type="number" id="net_total" name="net_total" readonly
-                                class="w-32 text-right border-b focus:outline-none font-bold">
-                        </div>
-
-                        <div class="mt-6">
-                            <label class="text-xs text-gray-500">Status</label>
-                            <select name="status"
-                                class="w-full border-b border-gray-300 focus:outline-none py-2">
-                                <option>Unpaid</option>
-                                <option>Partial</option>
-                                <option>Paid</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notes -->
-                <div class="mb-10">
-                    <label class="text-xs text-gray-500">Notes</label>
-                    <textarea name="notes" rows="2"
-                        class="w-full border border-gray-200 rounded-lg p-3 focus:outline-none"></textarea>
-                </div>
-
-                <!-- Footer -->
-                <div class="flex justify-between items-center border-t pt-6">
-                    <div class="flex gap-3">
-                        <a href="{{ route('invoices.index') }}" class="text-gray-500 hover:text-gray-800">Cancel</a>
-
-                        <button type="button" onclick="window.print()"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow">
-                            Print
-                        </button>
-                    </div>
-
-                    <button type="submit"
-                        class="bg-slate-900 hover:bg-black text-white px-6 py-2 rounded-lg shadow">
-                        Save Invoice
-                    </button>
-                </div>
-
-            </div>
-        </form>
+    <div>
+        <h1 class="text-xl font-bold tracking-wide">HOSPITAL INVOICE</h1>
+        <p class="text-sm text-slate-300">Premium Healthcare Billing System</p>
     </div>
+
+    <!-- FIXED HEADER BOX -->
+    <div class="header-box w-56 space-y-3">
+
+        <div>
+            <p class="text-xs text-slate-300">Invoice No</p>
+            <input type="text" id="invoice_no" name="invoice_no" readonly>
+        </div>
+
+        <div>
+            <p class="text-xs text-slate-300">Date</p>
+            <input type="date" name="invoice_date"
+                value="{{ now()->format('Y-m-d') }}">
+        </div>
+
+    </div>
+
 </div>
 
-<!-- SCRIPT -->
-<script>
-const inputs = document.querySelectorAll('.calc');
-const netTotal = document.getElementById('net_total');
+<div class="p-10">
 
-function calc() {
-    let subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+<!-- PATIENT -->
+<div class="grid grid-cols-2 gap-8 mb-8">
+
+    <div>
+        <label class="text-xs text-gray-500">Patient</label>
+        <select name="patient_id">
+            <option value="">Select Patient</option>
+            @foreach($patients as $patient)
+                <option value="{{ $patient->id }}">
+                    {{ $patient->first_name }} {{ $patient->last_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="text-right">
+        <p class="text-xs text-gray-500">Created By</p>
+        <p class="font-medium">{{ auth()->user()->name ?? 'Unknown' }}</p>
+    </div>
+
+</div>
+
+<!-- ADMISSION -->
+<div class="mb-8">
+    <label class="text-xs text-gray-500">Admission</label>
+    <select name="admission_id">
+        <option value="">Select Admission</option>
+        @foreach($admissions as $admission)
+            <option value="{{ $admission->id }}">
+                {{ $admission->admission_no }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
+<!-- SERVICE LIST -->
+<div class="mb-8">
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="font-semibold">Service List</h3>
+        <button type="button" onclick="addRow()" class="btn-add">
+            + Add Service
+        </button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody id="serviceBody"></tbody>
+    </table>
+</div>
+
+<!-- BILL -->
+<div class="flex justify-end mb-6">
+
+<div class="bill-box w-80">
+
+    <div class="bill-row">
+        <span>Subtotal</span>
+        <input id="subtotal" name="subtotal" readonly>
+    </div>
+
+    <div class="bill-row">
+        <span>Discount</span>
+        <input id="discount" name="discount" value="0" class="calc">
+    </div>
+
+    <div class="bill-row">
+        <span>Tax</span>
+        <input id="tax" name="tax" value="0" class="calc">
+    </div>
+
+    <hr class="my-3">
+
+    <div class="bill-row font-bold text-lg">
+        <span>Total</span>
+        <input id="net_total" name="net_total" readonly>
+    </div>
+
+</div>
+
+</div>
+
+<!-- STATUS -->
+<div class="mb-6">
+    <select name="status">
+        <option>Unpaid</option>
+        <option>Partial</option>
+        <option>Paid</option>
+        <option>Cancelled</option>
+    </select>
+</div>
+
+<!-- NOTES -->
+<div class="mb-6">
+    <textarea name="notes" rows="3" placeholder="Notes..."></textarea>
+</div>
+
+<!-- FOOTER -->
+<div class="flex justify-between">
+
+    <a href="{{ route('invoices.index') }}">Cancel</a>
+
+    <div class="flex gap-3">
+        <button type="button" onclick="window.print()" class="btn-blue">
+            Print
+        </button>
+
+        <button type="submit" class="btn-primary">
+            Save Invoice
+        </button>
+    </div>
+
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+
+<script>
+let services = @json($services);
+
+function addRow(){
+    let row = document.createElement('tr');
+
+    let options = services.map(s =>
+        `<option value="${s.id}" data-price="${s.price}">${s.name}</option>`
+    ).join('');
+
+    row.innerHTML = `
+        <td>
+            <select onchange="setPrice(this)">
+                <option value="">Select</option>
+                ${options}
+            </select>
+        </td>
+
+        <td><input class="price" readonly></td>
+
+        <td><input value="1" class="qty" oninput="calcRow(this)"></td>
+
+        <td><input class="rowTotal" readonly></td>
+
+        <td><button type="button" class="btn-remove" onclick="removeRow(this)">X</button></td>
+    `;
+
+    document.getElementById('serviceBody').appendChild(row);
+}
+
+function setPrice(el){
+    let price = el.options[el.selectedIndex].dataset.price;
+    let row = el.closest('tr');
+
+    row.querySelector('.price').value = price;
+    calcRow(el);
+}
+
+function calcRow(el){
+    let row = el.closest('tr');
+
+    let price = parseFloat(row.querySelector('.price').value) || 0;
+    let qty = parseFloat(row.querySelector('.qty').value) || 0;
+
+    row.querySelector('.rowTotal').value = (price * qty).toFixed(2);
+
+    calcAll();
+}
+
+function removeRow(btn){
+    btn.closest('tr').remove();
+    calcAll();
+}
+
+function calcAll(){
+    let sum = 0;
+
+    document.querySelectorAll('.rowTotal').forEach(i=>{
+        sum += parseFloat(i.value) || 0;
+    });
+
+    document.getElementById('subtotal').value = sum.toFixed(2);
+
     let discount = parseFloat(document.getElementById('discount').value) || 0;
     let tax = parseFloat(document.getElementById('tax').value) || 0;
 
-    netTotal.value = (subtotal - discount + tax).toFixed(2);
+    document.getElementById('net_total').value =
+        (sum - discount + tax).toFixed(2);
 }
 
-inputs.forEach(i => i.addEventListener('input', calc));
+document.querySelectorAll('.calc').forEach(i=>{
+    i.addEventListener('input', calcAll);
+});
 
-function generateInvoiceNo() {
-    const now = new Date();
-    const unique = now.getFullYear().toString().slice(2) +
-                   String(now.getMonth()+1).padStart(2,'0') +
-                   String(now.getDate()).padStart(2,'0') +
-                   String(now.getHours()).padStart(2,'0') +
-                   String(now.getMinutes()).padStart(2,'0') +
-                   String(now.getSeconds()).padStart(2,'0');
-
-    document.getElementById('invoice_no').value = 'INV-' + unique;
+function generateInvoiceNo(){
+    let now = new Date();
+    document.getElementById('invoice_no').value =
+        "INV-" + now.getTime();
 }
 
-window.onload = function() {
-    calc();
+window.onload = function(){
     generateInvoiceNo();
+    addRow();
+    calcAll();
 };
 </script>
 
