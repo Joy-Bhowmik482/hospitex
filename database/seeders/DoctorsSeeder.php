@@ -71,6 +71,7 @@ class DoctorsSeeder extends Seeder
                 $specs = $specializations[$dept->code] ?? ['Specialist'];
                 
                 Doctor::create([
+                    'name' => $user->name,
                     'user_id' => $user->id,
                     'department_id' => $dept->id,
                     'reg_no' => 'REG' . str_pad($index + 1, 4, '0', STR_PAD_LEFT),
