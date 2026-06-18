@@ -150,6 +150,11 @@ A comprehensive patient management system built with Laravel that includes patie
 - patient_id (foreign key)
 - admission_date, discharge_date
 - ward, bed_number
+
+
+
+
+
 - reason_for_admission, diagnosis
 - treatment_plan, discharge_notes
 - status (enum: 'Admitted', 'Discharged', 'Cancelled')

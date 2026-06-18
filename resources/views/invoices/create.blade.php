@@ -10,36 +10,56 @@ body {
 
 /* PRINT */
 @media print {
-    @page { size: A4; margin: 18mm; }
 
-    body {
-        background: #fff !important;
-        color: #000 !important;
+    .no-print{
+        display:none !important;
     }
 
-    body * { visibility: hidden; }
-
-    #invoiceArea, #invoiceArea * {
-        visibility: visible;
+    body{
+        background:#fff;
+        color:#000;
+        font-size:14px;
     }
 
-    #invoiceArea {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: #fff !important;
+    #invoicePrint{
+        width:100%;
+        padding:0;
+        margin:0;
     }
 
-    button, a { display: none !important; }
-
-    input, select, textarea {
-        border: none !important;
-        background: transparent !important;
+    table{
+        width:100%;
+        border-collapse:collapse;
     }
 
-    table, th, td {
-        border: 1px solid #000 !important;
+    table,
+    td,
+    th{
+        border:1px solid #000;
+    }
+
+    td,
+    th{
+        padding:6px;
+    }
+
+    .hospital-name{
+        text-align:center;
+        font-size:26px;
+        font-weight:bold;
+    }
+
+    .invoice-title{
+        text-align:center;
+        font-size:22px;
+        font-weight:bold;
+        text-decoration:underline;
+        margin-top:10px;
+    }
+
+    .summary-table{
+        width:300px;
+        float:right;
     }
 }
 
@@ -309,21 +329,38 @@ tbody tr:hover {
 </div>
 
 <!-- FOOTER -->
-<div class="flex justify-between">
+<!-- FOOTER -->
 
-    <a href="{{ route('invoices.index') }}">Cancel</a>
+<div class="flex justify-between items-center border-t pt-6 mt-8">
 
-    <div class="flex gap-3">
-        <button type="button" onclick="window.print()" class="btn-blue">
-            Print
-        </button>
+```
+<a href="{{ route('invoices.index') }}"
+   class="text-gray-600 hover:text-gray-900 font-medium">
+    Cancel
+</a>
 
-        <button type="submit" class="btn-primary">
-            Save Invoice
-        </button>
-    </div>
+<div class="flex gap-3">
+
+    <!-- PRINT BUTTON -->
+    <button
+        type="button"
+        onclick="window.print();"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md transition">
+        🖨 Print Invoice
+    </button>
+
+    <!-- SAVE BUTTON -->
+    <button
+        type="submit"
+        class="bg-slate-900 hover:bg-black text-white px-5 py-2 rounded-lg shadow-md transition">
+        Save Invoice
+    </button>
 
 </div>
+```
+
+</div>
+
 
 </div>
 </form>
