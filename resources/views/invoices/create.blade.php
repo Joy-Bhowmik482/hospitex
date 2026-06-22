@@ -278,30 +278,31 @@
             </div>
             <div class="ph-title">Patient Invoice</div>
         </div>
-
+ <form id="invoiceForm" method="POST" action="{{ route('invoices.store') }}">
+    @csrf
         {{-- ===== SCREEN LETTERHEAD ===== --}}
         <div class="letterhead no-print">
             <div class="brand">
                 <div class="brand-logo">+</div>
                 <div>
-                    <div class="brand-title">Premium Healthcare Hospital</div>
+                    <div class="brand-title">HOSPITEX</div>
                     <div class="brand-sub">Patient Billing &amp; Invoicing System</div>
                 </div>
             </div>
             <div class="meta-grid">
                 <div>
                     <label>Invoice No</label>
-                    <input type="text" id="invoice_no" readonly>
+                    <input type="text" id="invoice_no" name="invoice_no" readonly>
                 </div>
                 <div>
                     <label>Date</label>
-                    <input type="date" id="invoice_date" value="{{ date('Y-m-d') }}">
+                    <input type="date" id="invoice_date" name="invoice_date" value="{{ date('Y-m-d') }}" required>
                 </div>
             </div>
         </div>
 
-        <form id="invoiceForm" method="POST" action="">
-            @csrf
+       
+           
 
             <div class="invoice-body">
 
@@ -340,7 +341,7 @@
                             </div>
                             <div class="field">
                                 <label>Payment Status</label>
-                                <select name="payment_status" id="payment_status">
+                                <select name="status" id="payment_status">
                                     <option value="unpaid">Unpaid</option>
                                     <option value="partial">Partial</option>
                                     <option value="paid">Paid</option>
@@ -387,19 +388,19 @@
                     <div class="totals">
                         <div class="totals-row">
                             <span>Subtotal</span>
-                            <input id="subtotal" readonly>
+                            <input name="subtotal" id="subtotal" readonly>
                         </div>
                         <div class="totals-row">
                             <span>Discount</span>
-                            <input id="discount" class="calc" value="0">
+                            <input name="discount" id="discount" class="calc" value="0">
                         </div>
                         <div class="totals-row">
                             <span>Tax</span>
-                            <input id="tax" class="calc" value="0">
+                            <input name="tax" id="tax" class="calc" value="0">
                         </div>
                         <div class="totals-row grand">
                             <span>Total Due</span>
-                            <input id="net_total" readonly>
+                            <input name="net_total" id="net_total" readonly>
                         </div>
                     </div>
                 </div>
@@ -434,13 +435,13 @@
         row.innerHTML = `
             <td class="row-index">${idx}</td>
             <td>
-                <select name="services[][id]" onchange="setPrice(this)">
+                <select name="services[${idx}][id]" onchange="setPrice(this)">
                     <option value="">Select service</option>
                     ${options}
                 </select>
             </td>
-            <td><input class="price" name="services[][price]" style="text-align:right;" readonly></td>
-            <td><input class="qty" name="services[][qty]" value="1" style="text-align:center;" oninput="calcRow(this)"></td>
+            <td><input class="price" name="services[${idx}][price]" style="text-align:right;" readonly></td>
+            <td><input class="qty" name="services[${idx}][qty]" value="1" style="text-align:center;" oninput="calcRow(this)"></td>
             <td><input class="rowTotal" style="text-align:right;" readonly></td>
             <td class="no-print">
                 <button type="button" class="btn-remove" onclick="removeRow(this)">Remove</button>

@@ -4,6 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\BaseModel;
+use App\Models\InvoiceItem;
+use App\Models\Patient;
+use App\Models\Admission;
+use App\Models\Appointment;
+use App\Models\User;
 
 class Invoice extends BaseModel
 {
@@ -32,6 +37,10 @@ class Invoice extends BaseModel
         'net_total' => 'decimal:2',
     ];
 
+    /* =========================
+        RELATIONSHIPS
+    ========================= */
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
@@ -51,6 +60,10 @@ class Invoice extends BaseModel
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    // ✅ THIS FIXES YOUR ERROR
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
 }
-
-
