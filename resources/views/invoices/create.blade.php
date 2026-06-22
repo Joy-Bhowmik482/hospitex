@@ -3,193 +3,297 @@
 @section('content')
 
 <style>
+    :root {
+        --ink:#0b1220;
+        --ink-2:#1f2937;
+        --muted:#64748b;
+        --line:#e5e7eb;
+        --soft:#f8fafc;
+        --brand:#0f766e;       /* deep teal — medical, trustworthy */
+        --brand-2:#0d9488;
+        --accent:#0ea5e9;
+        --bg:#eef2f7;
+    }
+
     body {
-        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-        background: #f1f5f9;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
     }
 
-    /* ---------- SCREEN STYLES ---------- */
+    /* ---------- CARD ---------- */
     #invoiceArea {
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        max-width: 1080px;
+        margin: 32px auto;
         background: #fff;
-        max-width: 1100px;
-        margin: 30px auto;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px -20px rgba(2,12,27,.18), 0 2px 6px rgba(2,12,27,.05);
     }
 
-    .invoice-header {
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: #fff;
-        padding: 28px 36px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 16px;
+    /* ---------- LETTERHEAD ---------- */
+    .letterhead {
+        display:grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 24px;
+        padding: 28px 40px;
+        background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+        color:#fff;
+    }
+    .brand {
+        display:flex; align-items:center; gap:14px;
+    }
+    .brand-logo {
+        width:54px; height:54px; border-radius:14px;
+        background: rgba(255,255,255,.15);
+        display:flex; align-items:center; justify-content:center;
+        font-size:26px; font-weight:800; letter-spacing:.5px;
+        border:1px solid rgba(255,255,255,.3);
+    }
+    .brand-title { font-size: 22px; font-weight: 800; letter-spacing:.3px; }
+    .brand-sub   { font-size: 12px; opacity:.85; margin-top:2px; }
+
+    .meta-grid {
+        display:grid; grid-template-columns: 1fr 1fr; gap:10px 16px;
+        align-self:center;
+    }
+    .meta-grid label {
+        font-size: 10px; text-transform: uppercase; letter-spacing:.08em; opacity:.8;
+        display:block; margin-bottom:4px;
+    }
+    .meta-grid input, .meta-grid select {
+        height: 36px; padding: 0 12px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.25);
+        color: #fff; border-radius: 8px; width:100%;
+        font-size: 13px;
+    }
+    .meta-grid input::placeholder { color: rgba(255,255,255,.6); }
+
+    /* ---------- BODY ---------- */
+    .invoice-body { padding: 28px 40px 8px; }
+
+    .row-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .row-3 { display:grid; grid-template-columns: 2fr 1fr 1fr; gap: 18px; }
+
+    .panel-title {
+        font-size: 11px; text-transform: uppercase; letter-spacing:.1em;
+        color: var(--muted); font-weight: 700; margin-bottom: 10px;
+    }
+    .panel {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 18px;
+        background: #fff;
     }
 
-    .invoice-header h1 { font-size: 26px; font-weight: 800; letter-spacing: .3px; }
-    .invoice-header p  { font-size: 13px; opacity: .8; margin-top: 4px; }
-
-    .header-box { display: flex; flex-direction: column; gap: 8px; min-width: 240px; }
-    .header-box label { font-size: 11px; text-transform: uppercase; opacity:.75; }
-    .header-box input {
-        height: 38px; text-align: right;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.25);
-        color: #fff; border-radius: 10px; padding: 0 12px;
+    .field label {
+        display:block; font-size: 12px; color:var(--muted);
+        margin-bottom:6px; font-weight:600;
     }
-
-    .invoice-body { padding: 28px 36px; }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .grid-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 18px; }
-
-    .field label { display:block; font-size: 12px; color:#475569; margin-bottom:6px; font-weight:600; }
     input, select, textarea {
         width: 100%; padding: 10px 12px;
-        border: 1px solid #e2e8f0; border-radius: 10px;
-        outline: none; transition: .2s; background:#fff;
+        border: 1px solid var(--line); border-radius: 10px;
+        background:#fff; color: var(--ink); font-size: 14px;
+        outline: none; transition: border-color .15s, box-shadow .15s;
     }
     input:focus, select:focus, textarea:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 18%, transparent);
     }
 
+    /* ---------- SECTION TITLE ---------- */
     .section-title {
         display:flex; justify-content:space-between; align-items:center;
-        margin: 24px 0 12px;
+        margin: 28px 0 12px;
     }
-    .section-title h3 { font-size: 16px; font-weight:700; color:#0f172a; }
+    .section-title h3 {
+        font-size: 14px; font-weight: 800;
+        text-transform: uppercase; letter-spacing:.08em; color: var(--ink);
+    }
 
-    table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow:hidden; }
-    thead { background: #f8fafc; }
-    th { font-size: 11px; text-transform: uppercase; color:#64748b; padding:12px; text-align:left; }
-    td { padding: 10px 12px; border-top: 1px solid #e2e8f0; vertical-align: middle; }
-    tbody tr:hover { background: #f8fafc; }
+    /* ---------- TABLE ---------- */
+    .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 12px; overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--soft); }
+    th {
+        font-size: 11px; text-transform: uppercase; letter-spacing:.08em;
+        color: var(--muted); padding: 12px 14px; text-align: left; font-weight: 700;
+    }
+    td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+    tbody tr:nth-child(even) { background: #fbfdff; }
+    tbody tr:hover { background: #f4f8fb; }
+    td input, td select { border: 1px solid transparent; background: transparent; }
+    td input:hover, td select:hover { border-color: var(--line); background:#fff; }
+    td input.rowTotal { font-weight: 700; color: var(--ink); }
 
-    .btn-add    { background:#16a34a; color:#fff; padding:8px 14px; border-radius:10px; font-size:13px; border:none; cursor:pointer; }
-    .btn-remove { background:#ef4444; color:#fff; padding:6px 10px;  border-radius:8px;  border:none; cursor:pointer; }
-    .btn-primary{ background:#0f172a; color:#fff; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; }
-    .btn-blue   { background:#2563eb; color:#fff; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; }
-    .btn-ghost  { background:#e2e8f0; color:#0f172a; padding:10px 18px; border-radius:10px; border:none; cursor:pointer; }
+    /* ---------- BUTTONS ---------- */
+    .btn        { padding:10px 16px; border-radius:10px; font-size:13px; font-weight:600; border:none; cursor:pointer; transition: transform .05s ease, filter .15s ease; }
+    .btn:hover  { filter: brightness(1.05); }
+    .btn:active { transform: translateY(1px); }
+    .btn-add    { background: var(--brand); color:#fff; }
+    .btn-remove { background:#fee2e2; color:#b91c1c; padding:6px 10px; border-radius:8px; font-size:12px; }
+    .btn-primary{ background: var(--ink); color:#fff; }
+    .btn-blue   { background: var(--accent); color:#fff; }
+    .btn-ghost  { background: #eef2f7; color: var(--ink-2); }
 
+    /* ---------- SUMMARY ---------- */
     .summary {
         margin-top: 24px;
-        display: grid; grid-template-columns: 1fr 320px; gap: 24px;
+        display: grid; grid-template-columns: 1fr 340px; gap: 28px;
     }
-    .bill-box {
-        background:#f8fafc; border:1px solid #e2e8f0;
-        padding:18px; border-radius:14px;
+    .totals {
+        background: linear-gradient(180deg, #f8fafc, #fff);
+        border: 1px solid var(--line);
+        border-radius: 14px; padding: 18px 20px;
     }
-    .bill-row {
-        display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;
+    .totals-row {
+        display:flex; justify-content:space-between; align-items:center;
+        padding: 8px 0; font-size: 14px; color: var(--ink-2);
     }
-    .bill-row span { font-size:14px; color:#475569; }
-    .bill-row input { width:150px; height:38px; text-align:right; }
-    .bill-row.total {
-        border-top: 2px dashed #cbd5e1; padding-top:12px; margin-top:12px;
+    .totals-row input { width: 140px; height: 36px; text-align: right; }
+    .totals-row.grand {
+        margin-top: 8px; padding-top: 14px;
+        border-top: 1px dashed #cbd5e1;
     }
-    .bill-row.total span { font-size:16px; font-weight:800; color:#0f172a; }
-    .bill-row.total input{ font-size:16px; font-weight:800; color:#0f172a; }
+    .totals-row.grand span { font-size: 15px; font-weight: 800; color: var(--ink); text-transform: uppercase; letter-spacing:.06em; }
+    .totals-row.grand input {
+        height: 44px; font-size: 18px; font-weight: 800; color: var(--brand);
+        border-color: color-mix(in oklab, var(--brand) 30%, var(--line));
+        background: #fff;
+    }
 
+    .status-badge {
+        display:inline-flex; align-items:center; gap:6px;
+        padding: 4px 10px; border-radius: 999px;
+        font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing:.06em;
+        background: #fef3c7; color:#92400e;
+    }
+
+    /* ---------- ACTIONS ---------- */
     .actions {
         display:flex; justify-content:flex-end; gap:10px;
-        padding: 20px 36px 28px; background:#fff;
+        padding: 18px 40px 28px;
+        border-top: 1px solid var(--line); background: #fff;
     }
 
-    /* Hospital identity that's hidden on screen, shown only when printing */
     .print-only { display: none; }
 
-    /* ---------- PRINT STYLES ---------- */
+    /* ---------- PRINT ---------- */
     @media print {
-        /* Hide everything from the host layout (sidebar, navbar, footer) */
-        body * { visibility: hidden !important; }
+        @page { size: A4; margin: 14mm; }
 
-        /* Then reveal only the invoice */
+        body * { visibility: hidden !important; }
         #printArea, #printArea * { visibility: visible !important; }
 
-        /* Position the invoice as the whole page */
+        body { background:#fff !important; }
         #printArea {
-            position: absolute;
-            inset: 0;
-            margin: 0;
-            padding: 24px 28px;
-            width: 100%;
-            background: #fff !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            color:#000;
+            position: absolute; inset: 0;
+            margin: 0; padding: 0; width: 100%;
+            background:#fff !important;
+        }
+        #invoiceArea {
+            margin: 0; box-shadow: none !important;
+            border-radius: 0 !important; max-width: 100%;
         }
 
-        /* Strip screen-only chrome inside the invoice */
-        .no-print { display: none !important; }
-        .invoice-header {
-            background: #fff !important;
-            color: #000 !important;
-            border-bottom: 2px solid #000;
-            padding: 0 0 12px 0 !important;
+        .no-print, .actions { display: none !important; }
+
+        /* Replace gradient header with a clean print letterhead */
+        .letterhead { display: none !important; }
+        .print-only {
             display: block !important;
+            padding: 0 0 14px 0;
+            border-bottom: 2px solid var(--ink);
+            margin-bottom: 18px;
         }
-        .invoice-body { padding: 12px 0 !important; }
-        .actions     { display: none !important; }
-
-        .print-only { display: block !important; text-align:center; margin-bottom: 8px; }
-        .print-only .hospital-name { font-size: 26px; font-weight: 800; }
-        .print-only .hospital-sub  { font-size: 12px; color:#333; }
-        .print-only .invoice-title {
-            margin-top: 10px; font-size: 20px; font-weight: 800;
-            text-decoration: underline; letter-spacing:.5px;
+        .print-only .ph-top {
+            display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
+        }
+        .print-only .ph-name { font-size: 22px; font-weight: 800; letter-spacing:.3px; }
+        .print-only .ph-sub  { font-size: 11px; color:#555; margin-top: 2px; }
+        .print-only .ph-meta { font-size: 12px; text-align: right; line-height: 1.6; }
+        .print-only .ph-meta b { display:inline-block; min-width: 88px; color:#000; }
+        .print-only .ph-title {
+            text-align:center; margin-top: 14px;
+            font-size: 16px; font-weight: 800; letter-spacing:.18em;
+            text-transform: uppercase;
         }
 
-        /* Flatten inputs to plain text so the print looks like a real document */
+        .invoice-body { padding: 0 !important; }
+        .panel { border:1px solid #cbd5e1 !important; box-shadow:none !important; }
+
+        /* Flatten inputs to printed text */
         input, select, textarea {
-            border: none !important;
-            background: transparent !important;
-            padding: 2px 0 !important;
-            color: #000 !important;
-            box-shadow: none !important;
-            -webkit-appearance: none; appearance: none;
-            text-align: left !important;
+            border: none !important; background: transparent !important;
+            padding: 2px 0 !important; color: #000 !important;
+            box-shadow: none !important; -webkit-appearance: none; appearance: none;
+            font-size: 13px !important;
         }
-        .bill-row input { text-align: right !important; }
-        select { appearance: none; }
+        td input, td select {
+            border: none !important; background: transparent !important;
+        }
 
+        .table-wrap { border:1px solid #000 !important; border-radius: 0 !important; }
         table, th, td { border: 1px solid #000 !important; }
-        thead { background: #f1f1f1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        thead { background:#f1f1f1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         th { color:#000 !important; }
+        tbody tr:nth-child(even) { background:#fafafa !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-        .summary { grid-template-columns: 1fr 300px !important; }
-        .bill-box { background:#fff !important; border:1px solid #000 !important; }
+        .summary { grid-template-columns: 1fr 320px !important; gap: 18px !important; margin-top: 18px !important; }
+        .totals { background:#fff !important; border:1px solid #000 !important; border-radius: 0 !important; }
+        .totals-row.grand input { color:#000 !important; border:none !important; }
 
-        @page { size: A4; margin: 14mm; }
+        .section-title h3 { color:#000 !important; }
+
+        .footer-print {
+            display:block !important;
+            margin-top: 28px; padding-top: 14px;
+            border-top: 1px solid #999;
+            font-size: 11px; color:#333; text-align:center;
+        }
     }
+    .footer-print { display: none; }
 </style>
 
 <div id="printArea">
     <div id="invoiceArea">
 
-        {{-- Shown only on print --}}
+        {{-- ===== PRINT-ONLY LETTERHEAD ===== --}}
         <div class="print-only">
-            <div class="hospital-name">PREMIUM HEALTHCARE HOSPITAL</div>
-            <div class="hospital-sub">123 Wellness Avenue · Phone: +000 000 000 · info@hospital.com</div>
-            <div class="invoice-title">PATIENT INVOICE</div>
+            <div class="ph-top">
+                <div>
+                    <div class="ph-name">PREMIUM HEALTHCARE HOSPITAL</div>
+                    <div class="ph-sub">123 Wellness Avenue, City · Tel: +000 000 0000 · info@hospital.com</div>
+                    <div class="ph-sub">License No: HC-998877 · Tax ID: 12-3456789</div>
+                </div>
+                <div class="ph-meta">
+                    <div><b>Invoice No:</b> <span id="print_invoice_no"></span></div>
+                    <div><b>Date:</b> <span id="print_invoice_date"></span></div>
+                    <div><b>Issued By:</b> {{ auth()->user()->name ?? 'Unknown' }}</div>
+                </div>
+            </div>
+            <div class="ph-title">Patient Invoice</div>
         </div>
 
-        {{-- HEADER (screen) --}}
-        <div class="invoice-header">
-            <div>
-                <h1>HOSPITAL INVOICE</h1>
-                <p>Premium Healthcare Billing System</p>
+        {{-- ===== SCREEN LETTERHEAD ===== --}}
+        <div class="letterhead no-print">
+            <div class="brand">
+                <div class="brand-logo">+</div>
+                <div>
+                    <div class="brand-title">Premium Healthcare Hospital</div>
+                    <div class="brand-sub">Patient Billing &amp; Invoicing System</div>
+                </div>
             </div>
-
-            <div style="display:flex; gap:16px; flex-wrap:wrap;">
-                <div class="header-box">
+            <div class="meta-grid">
+                <div>
                     <label>Invoice No</label>
                     <input type="text" id="invoice_no" readonly>
                 </div>
-                <div class="header-box">
+                <div>
                     <label>Date</label>
                     <input type="date" id="invoice_date" value="{{ date('Y-m-d') }}">
                 </div>
@@ -198,100 +302,118 @@
 
         <form id="invoiceForm" method="POST" action="">
             @csrf
+
             <div class="invoice-body">
 
-                {{-- PATIENT / USER --}}
-                <div class="grid-2">
-                    <div class="field">
-                        <label>Patient</label>
-                        <select name="patient_id" required>
-                            <option value="">Select Patient</option>
-                            @foreach($patients as $patient)
-                                <option value="{{ $patient->id }}">
-                                    {{ $patient->first_name }} {{ $patient->last_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Created By</label>
-                        <input type="text" value="{{ auth()->user()->name ?? 'Unknown' }}" readonly>
-                    </div>
-                </div>
-
-                {{-- ADMISSION --}}
-                <div class="field" style="margin-top:18px;">
-                    <label>Admission</label>
-                    <select name="admission_id">
-                        <option value="">Select Admission</option>
-                        @foreach($admissions as $admission)
-                            <option value="{{ $admission->id }}">{{ $admission->admission_no }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                {{-- SERVICES --}}
-                <div class="section-title">
-                    <h3>Service List</h3>
-                    <button type="button" class="btn-add no-print" onclick="addRow()">+ Add Service</button>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:45%">Service</th>
-                            <th style="width:15%">Price</th>
-                            <th style="width:10%">Qty</th>
-                            <th style="width:20%">Total</th>
-                            <th style="width:10%" class="no-print"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="serviceBody"></tbody>
-                </table>
-
-                {{-- SUMMARY --}}
-                <div class="summary">
-                    <div class="field">
-                        <label>Notes</label>
-                        <textarea name="notes" rows="5" placeholder="Optional notes..."></textarea>
-
-                        <div style="margin-top:14px;">
-                            <label style="font-size:12px; color:#475569; font-weight:600;">Payment Status</label>
-                            <select name="payment_status">
-                                <option value="unpaid">Unpaid</option>
-                                <option value="partial">Partial</option>
-                                <option value="paid">Paid</option>
-                                <option value="cancelled">Cancelled</option>
+                {{-- ===== PATIENT / ADMISSION ===== --}}
+                <div class="row-2">
+                    <div class="panel">
+                        <div class="panel-title">Bill To</div>
+                        <div class="field" style="margin-bottom:12px;">
+                            <label>Patient</label>
+                            <select name="patient_id" required>
+                                <option value="">Select Patient</option>
+                                @foreach($patients as $patient)
+                                    <option value="{{ $patient->id }}">
+                                        {{ $patient->first_name }} {{ $patient->last_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Admission</label>
+                            <select name="admission_id">
+                                <option value="">Select Admission</option>
+                                @foreach($admissions as $admission)
+                                    <option value="{{ $admission->id }}">{{ $admission->admission_no }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="bill-box">
-                        <div class="bill-row">
+                    <div class="panel">
+                        <div class="panel-title">Invoice Info</div>
+                        <div class="row-2" style="gap:12px;">
+                            <div class="field">
+                                <label>Issued By</label>
+                                <input type="text" value="{{ auth()->user()->name ?? 'Unknown' }}" readonly>
+                            </div>
+                            <div class="field">
+                                <label>Payment Status</label>
+                                <select name="payment_status" id="payment_status">
+                                    <option value="unpaid">Unpaid</option>
+                                    <option value="partial">Partial</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top:12px;">
+                            <label>Department</label>
+                            <input type="text" name="department" placeholder="e.g. Cardiology">
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ===== SERVICES ===== --}}
+                <div class="section-title">
+                    <h3>Service List</h3>
+                    <button type="button" class="btn btn-add no-print" onclick="addRow()">+ Add Service</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:8%">#</th>
+                                <th style="width:42%">Service Description</th>
+                                <th style="width:14%; text-align:right;">Unit Price</th>
+                                <th style="width:10%; text-align:center;">Qty</th>
+                                <th style="width:18%; text-align:right;">Amount</th>
+                                <th style="width:8%" class="no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceBody"></tbody>
+                    </table>
+                </div>
+
+                {{-- ===== SUMMARY ===== --}}
+                <div class="summary">
+                    <div class="panel">
+                        <div class="panel-title">Notes</div>
+                        <textarea name="notes" rows="6" placeholder="Optional notes, instructions, or remarks..."></textarea>
+                    </div>
+
+                    <div class="totals">
+                        <div class="totals-row">
                             <span>Subtotal</span>
                             <input id="subtotal" readonly>
                         </div>
-                        <div class="bill-row">
+                        <div class="totals-row">
                             <span>Discount</span>
                             <input id="discount" class="calc" value="0">
                         </div>
-                        <div class="bill-row">
+                        <div class="totals-row">
                             <span>Tax</span>
                             <input id="tax" class="calc" value="0">
                         </div>
-                        <div class="bill-row total">
-                            <span>Total</span>
+                        <div class="totals-row grand">
+                            <span>Total Due</span>
                             <input id="net_total" readonly>
                         </div>
                     </div>
                 </div>
+
+                <div class="footer-print">
+                    Thank you for choosing Premium Healthcare Hospital · This is a computer-generated invoice and does not require a signature.
+                </div>
             </div>
 
-            {{-- ACTIONS (screen only) --}}
+            {{-- ===== ACTIONS ===== --}}
             <div class="actions no-print">
-                <button type="button" class="btn-ghost" onclick="history.back()">Cancel</button>
-                <button type="button" class="btn-blue" onclick="window.print()">🖨 Print Invoice</button>
-                <button type="submit" class="btn-primary">Save Invoice</button>
+                <button type="button" class="btn btn-ghost" onclick="history.back()">Cancel</button>
+                <button type="button" class="btn btn-blue" onclick="printInvoice()">🖨 Print Invoice</button>
+                <button type="submit" class="btn btn-primary">Save Invoice</button>
             </div>
         </form>
     </div>
@@ -301,32 +423,36 @@
     const services = @json($services);
 
     function addRow() {
+        const tbody = document.getElementById('serviceBody');
+        const idx = tbody.children.length + 1;
         const row = document.createElement('tr');
+
         const options = services.map(s =>
             `<option value="${s.id}" data-price="${s.price}">${s.name}</option>`
         ).join('');
 
         row.innerHTML = `
+            <td class="row-index">${idx}</td>
             <td>
                 <select name="services[][id]" onchange="setPrice(this)">
-                    <option value="">Select Service</option>
+                    <option value="">Select service</option>
                     ${options}
                 </select>
             </td>
-            <td><input class="price" name="services[][price]" readonly></td>
-            <td><input class="qty"   name="services[][qty]" value="1" oninput="calcRow(this)"></td>
-            <td><input class="rowTotal" readonly></td>
+            <td><input class="price" name="services[][price]" style="text-align:right;" readonly></td>
+            <td><input class="qty" name="services[][qty]" value="1" style="text-align:center;" oninput="calcRow(this)"></td>
+            <td><input class="rowTotal" style="text-align:right;" readonly></td>
             <td class="no-print">
-                <button type="button" class="btn-remove" onclick="removeRow(this)">X</button>
+                <button type="button" class="btn-remove" onclick="removeRow(this)">Remove</button>
             </td>
         `;
-        document.getElementById('serviceBody').appendChild(row);
+        tbody.appendChild(row);
     }
 
     function setPrice(el) {
         const price = el.options[el.selectedIndex].dataset.price || 0;
         const row = el.closest('tr');
-        row.querySelector('.price').value = price;
+        row.querySelector('.price').value = parseFloat(price).toFixed(2);
         calcRow(el);
     }
 
@@ -340,7 +466,15 @@
 
     function removeRow(btn) {
         btn.closest('tr').remove();
+        reindexRows();
         calcAll();
+    }
+
+    function reindexRows() {
+        document.querySelectorAll('#serviceBody tr').forEach((tr, i) => {
+            const cell = tr.querySelector('.row-index');
+            if (cell) cell.textContent = i + 1;
+        });
     }
 
     function calcAll() {
@@ -358,13 +492,25 @@
     });
 
     function generateInvoiceNo() {
-        document.getElementById('invoice_no').value = "INV-" + Date.now();
+        const n = "INV-" + Date.now();
+        document.getElementById('invoice_no').value = n;
+    }
+
+    function syncPrintHeader() {
+        document.getElementById('print_invoice_no').textContent   = document.getElementById('invoice_no').value;
+        document.getElementById('print_invoice_date').textContent = document.getElementById('invoice_date').value;
+    }
+
+    function printInvoice() {
+        syncPrintHeader();
+        window.print();
     }
 
     window.onload = function () {
         generateInvoiceNo();
         addRow();
         calcAll();
+        syncPrintHeader();
     };
 </script>
 
