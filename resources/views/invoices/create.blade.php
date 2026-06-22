@@ -266,7 +266,7 @@
         <div class="print-only">
             <div class="ph-top">
                 <div>
-                    <div class="ph-name">PREMIUM HEALTHCARE HOSPITAL</div>
+                    <div class="ph-name">HOSPITEX</div>
                     <div class="ph-sub">123 Wellness Avenue, City · Tel: +000 000 0000 · info@hospital.com</div>
                     <div class="ph-sub">License No: HC-998877 · Tax ID: 12-3456789</div>
                 </div>
