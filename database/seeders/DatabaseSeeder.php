@@ -80,6 +80,7 @@ class DatabaseSeeder extends Seeder
             MaintenanceSchedulesSeeder::class,
             RolesPermissionsSeeder::class,
             SettingsSeeder::class,
+            ActivityLogsSeeder::class,
         ]);
     }
 }

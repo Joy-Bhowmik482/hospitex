@@ -29,6 +29,7 @@ class StaffSeeder extends Seeder
             // create staff only if not exists for user
             if (! Staff::where('user_id', $user->id)->exists()) {
                 Staff::create([
+                    'name' => $user->name,
                     'user_id' => $user->id,
                     'department_id' => $departments->random()->id,
                     'designation' => 'Nurse',
