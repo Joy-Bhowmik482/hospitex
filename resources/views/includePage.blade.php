@@ -89,6 +89,8 @@ h-screen shadow-lg fixed text-white flex flex-col">
         HOSPITEX
     </div>
 
+
+    
     <!-- Navigation -->
     <nav class="mt-6 px-2 space-y-1">
 

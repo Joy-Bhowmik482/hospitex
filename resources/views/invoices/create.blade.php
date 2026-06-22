@@ -3,419 +3,515 @@
 @section('content')
 
 <style>
-body {
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    background: #f1f5f9;
-}
-
-/* PRINT */
-@media print {
-    @page { size: A4; margin: 18mm; }
+    :root {
+        --ink:#0b1220;
+        --ink-2:#1f2937;
+        --muted:#64748b;
+        --line:#e5e7eb;
+        --soft:#f8fafc;
+        --brand:#0f766e;       /* deep teal — medical, trustworthy */
+        --brand-2:#0d9488;
+        --accent:#0ea5e9;
+        --bg:#eef2f7;
+    }
 
     body {
-        background: #fff !important;
-        color: #000 !important;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
     }
 
-    body * { visibility: hidden; }
-
-    #invoiceArea, #invoiceArea * {
-        visibility: visible;
-    }
-
+    /* ---------- CARD ---------- */
     #invoiceArea {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: #fff !important;
+        max-width: 1080px;
+        margin: 32px auto;
+        background: #fff;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px -20px rgba(2,12,27,.18), 0 2px 6px rgba(2,12,27,.05);
     }
 
-    button, a { display: none !important; }
+    /* ---------- LETTERHEAD ---------- */
+    .letterhead {
+        display:grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 24px;
+        padding: 28px 40px;
+        background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+        color:#fff;
+    }
+    .brand {
+        display:flex; align-items:center; gap:14px;
+    }
+    .brand-logo {
+        width:54px; height:54px; border-radius:14px;
+        background: rgba(255,255,255,.15);
+        display:flex; align-items:center; justify-content:center;
+        font-size:26px; font-weight:800; letter-spacing:.5px;
+        border:1px solid rgba(255,255,255,.3);
+    }
+    .brand-title { font-size: 22px; font-weight: 800; letter-spacing:.3px; }
+    .brand-sub   { font-size: 12px; opacity:.85; margin-top:2px; }
 
+    .meta-grid {
+        display:grid; grid-template-columns: 1fr 1fr; gap:10px 16px;
+        align-self:center;
+    }
+    .meta-grid label {
+        font-size: 10px; text-transform: uppercase; letter-spacing:.08em; opacity:.8;
+        display:block; margin-bottom:4px;
+    }
+    .meta-grid input, .meta-grid select {
+        height: 36px; padding: 0 12px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.25);
+        color: #fff; border-radius: 8px; width:100%;
+        font-size: 13px;
+    }
+    .meta-grid input::placeholder { color: rgba(255,255,255,.6); }
+
+    /* ---------- BODY ---------- */
+    .invoice-body { padding: 28px 40px 8px; }
+
+    .row-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .row-3 { display:grid; grid-template-columns: 2fr 1fr 1fr; gap: 18px; }
+
+    .panel-title {
+        font-size: 11px; text-transform: uppercase; letter-spacing:.1em;
+        color: var(--muted); font-weight: 700; margin-bottom: 10px;
+    }
+    .panel {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 18px;
+        background: #fff;
+    }
+
+    .field label {
+        display:block; font-size: 12px; color:var(--muted);
+        margin-bottom:6px; font-weight:600;
+    }
     input, select, textarea {
-        border: none !important;
-        background: transparent !important;
+        width: 100%; padding: 10px 12px;
+        border: 1px solid var(--line); border-radius: 10px;
+        background:#fff; color: var(--ink); font-size: 14px;
+        outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 18%, transparent);
     }
 
-    table, th, td {
-        border: 1px solid #000 !important;
+    /* ---------- SECTION TITLE ---------- */
+    .section-title {
+        display:flex; justify-content:space-between; align-items:center;
+        margin: 28px 0 12px;
     }
-}
+    .section-title h3 {
+        font-size: 14px; font-weight: 800;
+        text-transform: uppercase; letter-spacing:.08em; color: var(--ink);
+    }
 
-/* MAIN CARD */
-#invoiceArea {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    background: #fff;
-}
+    /* ---------- TABLE ---------- */
+    .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 12px; overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--soft); }
+    th {
+        font-size: 11px; text-transform: uppercase; letter-spacing:.08em;
+        color: var(--muted); padding: 12px 14px; text-align: left; font-weight: 700;
+    }
+    td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+    tbody tr:nth-child(even) { background: #fbfdff; }
+    tbody tr:hover { background: #f4f8fb; }
+    td input, td select { border: 1px solid transparent; background: transparent; }
+    td input:hover, td select:hover { border-color: var(--line); background:#fff; }
+    td input.rowTotal { font-weight: 700; color: var(--ink); }
 
-/* HEADER */
-.invoice-header {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: #fff;
-    padding: 24px 32px;
-}
+    /* ---------- BUTTONS ---------- */
+    .btn        { padding:10px 16px; border-radius:10px; font-size:13px; font-weight:600; border:none; cursor:pointer; transition: transform .05s ease, filter .15s ease; }
+    .btn:hover  { filter: brightness(1.05); }
+    .btn:active { transform: translateY(1px); }
+    .btn-add    { background: var(--brand); color:#fff; }
+    .btn-remove { background:#fee2e2; color:#b91c1c; padding:6px 10px; border-radius:8px; font-size:12px; }
+    .btn-primary{ background: var(--ink); color:#fff; }
+    .btn-blue   { background: var(--accent); color:#fff; }
+    .btn-ghost  { background: #eef2f7; color: var(--ink-2); }
 
-/* INPUT GLOBAL */
-input, select, textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    outline: none;
-    transition: 0.2s;
-}
+    /* ---------- SUMMARY ---------- */
+    .summary {
+        margin-top: 24px;
+        display: grid; grid-template-columns: 1fr 340px; gap: 28px;
+    }
+    .totals {
+        background: linear-gradient(180deg, #f8fafc, #fff);
+        border: 1px solid var(--line);
+        border-radius: 14px; padding: 18px 20px;
+    }
+    .totals-row {
+        display:flex; justify-content:space-between; align-items:center;
+        padding: 8px 0; font-size: 14px; color: var(--ink-2);
+    }
+    .totals-row input { width: 140px; height: 36px; text-align: right; }
+    .totals-row.grand {
+        margin-top: 8px; padding-top: 14px;
+        border-top: 1px dashed #cbd5e1;
+    }
+    .totals-row.grand span { font-size: 15px; font-weight: 800; color: var(--ink); text-transform: uppercase; letter-spacing:.06em; }
+    .totals-row.grand input {
+        height: 44px; font-size: 18px; font-weight: 800; color: var(--brand);
+        border-color: color-mix(in oklab, var(--brand) 30%, var(--line));
+        background: #fff;
+    }
 
-input:focus, select:focus, textarea:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-}
+    .status-badge {
+        display:inline-flex; align-items:center; gap:6px;
+        padding: 4px 10px; border-radius: 999px;
+        font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing:.06em;
+        background: #fef3c7; color:#92400e;
+    }
 
-/* HEADER INPUT FIX */
-.header-box input {
-    height: 40px;
-    text-align: right;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.25);
-    color: #fff;
-    border-radius: 10px;
-}
+    /* ---------- ACTIONS ---------- */
+    .actions {
+        display:flex; justify-content:flex-end; gap:10px;
+        padding: 18px 40px 28px;
+        border-top: 1px solid var(--line); background: #fff;
+    }
 
-/* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    overflow: hidden;
-    border-radius: 12px;
-}
+    .print-only { display: none; }
 
-thead {
-    background: #f8fafc;
-}
+    /* ---------- PRINT ---------- */
+    @media print {
+        @page { size: A4; margin: 14mm; }
 
-th {
-    font-size: 11px;
-    text-transform: uppercase;
-    color: #64748b;
-    padding: 12px;
-}
+        body * { visibility: hidden !important; }
+        #printArea, #printArea * { visibility: visible !important; }
 
-td {
-    padding: 12px;
-    border-top: 1px solid #e2e8f0;
-}
+        body { background:#fff !important; }
+        #printArea {
+            position: absolute; inset: 0;
+            margin: 0; padding: 0; width: 100%;
+            background:#fff !important;
+        }
+        #invoiceArea {
+            margin: 0; box-shadow: none !important;
+            border-radius: 0 !important; max-width: 100%;
+        }
 
-tbody tr:hover {
-    background: #f8fafc;
-}
+        .no-print, .actions { display: none !important; }
 
-/* BUTTONS */
-.btn-add {
-    background: #16a34a;
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-}
+        /* Replace gradient header with a clean print letterhead */
+        .letterhead { display: none !important; }
+        .print-only {
+            display: block !important;
+            padding: 0 0 14px 0;
+            border-bottom: 2px solid var(--ink);
+            margin-bottom: 18px;
+        }
+        .print-only .ph-top {
+            display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
+        }
+        .print-only .ph-name { font-size: 22px; font-weight: 800; letter-spacing:.3px; }
+        .print-only .ph-sub  { font-size: 11px; color:#555; margin-top: 2px; }
+        .print-only .ph-meta { font-size: 12px; text-align: right; line-height: 1.6; }
+        .print-only .ph-meta b { display:inline-block; min-width: 88px; color:#000; }
+        .print-only .ph-title {
+            text-align:center; margin-top: 14px;
+            font-size: 16px; font-weight: 800; letter-spacing:.18em;
+            text-transform: uppercase;
+        }
 
-.btn-remove {
-    background: #ef4444;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-}
+        .invoice-body { padding: 0 !important; }
+        .panel { border:1px solid #cbd5e1 !important; box-shadow:none !important; }
 
-.btn-primary {
-    background: #0f172a;
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 10px;
-}
+        /* Flatten inputs to printed text */
+        input, select, textarea {
+            border: none !important; background: transparent !important;
+            padding: 2px 0 !important; color: #000 !important;
+            box-shadow: none !important; -webkit-appearance: none; appearance: none;
+            font-size: 13px !important;
+        }
+        td input, td select {
+            border: none !important; background: transparent !important;
+        }
 
-.btn-blue {
-    background: #2563eb;
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 10px;
-}
+        .table-wrap { border:1px solid #000 !important; border-radius: 0 !important; }
+        table, th, td { border: 1px solid #000 !important; }
+        thead { background:#f1f1f1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        th { color:#000 !important; }
+        tbody tr:nth-child(even) { background:#fafafa !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-/* BILL BOX */
-.bill-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 18px;
-    border-radius: 14px;
-}
+        .summary { grid-template-columns: 1fr 320px !important; gap: 18px !important; margin-top: 18px !important; }
+        .totals { background:#fff !important; border:1px solid #000 !important; border-radius: 0 !important; }
+        .totals-row.grand input { color:#000 !important; border:none !important; }
 
-.bill-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
+        .section-title h3 { color:#000 !important; }
 
-.bill-row span {
-    font-size: 14px;
-    color: #475569;
-}
-
-.bill-row input {
-    width: 140px;
-    height: 40px;
-    text-align: right;
-}
+        .footer-print {
+            display:block !important;
+            margin-top: 28px; padding-top: 14px;
+            border-top: 1px solid #999;
+            font-size: 11px; color:#333; text-align:center;
+        }
+    }
+    .footer-print { display: none; }
 </style>
 
-<div class="min-h-screen bg-slate-100 py-10 px-4">
+<div id="printArea">
+    <div id="invoiceArea">
 
-<div id="invoiceArea" class="max-w-5xl mx-auto">
-
-<form action="{{ route('invoices.store') }}" method="POST">
-@csrf
-
-<!-- HEADER -->
-<div class="invoice-header flex justify-between items-center">
-
-    <div>
-        <h1 class="text-xl font-bold tracking-wide">HOSPITAL INVOICE</h1>
-        <p class="text-sm text-slate-300">Premium Healthcare Billing System</p>
-    </div>
-
-    <!-- FIXED HEADER BOX -->
-    <div class="header-box w-56 space-y-3">
-
-        <div>
-            <p class="text-xs text-slate-300">Invoice No</p>
-            <input type="text" id="invoice_no" name="invoice_no" readonly>
+        {{-- ===== PRINT-ONLY LETTERHEAD ===== --}}
+        <div class="print-only">
+            <div class="ph-top">
+                <div>
+                    <div class="ph-name">HOSPITEX</div>
+                    <div class="ph-sub">123 Wellness Avenue, City · Tel: +000 000 0000 · info@hospital.com</div>
+                    <div class="ph-sub">License No: HC-998877 · Tax ID: 12-3456789</div>
+                </div>
+                <div class="ph-meta">
+                    <div><b>Invoice No:</b> <span id="print_invoice_no"></span></div>
+                    <div><b>Date:</b> <span id="print_invoice_date"></span></div>
+                    <div><b>Issued By:</b> {{ auth()->user()->name ?? 'Unknown' }}</div>
+                </div>
+            </div>
+            <div class="ph-title">Patient Invoice</div>
         </div>
 
-        <div>
-            <p class="text-xs text-slate-300">Date</p>
-            <input type="date" name="invoice_date"
-                value="{{ now()->format('Y-m-d') }}">
+        {{-- ===== SCREEN LETTERHEAD ===== --}}
+        <div class="letterhead no-print">
+            <div class="brand">
+                <div class="brand-logo">+</div>
+                <div>
+                    <div class="brand-title">Premium Healthcare Hospital</div>
+                    <div class="brand-sub">Patient Billing &amp; Invoicing System</div>
+                </div>
+            </div>
+            <div class="meta-grid">
+                <div>
+                    <label>Invoice No</label>
+                    <input type="text" id="invoice_no" readonly>
+                </div>
+                <div>
+                    <label>Date</label>
+                    <input type="date" id="invoice_date" value="{{ date('Y-m-d') }}">
+                </div>
+            </div>
         </div>
 
+        <form id="invoiceForm" method="POST" action="">
+            @csrf
+
+            <div class="invoice-body">
+
+                {{-- ===== PATIENT / ADMISSION ===== --}}
+                <div class="row-2">
+                    <div class="panel">
+                        <div class="panel-title">Bill To</div>
+                        <div class="field" style="margin-bottom:12px;">
+                            <label>Patient</label>
+                            <select name="patient_id" required>
+                                <option value="">Select Patient</option>
+                                @foreach($patients as $patient)
+                                    <option value="{{ $patient->id }}">
+                                        {{ $patient->first_name }} {{ $patient->last_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Admission</label>
+                            <select name="admission_id">
+                                <option value="">Select Admission</option>
+                                @foreach($admissions as $admission)
+                                    <option value="{{ $admission->id }}">{{ $admission->admission_no }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-title">Invoice Info</div>
+                        <div class="row-2" style="gap:12px;">
+                            <div class="field">
+                                <label>Issued By</label>
+                                <input type="text" value="{{ auth()->user()->name ?? 'Unknown' }}" readonly>
+                            </div>
+                            <div class="field">
+                                <label>Payment Status</label>
+                                <select name="payment_status" id="payment_status">
+                                    <option value="unpaid">Unpaid</option>
+                                    <option value="partial">Partial</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top:12px;">
+                            <label>Department</label>
+                            <input type="text" name="department" placeholder="e.g. Cardiology">
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ===== SERVICES ===== --}}
+                <div class="section-title">
+                    <h3>Service List</h3>
+                    <button type="button" class="btn btn-add no-print" onclick="addRow()">+ Add Service</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:8%">#</th>
+                                <th style="width:42%">Service Description</th>
+                                <th style="width:14%; text-align:right;">Unit Price</th>
+                                <th style="width:10%; text-align:center;">Qty</th>
+                                <th style="width:18%; text-align:right;">Amount</th>
+                                <th style="width:8%" class="no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceBody"></tbody>
+                    </table>
+                </div>
+
+                {{-- ===== SUMMARY ===== --}}
+                <div class="summary">
+                    <div class="panel">
+                        <div class="panel-title">Notes</div>
+                        <textarea name="notes" rows="6" placeholder="Optional notes, instructions, or remarks..."></textarea>
+                    </div>
+
+                    <div class="totals">
+                        <div class="totals-row">
+                            <span>Subtotal</span>
+                            <input id="subtotal" readonly>
+                        </div>
+                        <div class="totals-row">
+                            <span>Discount</span>
+                            <input id="discount" class="calc" value="0">
+                        </div>
+                        <div class="totals-row">
+                            <span>Tax</span>
+                            <input id="tax" class="calc" value="0">
+                        </div>
+                        <div class="totals-row grand">
+                            <span>Total Due</span>
+                            <input id="net_total" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-print">
+                    Thank you for choosing Premium Healthcare Hospital · This is a computer-generated invoice and does not require a signature.
+                </div>
+            </div>
+
+            {{-- ===== ACTIONS ===== --}}
+            <div class="actions no-print">
+                <button type="button" class="btn btn-ghost" onclick="history.back()">Cancel</button>
+                <button type="button" class="btn btn-blue" onclick="printInvoice()">🖨 Print Invoice</button>
+                <button type="submit" class="btn btn-primary">Save Invoice</button>
+            </div>
+        </form>
     </div>
-
-</div>
-
-<div class="p-10">
-
-<!-- PATIENT -->
-<div class="grid grid-cols-2 gap-8 mb-8">
-
-    <div>
-        <label class="text-xs text-gray-500">Patient</label>
-        <select name="patient_id">
-            <option value="">Select Patient</option>
-            @foreach($patients as $patient)
-                <option value="{{ $patient->id }}">
-                    {{ $patient->first_name }} {{ $patient->last_name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <div class="text-right">
-        <p class="text-xs text-gray-500">Created By</p>
-        <p class="font-medium">{{ auth()->user()->name ?? 'Unknown' }}</p>
-    </div>
-
-</div>
-
-<!-- ADMISSION -->
-<div class="mb-8">
-    <label class="text-xs text-gray-500">Admission</label>
-    <select name="admission_id">
-        <option value="">Select Admission</option>
-        @foreach($admissions as $admission)
-            <option value="{{ $admission->id }}">
-                {{ $admission->admission_no }}
-            </option>
-        @endforeach
-    </select>
-</div>
-
-<!-- SERVICE LIST -->
-<div class="mb-8">
-    <div class="flex justify-between items-center mb-3">
-        <h3 class="font-semibold">Service List</h3>
-        <button type="button" onclick="addRow()" class="btn-add">
-            + Add Service
-        </button>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Service</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody id="serviceBody"></tbody>
-    </table>
-</div>
-
-<!-- BILL -->
-<div class="flex justify-end mb-6">
-
-<div class="bill-box w-80">
-
-    <div class="bill-row">
-        <span>Subtotal</span>
-        <input id="subtotal" name="subtotal" readonly>
-    </div>
-
-    <div class="bill-row">
-        <span>Discount</span>
-        <input id="discount" name="discount" value="0" class="calc">
-    </div>
-
-    <div class="bill-row">
-        <span>Tax</span>
-        <input id="tax" name="tax" value="0" class="calc">
-    </div>
-
-    <hr class="my-3">
-
-    <div class="bill-row font-bold text-lg">
-        <span>Total</span>
-        <input id="net_total" name="net_total" readonly>
-    </div>
-
-</div>
-
-</div>
-
-<!-- STATUS -->
-<div class="mb-6">
-    <select name="status">
-        <option>Unpaid</option>
-        <option>Partial</option>
-        <option>Paid</option>
-        <option>Cancelled</option>
-    </select>
-</div>
-
-<!-- NOTES -->
-<div class="mb-6">
-    <textarea name="notes" rows="3" placeholder="Notes..."></textarea>
-</div>
-
-<!-- FOOTER -->
-<div class="flex justify-between">
-
-    <a href="{{ route('invoices.index') }}">Cancel</a>
-
-    <div class="flex gap-3">
-        <button type="button" onclick="window.print()" class="btn-blue">
-            Print
-        </button>
-
-        <button type="submit" class="btn-primary">
-            Save Invoice
-        </button>
-    </div>
-
-</div>
-
-</div>
-</form>
-
-</div>
 </div>
 
 <script>
-let services = @json($services);
+    const services = @json($services);
 
-function addRow(){
-    let row = document.createElement('tr');
+    function addRow() {
+        const tbody = document.getElementById('serviceBody');
+        const idx = tbody.children.length + 1;
+        const row = document.createElement('tr');
 
-    let options = services.map(s =>
-        `<option value="${s.id}" data-price="${s.price}">${s.name}</option>`
-    ).join('');
+        const options = services.map(s =>
+            `<option value="${s.id}" data-price="${s.price}">${s.name}</option>`
+        ).join('');
 
-    row.innerHTML = `
-        <td>
-            <select onchange="setPrice(this)">
-                <option value="">Select</option>
-                ${options}
-            </select>
-        </td>
+        row.innerHTML = `
+            <td class="row-index">${idx}</td>
+            <td>
+                <select name="services[][id]" onchange="setPrice(this)">
+                    <option value="">Select service</option>
+                    ${options}
+                </select>
+            </td>
+            <td><input class="price" name="services[][price]" style="text-align:right;" readonly></td>
+            <td><input class="qty" name="services[][qty]" value="1" style="text-align:center;" oninput="calcRow(this)"></td>
+            <td><input class="rowTotal" style="text-align:right;" readonly></td>
+            <td class="no-print">
+                <button type="button" class="btn-remove" onclick="removeRow(this)">Remove</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    }
 
-        <td><input class="price" readonly></td>
+    function setPrice(el) {
+        const price = el.options[el.selectedIndex].dataset.price || 0;
+        const row = el.closest('tr');
+        row.querySelector('.price').value = parseFloat(price).toFixed(2);
+        calcRow(el);
+    }
 
-        <td><input value="1" class="qty" oninput="calcRow(this)"></td>
+    function calcRow(el) {
+        const row = el.closest('tr');
+        const price = parseFloat(row.querySelector('.price').value) || 0;
+        const qty   = parseFloat(row.querySelector('.qty').value)   || 0;
+        row.querySelector('.rowTotal').value = (price * qty).toFixed(2);
+        calcAll();
+    }
 
-        <td><input class="rowTotal" readonly></td>
+    function removeRow(btn) {
+        btn.closest('tr').remove();
+        reindexRows();
+        calcAll();
+    }
 
-        <td><button type="button" class="btn-remove" onclick="removeRow(this)">X</button></td>
-    `;
+    function reindexRows() {
+        document.querySelectorAll('#serviceBody tr').forEach((tr, i) => {
+            const cell = tr.querySelector('.row-index');
+            if (cell) cell.textContent = i + 1;
+        });
+    }
 
-    document.getElementById('serviceBody').appendChild(row);
-}
+    function calcAll() {
+        let sum = 0;
+        document.querySelectorAll('.rowTotal').forEach(i => sum += parseFloat(i.value) || 0);
+        document.getElementById('subtotal').value = sum.toFixed(2);
 
-function setPrice(el){
-    let price = el.options[el.selectedIndex].dataset.price;
-    let row = el.closest('tr');
+        const discount = parseFloat(document.getElementById('discount').value) || 0;
+        const tax      = parseFloat(document.getElementById('tax').value) || 0;
+        document.getElementById('net_total').value = (sum - discount + tax).toFixed(2);
+    }
 
-    row.querySelector('.price').value = price;
-    calcRow(el);
-}
-
-function calcRow(el){
-    let row = el.closest('tr');
-
-    let price = parseFloat(row.querySelector('.price').value) || 0;
-    let qty = parseFloat(row.querySelector('.qty').value) || 0;
-
-    row.querySelector('.rowTotal').value = (price * qty).toFixed(2);
-
-    calcAll();
-}
-
-function removeRow(btn){
-    btn.closest('tr').remove();
-    calcAll();
-}
-
-function calcAll(){
-    let sum = 0;
-
-    document.querySelectorAll('.rowTotal').forEach(i=>{
-        sum += parseFloat(i.value) || 0;
+    document.addEventListener('input', e => {
+        if (e.target.classList.contains('calc')) calcAll();
     });
 
-    document.getElementById('subtotal').value = sum.toFixed(2);
+    function generateInvoiceNo() {
+        const n = "INV-" + Date.now();
+        document.getElementById('invoice_no').value = n;
+    }
 
-    let discount = parseFloat(document.getElementById('discount').value) || 0;
-    let tax = parseFloat(document.getElementById('tax').value) || 0;
+    function syncPrintHeader() {
+        document.getElementById('print_invoice_no').textContent   = document.getElementById('invoice_no').value;
+        document.getElementById('print_invoice_date').textContent = document.getElementById('invoice_date').value;
+    }
 
-    document.getElementById('net_total').value =
-        (sum - discount + tax).toFixed(2);
-}
+    function printInvoice() {
+        syncPrintHeader();
+        window.print();
+    }
 
-document.querySelectorAll('.calc').forEach(i=>{
-    i.addEventListener('input', calcAll);
-});
-
-function generateInvoiceNo(){
-    let now = new Date();
-    document.getElementById('invoice_no').value =
-        "INV-" + now.getTime();
-}
-
-window.onload = function(){
-    generateInvoiceNo();
-    addRow();
-    calcAll();
-};
+    window.onload = function () {
+        generateInvoiceNo();
+        addRow();
+        calcAll();
+        syncPrintHeader();
+    };
 </script>
 
 @endsection

@@ -63,6 +63,7 @@
   - Lab Tests
   - X-Rays, MRIs, CT Scans
   - Ultrasounds
+  
   - Insurance Documents
 - File upload with max 10MB size
 - Document metadata tracking
