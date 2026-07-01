@@ -24,18 +24,33 @@
         <table class="w-full">
             <thead class="bg-slate-100 border-b border-slate-300">
                 <tr>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Code</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Name</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Policy Rules</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Created Date</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Contact</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Status</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($insuranceProviders as $provider)
                     <tr class="border-b border-slate-200 hover:bg-slate-50 transition">
+                        <td class="px-6 py-4 text-sm">
+                            <span class="font-mono font-bold text-blue-700">{{ $provider->code }}</span>
+                        </td>
                         <td class="px-6 py-4 text-sm text-slate-700 font-medium">{{ $provider->name }}</td>
-                        <td class="px-6 py-4 text-sm text-slate-600">{{ Str::limit($provider->policy_rules, 50) }}</td>
-                        <td class="px-6 py-4 text-sm text-slate-600">{{ $provider->created_at->format('d M Y') }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600">
+                            @if($provider->contact)
+                                {{ $provider->contact }}<br>
+                            @endif
+                            @if($provider->email)
+                                <span class="text-xs">{{ $provider->email }}</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium {{ $provider->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $provider->is_active ? '✓ Active' : '✕ Inactive' }}
+                            </span>
+                        </td>
                         <td class="px-6 py-4 text-sm space-x-2">
                             <a href="{{ route('insurance-providers.show', $provider) }}" class="text-blue-600 hover:text-blue-800">View</a>
                             <a href="{{ route('insurance-providers.edit', $provider) }}" class="text-yellow-600 hover:text-yellow-800">Edit</a>
@@ -47,7 +62,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-6 py-4 text-center text-slate-500">No insurance providers found</td>
+                        <td colspan="5" class="px-6 py-4 text-center text-slate-500">No insurance providers found</td>
                     </tr>
                 @endforelse
             </tbody>

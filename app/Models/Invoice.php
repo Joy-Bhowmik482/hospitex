@@ -25,6 +25,7 @@ class Invoice extends BaseModel
         'discount',
         'tax',
         'net_total',
+        'department',
         'notes',
         'created_by',
     ];

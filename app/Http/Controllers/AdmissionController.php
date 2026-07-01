@@ -40,6 +40,15 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
+        // Convert datetime-local format (Y-m-d\TH:i) to expected format (Y-m-d H:i)
+        // datetime-local sends: 2026-07-01T14:30 → convert to: 2026-07-01 14:30
+        if ($request->has('admitted_at') && $request->admitted_at) {
+            $request->merge(['admitted_at' => str_replace('T', ' ', $request->admitted_at)]);
+        }
+        if ($request->has('discharge_at') && $request->discharge_at) {
+            $request->merge(['discharge_at' => str_replace('T', ' ', $request->discharge_at)]);
+        }
+
         $validated = $request->validate([
             'admission_no' => 'required|string|unique:admissions',
             'patient_id' => 'required|exists:patients,id',
@@ -84,6 +93,15 @@ class AdmissionController extends Controller
      */
     public function update(Request $request, Admission $admission)
     {
+        // Convert datetime-local format (Y-m-d\TH:i) to expected format (Y-m-d H:i)
+        // datetime-local sends: 2026-07-01T14:30 → convert to: 2026-07-01 14:30
+        if ($request->has('admitted_at') && $request->admitted_at) {
+            $request->merge(['admitted_at' => str_replace('T', ' ', $request->admitted_at)]);
+        }
+        if ($request->has('discharge_at') && $request->discharge_at) {
+            $request->merge(['discharge_at' => str_replace('T', ' ', $request->discharge_at)]);
+        }
+
         $validated = $request->validate([
             'admission_no' => 'required|string|unique:admissions,admission_no,' . $admission->id,
             'patient_id' => 'required|exists:patients,id',

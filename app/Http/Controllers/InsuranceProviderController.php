@@ -22,6 +22,8 @@ class InsuranceProviderController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:insurance_providers,name',
+            'contact' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
             'policy_rules' => 'nullable|string',
         ]);
 
@@ -43,6 +45,8 @@ class InsuranceProviderController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:insurance_providers,name,' . $insuranceProvider->id,
+            'contact' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
             'policy_rules' => 'nullable|string',
         ]);
 

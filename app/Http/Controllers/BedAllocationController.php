@@ -34,6 +34,15 @@ class BedAllocationController extends Controller
      */
     public function store(Request $request)
     {
+        // Convert datetime-local format (Y-m-d\TH:i) to expected format (Y-m-d H:i)
+        // datetime-local sends: 2026-07-01T15:30 → convert to: 2026-07-01 15:30
+        if ($request->has('allocated_at') && $request->allocated_at) {
+            $request->merge(['allocated_at' => str_replace('T', ' ', $request->allocated_at)]);
+        }
+        if ($request->has('released_at') && $request->released_at) {
+            $request->merge(['released_at' => str_replace('T', ' ', $request->released_at)]);
+        }
+
         $validated = $request->validate([
             'admission_id' => 'required|exists:admissions,id',
             'bed_id' => 'required|exists:beds,id',
@@ -55,7 +64,7 @@ class BedAllocationController extends Controller
             $bed->update(['status' => 'Occupied']);
         }
 
-        return redirect()->route('bed_allocations.index')
+        return redirect()->route('bed-allocations.index')
             ->with('success', 'Bed allocated successfully!');
     }
 
@@ -84,6 +93,15 @@ class BedAllocationController extends Controller
      */
     public function update(Request $request, BedAllocation $bedAllocation)
     {
+        // Convert datetime-local format (Y-m-d\TH:i) to expected format (Y-m-d H:i)
+        // datetime-local sends: 2026-07-01T15:30 → convert to: 2026-07-01 15:30
+        if ($request->has('allocated_at') && $request->allocated_at) {
+            $request->merge(['allocated_at' => str_replace('T', ' ', $request->allocated_at)]);
+        }
+        if ($request->has('released_at') && $request->released_at) {
+            $request->merge(['released_at' => str_replace('T', ' ', $request->released_at)]);
+        }
+
         $validated = $request->validate([
             'admission_id' => 'required|exists:admissions,id',
             'bed_id' => 'required|exists:beds,id',
@@ -101,7 +119,7 @@ class BedAllocationController extends Controller
 
         $bedAllocation->update($validated);
 
-        return redirect()->route('bed_allocations.index')
+        return redirect()->route('bed-allocations.index')
             ->with('success', 'Bed allocation updated successfully!');
     }
 
@@ -114,7 +132,7 @@ class BedAllocationController extends Controller
         $bedAllocation->bed->update(['status' => 'Available']);
         $bedAllocation->delete();
 
-        return redirect()->route('bed_allocations.index')
+        return redirect()->route('bed-allocations.index')
             ->with('success', 'Bed allocation deleted successfully!');
     }
 }

@@ -53,12 +53,24 @@ class MaintenanceScheduleController extends Controller
      */
     public function store(Request $request)
     {
+        // Convert datetime-local format (Y-m-d\TH:i) to expected format (Y-m-d H:i)
+        // datetime-local sends: 2026-07-01T15:30 → convert to: 2026-07-01 15:30
+        if ($request->has('scheduled_date') && $request->scheduled_date) {
+            $request->merge(['scheduled_date' => str_replace('T', ' ', $request->scheduled_date)]);
+        }
+        if ($request->has('scheduled_end_date') && $request->scheduled_end_date) {
+            $request->merge(['scheduled_end_date' => str_replace('T', ' ', $request->scheduled_end_date)]);
+        }
+        if ($request->has('completed_date') && $request->completed_date) {
+            $request->merge(['completed_date' => str_replace('T', ' ', $request->completed_date)]);
+        }
+
         $request->validate([
             'asset_id' => 'required|exists:assets,id',
             'maintenance_type' => 'required|string|max:255',
             'priority' => 'required|in:critical,high,medium,low',
-            'scheduled_date' => 'required|date|after:now',
-            'scheduled_end_date' => 'nullable|date|after:scheduled_date',
+            'scheduled_date' => 'required|date_format:Y-m-d H:i',
+            'scheduled_end_date' => 'nullable|date_format:Y-m-d H:i',
             'technician_name' => 'nullable|string|max:255',
             'technician_contact' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
@@ -109,12 +121,24 @@ class MaintenanceScheduleController extends Controller
      */
     public function update(Request $request, MaintenanceSchedule $maintenanceSchedule)
     {
+        // Convert datetime-local format (Y-m-d\TH:i) to expected format (Y-m-d H:i)
+        // datetime-local sends: 2026-07-01T15:30 → convert to: 2026-07-01 15:30
+        if ($request->has('scheduled_date') && $request->scheduled_date) {
+            $request->merge(['scheduled_date' => str_replace('T', ' ', $request->scheduled_date)]);
+        }
+        if ($request->has('scheduled_end_date') && $request->scheduled_end_date) {
+            $request->merge(['scheduled_end_date' => str_replace('T', ' ', $request->scheduled_end_date)]);
+        }
+        if ($request->has('completed_date') && $request->completed_date) {
+            $request->merge(['completed_date' => str_replace('T', ' ', $request->completed_date)]);
+        }
+
         $request->validate([
             'asset_id' => 'required|exists:assets,id',
             'maintenance_type' => 'required|string|max:255',
             'priority' => 'required|in:critical,high,medium,low',
-            'scheduled_date' => 'required|date',
-            'scheduled_end_date' => 'nullable|date|after:scheduled_date',
+            'scheduled_date' => 'required|date_format:Y-m-d H:i',
+            'scheduled_end_date' => 'nullable|date_format:Y-m-d H:i',
             'technician_name' => 'nullable|string|max:255',
             'technician_contact' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
@@ -125,7 +149,7 @@ class MaintenanceScheduleController extends Controller
             'work_performed' => 'nullable|string',
             'parts_used' => 'nullable|string',
             'notes' => 'nullable|string',
-            'completed_date' => 'nullable|date|required_if:status,completed',
+            'completed_date' => 'nullable|date_format:Y-m-d H:i|required_if:status,completed',
         ]);
 
         $maintenanceSchedule->update($request->all());

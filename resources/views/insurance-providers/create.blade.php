@@ -14,11 +14,32 @@
         <form action="{{ route('insurance-providers.store') }}" method="POST">
             @csrf
 
+            <!-- Auto-Generated Code Notice -->
+            <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p class="text-sm text-blue-800">
+                    <strong>ℹ️ Provider Code:</strong> A unique code (e.g., <code class="bg-blue-100 px-2 py-1 rounded text-xs font-mono">INS-00001</code>) will be automatically assigned when you create this provider.
+                </p>
+            </div>
+
             <!-- Provider Name -->
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Provider Name *</label>
                 <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror" value="{{ old('name') }}" placeholder="e.g., AXA Insurance, Cigna">
                 @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- Contact -->
+            <div class="mb-4">
+                <label for="contact" class="block text-sm font-medium text-slate-700 mb-2">Contact Person</label>
+                <input type="text" id="contact" name="contact" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('contact') border-red-500 @enderror" value="{{ old('contact') }}" placeholder="e.g., John Doe">
+                @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror" value="{{ old('email') }}" placeholder="e.g., contact@insurance.com">
+                @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <!-- Policy Rules -->
