@@ -42,15 +42,18 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Search
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
+
 //----Protected Routes----
+Route::get('/', function () {
+    return view('welcome');
+});
+
 Route::group(['middleware' => ['auth', 'activity.logger']], function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 // Patient Management Routes
@@ -74,6 +77,11 @@ Route::resource('duty-rosters', DutyRosterController::class);
 Route::resource('appointments', AppointmentController::class);
 Route::get('appointments-queue', [AppointmentController::class, 'queue'])->name('appointments.queue');
 Route::post('appointments/{appointment}/change-status', [AppointmentController::class, 'changeStatus'])->name('appointments.changeStatus');
+
+// OPD, Follow-up & Status Views
+Route::get('appointments-opd', [AppointmentController::class, 'opd'])->name('appointments.opd');
+Route::get('appointments-followup', [AppointmentController::class, 'followup'])->name('appointments.followup');
+Route::get('appointments-status', [AppointmentController::class, 'status'])->name('appointments.status');
 
 // Ward Management Routes
 Route::resource('wards', WardController::class);

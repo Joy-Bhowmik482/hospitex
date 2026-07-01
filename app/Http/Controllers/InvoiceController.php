@@ -52,19 +52,23 @@ class InvoiceController extends Controller
             'admission_id' => 'nullable|exists:admissions,id',
             'appointment_id' => 'nullable|exists:appointments,id',
             'invoice_date' => 'required|date',
-            'status' => 'required|in:unpaid,partial,paid,cancelled',
-            'subtotal' => 'required|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
-            'tax' => 'nullable|numeric|min:0',
-            'net_total' => 'required|numeric|min:0',
+            'status' => 'required|in:Unpaid,Partial,Paid,Cancelled',
+            'subtotal' => 'required|decimal:0,2|min:0',
+            'discount' => 'nullable|decimal:0,2|min:0',
+            'tax' => 'nullable|decimal:0,2|min:0',
+            'net_total' => 'required|decimal:0,2|min:0',
+            'department' => 'nullable|string|max:100',
             'notes' => 'nullable|string',
+            'services' => 'nullable|array',
+            'services.*.id' => 'required|exists:services,id',
+            'services.*.price' => 'required|decimal:0,2|min:0',
+            'services.*.qty' => 'required|integer|min:1',
         ]);
 
         DB::beginTransaction();
 
         try {
-
-            // SAFE invoice number generation
+            // SAFE invoice number generation with lock
             $lastInvoice = Invoice::lockForUpdate()
                 ->orderByDesc('id')
                 ->first();
@@ -74,17 +78,28 @@ class InvoiceController extends Controller
                 : 1;
 
             $validated['invoice_no'] = 'INV-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+            $validated['created_by'] = auth()->id();
 
             $invoice = Invoice::create($validated);
 
-            /* OPTIONAL: If you store services (invoice items) */
-            if ($request->has('services')) {
-                foreach ($request->services as $service) {
-                    if (!empty($service['id'])) {
+            // Create invoice items
+            if ($request->has('services') && !empty($request->services)) {
+                $servicesMap = Service::whereIn('id', array_column($request->services, 'id'))->get()->keyBy('id');
+
+                foreach ($request->services as $serviceData) {
+                    if (!empty($serviceData['id']) && isset($servicesMap[$serviceData['id']])) {
+                        $service = $servicesMap[$serviceData['id']];
+                        $qty = (int) ($serviceData['qty'] ?? 1);
+                        $rate = (float) ($serviceData['price'] ?? $service->price);
+                        $subtotal = $qty * $rate;
+
                         $invoice->items()->create([
-                            'service_id' => $service['id'],
-                            'price' => $service['price'] ?? 0,
-                            'qty' => $service['qty'] ?? 1,
+                            'item_type' => 'Service',
+                            'ref_id' => $service->id,
+                            'description' => $service->name,
+                            'qty' => $qty,
+                            'rate' => $rate,
+                            'subtotal' => $subtotal,
                         ]);
                     }
                 }
@@ -99,7 +114,8 @@ class InvoiceController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Failed to create invoice: ' . $e->getMessage());
         }
     }
 
@@ -145,35 +161,49 @@ class InvoiceController extends Controller
             'admission_id' => 'nullable|exists:admissions,id',
             'appointment_id' => 'nullable|exists:appointments,id',
             'invoice_date' => 'required|date',
-            'status' => 'required|in:unpaid,partial,paid,cancelled',
-            'subtotal' => 'required|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
-            'tax' => 'nullable|numeric|min:0',
-            'net_total' => 'required|numeric|min:0',
+            'status' => 'required|in:Unpaid,Partial,Paid,Cancelled',
+            'subtotal' => 'required|decimal:0,2|min:0',
+            'discount' => 'nullable|decimal:0,2|min:0',
+            'tax' => 'nullable|decimal:0,2|min:0',
+            'net_total' => 'required|decimal:0,2|min:0',
+            'department' => 'nullable|string|max:100',
             'notes' => 'nullable|string',
+            'services' => 'nullable|array',
+            'services.*.id' => 'required|exists:services,id',
+            'services.*.price' => 'required|decimal:0,2|min:0',
+            'services.*.qty' => 'required|integer|min:1',
         ]);
 
         DB::beginTransaction();
 
         try {
-
-            // update invoice
             $invoice->update($validated);
 
-            /* OPTIONAL: replace invoice items */
+            // Replace invoice items
             if ($request->has('services')) {
-
-                // delete old items
+                // Delete old items
                 $invoice->items()->delete();
 
-                // insert new items
-                foreach ($request->services as $service) {
-                    if (!empty($service['id'])) {
-                        $invoice->items()->create([
-                            'service_id' => $service['id'],
-                            'price' => $service['price'] ?? 0,
-                            'qty' => $service['qty'] ?? 1,
-                        ]);
+                // Create new items
+                if (!empty($request->services)) {
+                    $servicesMap = Service::whereIn('id', array_column($request->services, 'id'))->get()->keyBy('id');
+
+                    foreach ($request->services as $serviceData) {
+                        if (!empty($serviceData['id']) && isset($servicesMap[$serviceData['id']])) {
+                            $service = $servicesMap[$serviceData['id']];
+                            $qty = (int) ($serviceData['qty'] ?? 1);
+                            $rate = (float) ($serviceData['price'] ?? $service->price);
+                            $subtotal = $qty * $rate;
+
+                            $invoice->items()->create([
+                                'item_type' => 'Service',
+                                'ref_id' => $service->id,
+                                'description' => $service->name,
+                                'qty' => $qty,
+                                'rate' => $rate,
+                                'subtotal' => $subtotal,
+                            ]);
+                        }
                     }
                 }
             }
@@ -187,7 +217,8 @@ class InvoiceController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Update failed: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Failed to update invoice: ' . $e->getMessage());
         }
     }
 

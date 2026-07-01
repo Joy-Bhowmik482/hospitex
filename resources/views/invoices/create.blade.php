@@ -342,10 +342,10 @@
                             <div class="field">
                                 <label>Payment Status</label>
                                 <select name="status" id="payment_status">
-                                    <option value="unpaid">Unpaid</option>
-                                    <option value="partial">Partial</option>
-                                    <option value="paid">Paid</option>
-                                    <option value="cancelled">Cancelled</option>
+                                    <option value="Unpaid">Unpaid</option>
+                                    <option value="Partial">Partial</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Cancelled">Cancelled</option>
                                 </select>
                             </div>
                         </div>
@@ -493,8 +493,9 @@
     });
 
     function generateInvoiceNo() {
-        const n = "INV-" + Date.now();
-        document.getElementById('invoice_no').value = n;
+        // Invoice number will be generated server-side for safety
+        // Remove this client-side generation to avoid duplicates
+        document.getElementById('invoice_no').value = '(Generated on save)';
     }
 
     function syncPrintHeader() {

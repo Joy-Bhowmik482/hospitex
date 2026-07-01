@@ -146,11 +146,171 @@ class AppointmentController extends Controller
     public function changeStatus(Request $request, Appointment $appointment)
     {
         $validated = $request->validate([
-            'status' => 'required|in:Pending,Confirmed,Completed,Cancelled,NoShow',
+            'status' => 'required|in:Pending,Confirmed,Completed,Cancelled,NoShow,Checked In,Waiting,In Consultation,Rescheduled',
         ]);
 
         $appointment->update(['status' => $validated['status']]);
 
         return redirect()->back()->with('success', 'Appointment status updated successfully!');
+    }
+
+    /**
+     * Display OPD appointments
+     */
+    public function opd(Request $request)
+    {
+        $query = Appointment::with(['patient', 'doctor', 'department']);
+
+        // Search
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('appointment_no', 'like', "%$search%")
+                  ->orWhereHas('patient', function ($q) use ($search) {
+                      $q->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%");
+                  })
+                  ->orWhereHas('doctor', function ($q) use ($search) {
+                      $q->where('name', 'like', "%$search%");
+                  });
+            });
+        }
+
+        // Status Filter
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Date Range Filter
+        if ($request->has('date_from') && $request->date_from) {
+            $query->whereDate('appointment_date', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to) {
+            $query->whereDate('appointment_date', '<=', $request->date_to);
+        }
+
+        // Department Filter
+        if ($request->has('department_id') && $request->department_id) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        // Doctor Filter
+        if ($request->has('doctor_id') && $request->doctor_id) {
+            $query->where('doctor_id', $request->doctor_id);
+        }
+
+        $appointments = $query->orderBy('appointment_date', 'desc')
+                               ->orderBy('appointment_time', 'desc')
+                               ->paginate(15);
+
+        // Get statistics
+        $todayCount = Appointment::whereDate('appointment_date', now())->count();
+        $pendingCount = Appointment::where('status', 'Pending')->count();
+        $confirmedCount = Appointment::where('status', 'Confirmed')->count();
+        $completedCount = Appointment::whereMonth('appointment_date', now()->month)
+                                     ->where('status', 'Completed')
+                                     ->count();
+
+        return view('appointments.opd', compact('appointments', 'todayCount', 'pendingCount', 'confirmedCount', 'completedCount'));
+    }
+
+    /**
+     * Display follow-up appointments
+     */
+    public function followup(Request $request)
+    {
+        $query = Appointment::with(['patient', 'doctor', 'department']);
+
+        // Search
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('appointment_no', 'like', "%$search%")
+                  ->orWhereHas('patient', function ($q) use ($search) {
+                      $q->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%");
+                  })
+                  ->orWhereHas('doctor', function ($q) use ($search) {
+                      $q->where('name', 'like', "%$search%");
+                  });
+            });
+        }
+
+        // Status Filter
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Date Range Filter
+        if ($request->has('date_from') && $request->date_from) {
+            $query->whereDate('appointment_date', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to) {
+            $query->whereDate('appointment_date', '<=', $request->date_to);
+        }
+
+        // Department Filter
+        if ($request->has('department_id') && $request->department_id) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        // Doctor Filter
+        if ($request->has('doctor_id') && $request->doctor_id) {
+            $query->where('doctor_id', $request->doctor_id);
+        }
+
+        $appointments = $query->orderBy('appointment_date', 'desc')
+                               ->orderBy('appointment_time', 'desc')
+                               ->paginate(15);
+
+        // Get statistics
+        $pendingFollowups = Appointment::where('status', 'Pending')->count();
+        $dueThisWeek = Appointment::whereBetween('appointment_date', [now(), now()->addDays(7)])->count();
+        $completedFollowups = Appointment::where('status', 'Completed')->count();
+        $withReminders = Appointment::count(); // Placeholder - can be extended with reminder field
+
+        return view('appointments.followup', compact('appointments', 'pendingFollowups', 'dueThisWeek', 'completedFollowups', 'withReminders'));
+    }
+
+    /**
+     * Display appointments by status
+     */
+    public function status(Request $request)
+    {
+        $query = Appointment::with(['patient', 'doctor', 'department']);
+
+        // Search
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('appointment_no', 'like', "%$search%")
+                  ->orWhereHas('patient', function ($q) use ($search) {
+                      $q->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%");
+                  })
+                  ->orWhereHas('doctor', function ($q) use ($search) {
+                      $q->where('name', 'like', "%$search%");
+                  });
+            });
+        }
+
+        // Status Filter
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $appointments = $query->orderBy('appointment_date', 'desc')
+                               ->orderBy('appointment_time', 'desc')
+                               ->paginate(15);
+
+        // Get status counts for all statuses
+        $allStatuses = ['Pending', 'Confirmed', 'Checked In', 'Waiting', 'In Consultation', 'Completed', 'Cancelled', 'No Show', 'Rescheduled'];
+        $statusCounts = [];
+        foreach ($allStatuses as $status) {
+            $statusCounts[$status] = Appointment::where('status', $status)->count();
+        }
+        $totalCount = Appointment::count();
+
+        return view('appointments.status', compact('appointments', 'statusCounts', 'totalCount'));
     }
 }

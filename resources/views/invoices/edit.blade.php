@@ -313,7 +313,7 @@ td {
                             @foreach($services as $s)
                                 <option value="{{ $s->id }}"
                                         data-price="{{ $s->price }}"
-                                        {{ $item->service_id == $s->id ? 'selected' : '' }}>
+                                        {{ $item->ref_id == $s->id ? 'selected' : '' }}>
                                     {{ $s->name }}
                                 </option>
                             @endforeach
@@ -323,7 +323,7 @@ td {
                     <td>
                         <input class="price"
                                name="services[{{ $i }}][price]"
-                               value="{{ $item->price }}" readonly>
+                               value="{{ $item->rate }}" readonly>
                     </td>
 
                     <td>
@@ -335,7 +335,7 @@ td {
 
                     <td>
                         <input class="rowTotal"
-                               value="{{ $item->price * $item->qty }}"
+                               value="{{ $item->rate * $item->qty }}"
                                readonly>
                     </td>
 

@@ -29,6 +29,11 @@ class InvoiceItem extends BaseModel
     {
         return $this->belongsTo(Invoice::class);
     }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'ref_id');
+    }
 }
 
 

@@ -268,10 +268,10 @@ body{
             @forelse($invoice->items ?? [] as $i => $item)
                 <tr>
                     <td>{{ $i+1 }}</td>
-                    <td>{{ $item->service->name ?? '-' }}</td>
-                    <td>{{ number_format($item->price,2) }}</td>
+                    <td>{{ $item->description ?? $item->service?->name ?? '-' }}</td>
+                    <td>{{ number_format($item->rate,2) }}</td>
                     <td>{{ $item->qty }}</td>
-                    <td>{{ number_format($item->price * $item->qty,2) }}</td>
+                    <td>{{ number_format($item->rate * $item->qty,2) }}</td>
                 </tr>
             @empty
                 <tr>

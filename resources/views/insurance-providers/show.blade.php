@@ -21,11 +21,40 @@
 
     <!-- Details Card -->
     <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Provider Code -->
+        <div class="mb-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <p class="text-sm text-blue-700 font-medium">Provider Code</p>
+            <p class="text-2xl font-bold text-blue-900 mt-1 font-mono">{{ $insuranceProvider->code }}</p>
+        </div>
+
         <!-- Name -->
         <div class="mb-6">
             <p class="text-sm text-slate-600 font-medium">Provider Name</p>
             <p class="text-2xl text-slate-800 font-bold mt-2">{{ $insuranceProvider->name }}</p>
         </div>
+
+        <!-- Contact Information -->
+        @if($insuranceProvider->contact || $insuranceProvider->email)
+        <div class="mb-6 border-t border-slate-200 pt-6">
+            <p class="text-sm text-slate-600 font-medium mb-3">Contact Information</p>
+            <div class="grid grid-cols-2 gap-4">
+                @if($insuranceProvider->contact)
+                <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wide">Contact Person</p>
+                    <p class="text-slate-800 font-medium mt-1">{{ $insuranceProvider->contact }}</p>
+                </div>
+                @endif
+                @if($insuranceProvider->email)
+                <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wide">Email</p>
+                    <p class="text-slate-800 font-medium mt-1">
+                        <a href="mailto:{{ $insuranceProvider->email }}" class="text-blue-600 hover:text-blue-800">{{ $insuranceProvider->email }}</a>
+                    </p>
+                </div>
+                @endif
+            </div>
+        </div>
+        @endif
 
         <!-- Policy Rules -->
         @if($insuranceProvider->policy_rules)
@@ -35,9 +64,17 @@
         </div>
         @endif
 
-        <!-- Created Date -->
+        <!-- Status & Dates -->
         <div class="border-t border-slate-200 pt-6 mt-6">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <p class="text-sm text-slate-600 font-medium">Status</p>
+                    <p class="text-lg text-slate-800 font-semibold mt-1">
+                        <span class="inline-block px-3 py-1 rounded-full text-sm font-medium {{ $insuranceProvider->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            {{ $insuranceProvider->is_active ? '✓ Active' : '✕ Inactive' }}
+                        </span>
+                    </p>
+                </div>
                 <div>
                     <p class="text-sm text-slate-600 font-medium">Created Date</p>
                     <p class="text-lg text-slate-800 font-semibold mt-1">{{ $insuranceProvider->created_at->format('d M Y H:i') }}</p>

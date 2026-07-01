@@ -56,11 +56,31 @@
 <nav class="fixed top-0 left-0 right-0 bg-darknav text-white shadow-md z-50">
     <div class="flex justify-between items-center px-6 py-4">
         <h1 class="text-lg font-semibold tracking-wide">Hospitex - Admin Panel</h1>
-        <div class="flex items-center gap-4">
-            <span class="text-sm opacity-80">Welcome, Admin</span>
-            <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center">
-                <span class="text-white font-bold">A</span>
-            </div>
+        <div class="flex items-center gap-3">
+            @guest
+                <a href="{{ route('login') }}" class="rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition">
+                    Sign In
+                </a>
+                <a href="{{ route('register') }}" class="rounded-full bg-white text-darknav px-4 py-2 text-sm font-semibold hover:bg-slate-100 transition">
+                    Register
+                </a>
+            @else
+                <div class="hidden sm:flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-3 py-2">
+                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-semibold uppercase">
+                        {{ substr(auth()->user()->name ?? 'U', 0, 1) }}
+                    </div>
+                    <div class="text-left">
+                        <div class="text-sm font-semibold text-white">{{ auth()->user()->name }}</div>
+                        <div class="text-xs text-slate-200 opacity-80">{{ auth()->user()->email ?? 'Administrator' }}</div>
+                    </div>
+                </div>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="rounded-full bg-white text-darknav px-4 py-2 text-sm font-semibold hover:bg-slate-100 transition">
+                        Logout
+                    </button>
+                </form>
+            @endguest
         </div>
     </div>
 </nav>
@@ -184,9 +204,9 @@ h-screen shadow-lg fixed text-white flex flex-col">
                 <a href="{{ route('appointments.create') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Book Appointment</a>
                 <a href="{{ route('appointments.index') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- All Appointments</a>
                 <a href="{{ route('appointments.queue') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Queue Management</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- OPD Appointments</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Follow-up Appointments</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Appointment Status</a>
+                <a href="{{ route('appointments.opd') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- OPD Appointments</a>
+                <a href="{{ route('appointments.followup') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Follow-up Appointments</a>
+                <a href="{{ route('appointments.status') }}" class="block px-4 py-2 rounded-lg hover:bg-white/20 transition">- Appointment Status</a>
             </div>
         </details>
 

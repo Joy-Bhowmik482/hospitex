@@ -14,11 +14,32 @@
         <form action="{{ route('insurance-providers.update', $insuranceProvider) }}" method="POST">
             @csrf @method('PUT')
 
+            <!-- Provider Code (Read-only) -->
+            <div class="mb-4">
+                <label for="code" class="block text-sm font-medium text-slate-700 mb-2">Provider Code</label>
+                <input type="text" id="code" value="{{ $insuranceProvider->code }}" readonly class="w-full px-4 py-2 border border-slate-300 rounded-lg bg-slate-100 text-slate-600 cursor-not-allowed">
+                <p class="text-xs text-slate-500 mt-1">This code is auto-generated and cannot be changed</p>
+            </div>
+
             <!-- Provider Name -->
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Provider Name *</label>
                 <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror" value="{{ old('name', $insuranceProvider->name) }}">
                 @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- Contact -->
+            <div class="mb-4">
+                <label for="contact" class="block text-sm font-medium text-slate-700 mb-2">Contact Person</label>
+                <input type="text" id="contact" name="contact" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('contact') border-red-500 @enderror" value="{{ old('contact', $insuranceProvider->contact) }}">
+                @error('contact') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror" value="{{ old('email', $insuranceProvider->email) }}">
+                @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <!-- Policy Rules -->
