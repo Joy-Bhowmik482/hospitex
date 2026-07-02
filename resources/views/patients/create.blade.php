@@ -52,7 +52,7 @@
                         <label for="last_name" class="block text-sm font-semibold text-slate-700 mb-2">Last Name *</label>
                         <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}" 
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('last_name') border-red-500 @enderror"
-                            placeholder="Doe" required>
+                            placeholder="Doe" >
                         @error('last_name')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                         @enderror
@@ -63,7 +63,7 @@
                         <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email *</label>
                         <input type="email" id="email" name="email" value="{{ old('email') }}" 
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('email') border-red-500 @enderror"
-                            placeholder="john@example.com" required>
+                            placeholder="john@example.com" >
                         @error('email')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                         @enderror
