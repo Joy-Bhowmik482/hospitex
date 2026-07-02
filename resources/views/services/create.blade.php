@@ -26,9 +26,22 @@
 
             <div class="grid gap-6 sm:grid-cols-2">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700">Price</label>
-                    <input name="price" value="{{ old('price') }}" class="mt-2 block w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" />
-                </div>
+    <label class="block text-sm font-medium text-slate-700">Price <span class="text-red-500">*</span></label>
+
+    <input
+        type="number"
+        name="price"
+        step="0.01"
+        min="0"
+        value="{{ old('price') }}"
+        required
+        class="mt-2 block w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+    >
+
+    @error('price')
+        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+</div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700">Department</label>
                     <select name="department_id" class="mt-2 block w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100">

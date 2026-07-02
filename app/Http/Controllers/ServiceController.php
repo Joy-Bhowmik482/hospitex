@@ -26,7 +26,7 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:services,code',
             'department_id' => 'nullable|exists:departments,id',
-            'price' => 'nullable|numeric',
+            'price' => 'required|numeric|min:0',
             'is_active' => 'nullable|boolean',
             'description' => 'nullable|string',
         ]);
