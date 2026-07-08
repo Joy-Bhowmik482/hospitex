@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bed;
 use App\Models\Room;
+use App\Models\BedAllocation;
 use Illuminate\Http\Request;
 
 class BedController extends Controller
@@ -14,6 +15,8 @@ class BedController extends Controller
     public function index()
     {
         $beds = Bed::with('room.ward', 'allocations')->get();
+       
+        // dd($beds); // Accessing the allocation_status of the first bed's allocation
         return view('beds.list', compact('beds'));
     }
 

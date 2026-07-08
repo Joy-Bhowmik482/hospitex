@@ -49,9 +49,6 @@
                     </thead>
                     <tbody class="divide-y divide-slate-200">
                         @foreach ($beds as $bed)
-                            @php
-                                $activeAllocation = $bed->allocations->where('allocation_status', 'Active')->first();
-                            @endphp
                             <tr class="hover:bg-slate-50 transition">
                                 <td class="px-6 py-4 font-semibold text-slate-800">{{ $bed->bed_no }}</td>
                                 <td class="px-6 py-4">
@@ -62,13 +59,13 @@
                                 <td class="px-6 py-4 text-slate-700">{{ $bed->room->ward->name }}</td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold 
-                                        {{ $bed->status === 'Available' ? 'bg-green-100 text-green-800' : ($bed->status === 'Occupied' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800') }}">
-                                        {{ $bed->status }}
+                                        {{ $bed->allocations &&$bed->allocations->allocation_status === 'Active' ? 'bg-orange-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                        {{ $bed->allocations && $bed->allocations->allocation_status === 'Active' ? 'Not Available' : 'Available' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-slate-700">
-                                    @if ($activeAllocation && $activeAllocation->admission)
-                                        {{ $activeAllocation->admission->patient->first_name ?? 'N/A' }} {{ $activeAllocation->admission->patient->last_name ?? '' }}
+                                    @if ($bed->allocations && $bed->allocations->allocation_status === 'Active')
+                                        {{ $bed->allocations->admission->patient->first_name ?? 'N/A' }} {{ $bed->allocations->admission->patient->last_name ?? '' }}
                                     @else
                                         <span class="text-slate-400">—</span>
                                     @endif

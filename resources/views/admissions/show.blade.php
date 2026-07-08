@@ -1,156 +1,212 @@
 @extends('includePage')
 
 @section('content')
+@php
+    use Carbon\Carbon;
 
-<div class="max-w-6xl mx-auto">
-    <!-- Page Header -->
-    <div class="mb-8 flex items-center justify-between">
-        <div>
-            <h2 class="text-3xl font-bold text-slate-800 mb-2">{{ $admission->admission_no }}</h2>
-            <p class="text-slate-600">Admission Details</p>
-        </div>
-        <div class="flex gap-3">
-            <a href="{{ route('admissions.edit', $admission) }}" class="bg-amber-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-amber-600 transition">
-                Edit Admission
-            </a>
-            <a href="{{ route('admissions.index') }}" class="bg-slate-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-slate-600 transition">
-                Back to List
-            </a>
-        </div>
-    </div>
+    $patient = $admission->patient;
+    $doctor = $admission->doctor;
+    $department = $admission->department;
+    $createdBy = $admission->createdBy;
+    $bedAllocations = $admission->bedAllocations ?? collect();
 
-    <!-- Admission Details Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <!-- Patient Info -->
-        <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">Patient Information</h3>
-            
-            <div class="space-y-4">
-                <div>
-                    <p class="text-sm text-slate-600">Patient Name</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->patient->first_name ?? 'N/A' }} {{ $admission->patient->last_name ?? '' }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-600">Email</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->patient->email ?? 'N/A' }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-600">Phone</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->patient->phone ?? 'N/A' }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-600">Blood Type</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->patient->blood_type ?? 'N/A' }}</p>
-                </div>
-            </div>
-        </div>
+    $status = strtolower(trim((string) $admission->status));
+    $statusClass = match ($status) {
+        'admitted' => 'bg-green-100 text-green-800',
+        'discharged' => 'bg-slate-100 text-slate-800',
+        'pending' => 'bg-amber-100 text-amber-800',
+        default => 'bg-red-100 text-red-800',
+    };
 
-        <!-- Medical Info -->
-        <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">Medical Information</h3>
-            
-            <div class="space-y-4">
-                <div>
-                    <p class="text-sm text-slate-600">Doctor</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->doctor->name ?? 'N/A' }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-600">Department</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->department->name ?? 'N/A' }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-600">Status</p>
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold 
-                        {{ $admission->status === 'Admitted' ? 'bg-green-100 text-green-800' : ($admission->status === 'Discharged' ? 'bg-slate-100 text-slate-800' : 'bg-red-100 text-red-800') }}">
-                        {{ $admission->status }}
-                    </span>
-                </div>
-                <div>
-                    <p class="text-sm text-slate-600">Created By</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->createdBy->name ?? 'N/A' }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    $admittedAt = $admission->admitted_at ? Carbon::parse($admission->admitted_at)->format('M d, Y H:i') : 'N/A';
+    $dischargeAt = $admission->discharge_at ? Carbon::parse($admission->discharge_at)->format('M d, Y H:i') : null;
+@endphp
 
-    <!-- Admission Timeline -->
-    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 mb-8">
-        <h3 class="text-lg font-semibold text-slate-800 mb-4">Admission Timeline</h3>
+<div class="min-h-screen bg-slate-50 py-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
-        <div class="space-y-4">
-            <div class="flex items-center gap-4">
-                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                <div class="flex-1">
-                    <p class="text-sm text-slate-600">Admitted At</p>
-                    <p class="font-semibold text-slate-800">{{ $admission->admitted_at->format('M d, Y H:i') }}</p>
-                </div>
+        <!-- Page Header -->
+        <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-slate-800">
+                    Admission #{{ $admission->admission_no }}
+                </h2>
+                <p class="mt-1 text-sm text-slate-500">Admission details and patient information</p>
             </div>
-            
-            @if ($admission->discharge_at)
-                <div class="flex items-center gap-4">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div class="flex-1">
-                        <p class="text-sm text-slate-600">Discharged At</p>
-                        <p class="font-semibold text-slate-800">{{ $admission->discharge_at->format('M d, Y H:i') }}</p>
+
+            <div class="flex flex-wrap gap-3">
+                <a href="{{ route('admissions.edit', $admission) }}"
+                   class="inline-flex items-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400">
+                    Edit Admission
+                </a>
+                <a href="{{ route('admissions.index') }}"
+                   class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Patient Information -->
+            <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 class="mb-4 text-lg font-semibold text-slate-800">Patient Information</h3>
+
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-sm text-slate-500">Patient Name</p>
+                        <p class="font-medium text-slate-800">
+                            {{ trim(($patient->first_name ?? '') . ' ' . ($patient->last_name ?? '')) ?: 'N/A' }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Email</p>
+                        <p class="font-medium text-slate-800">{{ $patient->email ?? 'N/A' }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Phone</p>
+                        <p class="font-medium text-slate-800">{{ $patient->phone ?? 'N/A' }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Blood Type</p>
+                        <p class="font-medium text-slate-800">{{ $patient->blood_type ?? 'N/A' }}</p>
                     </div>
                 </div>
-            @endif
-        </div>
-    </div>
+            </div>
 
-    <!-- Diagnosis & Remarks -->
-    @if ($admission->diagnosis || $admission->remarks)
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            @if ($admission->diagnosis)
-                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-                    <h3 class="text-lg font-semibold text-slate-800 mb-4">Diagnosis</h3>
-                    <p class="text-slate-700">{{ $admission->diagnosis }}</p>
+            <!-- Medical Information -->
+            <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 class="mb-4 text-lg font-semibold text-slate-800">Medical Information</h3>
+
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-sm text-slate-500">Doctor</p>
+                        <p class="font-medium text-slate-800">{{ $doctor->name ?? 'N/A' }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Department</p>
+                        <p class="font-medium text-slate-800">{{ $department->name ?? 'N/A' }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Status</p>
+                        <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {{ $statusClass }}">
+                            {{ $admission->status ?? 'N/A' }}
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-slate-500">Created By</p>
+                        <p class="font-medium text-slate-800">{{ $createdBy->name ?? 'N/A' }}</p>
+                    </div>
                 </div>
-            @endif
-
-            @if ($admission->remarks)
-                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-                    <h3 class="text-lg font-semibold text-slate-800 mb-4">Remarks</h3>
-                    <p class="text-slate-700">{{ $admission->remarks }}</p>
-                </div>
-            @endif
+            </div>
         </div>
-    @endif
 
-    <!-- Bed Allocations -->
-    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-        <h3 class="text-lg font-semibold text-slate-800 mb-6">Bed Allocations</h3>
+        <!-- Admission Timeline -->
+        <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-4 text-lg font-semibold text-slate-800">Admission Timeline</h3>
 
-        @if ($admission->bedAllocations->count() > 0)
             <div class="space-y-4">
-                @foreach ($admission->bedAllocations as $allocation)
-                    <div class="border border-slate-200 rounded-lg p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex items-start gap-3">
+                    <div class="mt-2 h-2.5 w-2.5 rounded-full bg-green-500"></div>
+                    <div>
+                        <p class="text-sm text-slate-500">Admitted At</p>
+                        <p class="font-medium text-slate-800">{{ $admittedAt }}</p>
+                    </div>
+                </div>
+
+                @if ($dischargeAt)
+                    <div class="flex items-start gap-3">
+                        <div class="mt-2 h-2.5 w-2.5 rounded-full bg-red-500"></div>
                         <div>
-                            <p class="text-sm text-slate-600">Bed</p>
-                            <p class="font-semibold text-slate-800">{{ $allocation->bed->bed_no }} (Room {{ $allocation->bed->room->room_no }}, {{ $allocation->bed->room->ward->name }})</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-slate-600">Allocated Period</p>
-                            <p class="text-sm text-slate-800">{{ $allocation->allocated_at->format('M d, Y H:i') }}</p>
-                            @if ($allocation->released_at)
-                                <p class="text-xs text-slate-600">to {{ $allocation->released_at->format('M d, Y H:i') }}</p>
-                            @endif
-                        </div>
-                        <div>
-                            <p class="text-sm text-slate-600">Status</p>
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $allocation->allocation_status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800' }}">
-                                {{ $allocation->allocation_status }}
-                            </span>
+                            <p class="text-sm text-slate-500">Discharged At</p>
+                            <p class="font-medium text-slate-800">{{ $dischargeAt }}</p>
                         </div>
                     </div>
-                @endforeach
+                @endif
             </div>
-        @else
-            <div class="text-center py-8">
-                <p class="text-slate-600">No beds allocated for this admission yet</p>
+        </div>
+
+        <!-- Diagnosis & Remarks -->
+        @if ($admission->diagnosis || $admission->remarks)
+            <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                @if ($admission->diagnosis)
+                    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <h3 class="mb-3 text-lg font-semibold text-slate-800">Diagnosis</h3>
+                        <p class="leading-relaxed text-slate-700">{{ $admission->diagnosis }}</p>
+                    </div>
+                @endif
+
+                @if ($admission->remarks)
+                    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <h3 class="mb-3 text-lg font-semibold text-slate-800">Remarks</h3>
+                        <p class="leading-relaxed text-slate-700">{{ $admission->remarks }}</p>
+                    </div>
+                @endif
             </div>
         @endif
+
+        <!-- Bed Allocations -->
+        <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-4 text-lg font-semibold text-slate-800">Bed Allocations</h3>
+
+            @if ($bedAllocations->count() > 0)
+                <div class="space-y-4">
+                    @foreach ($bedAllocations as $allocation)
+                        @php
+                            $bed = $allocation->bed;
+                            $room = $bed->room ?? null;
+                            $ward = $room->ward ?? null;
+                            $allocatedAt = $allocation->allocated_at ? Carbon::parse($allocation->allocated_at)->format('M d, Y H:i') : 'N/A';
+                            $releasedAt = $allocation->released_at ? Carbon::parse($allocation->released_at)->format('M d, Y H:i') : null;
+                            $allocationStatus = strtolower(trim((string) $allocation->allocation_status));
+                            $allocationClass = $allocationStatus === 'active'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-slate-100 text-slate-800';
+                        @endphp
+
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                                <div>
+                                    <p class="text-sm text-slate-500">Bed</p>
+                                    <p class="font-medium text-slate-800">
+                                        {{ $bed->bed_no ?? 'N/A' }}
+                                        @if ($room)
+                                            (Room {{ $room->room_no ?? 'N/A' }},
+                                            {{ $ward->name ?? 'N/A' }})
+                                        @endif
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <p class="text-sm text-slate-500">Allocated Period</p>
+                                    <p class="font-medium text-slate-800">{{ $allocatedAt }}</p>
+                                    @if ($releasedAt)
+                                        <p class="text-xs text-slate-500">to {{ $releasedAt }}</p>
+                                    @endif
+                                </div>
+
+                                <div>
+                                    <p class="text-sm text-slate-500">Status</p>
+                                    <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {{ $allocationClass }}">
+                                        {{ $allocation->allocation_status ?? 'N/A' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="py-8 text-center">
+                    <p class="text-sm text-slate-500">No beds allocated for this admission yet.</p>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
-
 @endsection
