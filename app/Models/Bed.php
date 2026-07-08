@@ -22,7 +22,7 @@ class Bed extends BaseModel
 
     public function allocations()
     {
-        return $this->hasMany(BedAllocation::class);
+        return $this->hasOne(BedAllocation::class);
     }
 }
 

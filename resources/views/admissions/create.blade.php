@@ -11,7 +11,7 @@
 
     <!-- Card Container -->
     <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
-        
+
         @if ($errors->any())
             <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                 <strong class="block mb-2">Errors:</strong>
@@ -23,18 +23,18 @@
             </div>
         @endif
 
-        <form action="{{ route('admissions.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('admissions.store') }}" method="POST" class="space-y-6" id="admissionForm">
             @csrf
 
             <!-- Basic Information Section -->
             <div class="border-b border-slate-200 pb-6">
                 <h3 class="text-lg font-semibold text-slate-800 mb-4">Basic Information</h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Admission Number -->
                     <div>
                         <label for="admission_no" class="block text-sm font-semibold text-slate-700 mb-2">Admission Number *</label>
-                        <input type="text" id="admission_no" name="admission_no" value="{{ old('admission_no', $admissionNo) }}" 
+                        <input type="text" id="admission_no" name="admission_no"
+                            value="{{ old('admission_no', $admissionNo) }}"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('admission_no') border-red-500 @enderror"
                             required readonly>
                         @error('admission_no')
@@ -42,10 +42,9 @@
                         @enderror
                     </div>
 
-                    <!-- Patient -->
                     <div>
                         <label for="patient_id" class="block text-sm font-semibold text-slate-700 mb-2">Patient *</label>
-                        <select id="patient_id" name="patient_id" 
+                        <select id="patient_id" name="patient_id"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('patient_id') border-red-500 @enderror"
                             required>
                             <option value="">Select Patient</option>
@@ -60,10 +59,9 @@
                         @enderror
                     </div>
 
-                    <!-- Doctor -->
                     <div>
                         <label for="doctor_id" class="block text-sm font-semibold text-slate-700 mb-2">Doctor (Primary Consultant) *</label>
-                        <select id="doctor_id" name="doctor_id" 
+                        <select id="doctor_id" name="doctor_id"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('doctor_id') border-red-500 @enderror"
                             required>
                             <option value="">Select Doctor</option>
@@ -78,10 +76,9 @@
                         @enderror
                     </div>
 
-                    <!-- Department -->
                     <div>
                         <label for="department_id" class="block text-sm font-semibold text-slate-700 mb-2">Department *</label>
-                        <select id="department_id" name="department_id" 
+                        <select id="department_id" name="department_id"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('department_id') border-red-500 @enderror"
                             required>
                             <option value="">Select Department</option>
@@ -101,12 +98,12 @@
             <!-- Admission Dates Section -->
             <div class="border-b border-slate-200 pb-6">
                 <h3 class="text-lg font-semibold text-slate-800 mb-4">Admission Dates</h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Admitted At -->
                     <div>
                         <label for="admitted_at" class="block text-sm font-semibold text-slate-700 mb-2">Admitted At *</label>
-                        <input type="datetime-local" id="admitted_at" name="admitted_at" value="{{ old('admitted_at') }}" 
+                        <input type="datetime-local" id="admitted_at" name="admitted_at"
+                            value="{{ old('admitted_at') }}"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('admitted_at') border-red-500 @enderror"
                             required>
                         @error('admitted_at')
@@ -114,10 +111,10 @@
                         @enderror
                     </div>
 
-                    <!-- Discharge At -->
                     <div>
                         <label for="discharge_at" class="block text-sm font-semibold text-slate-700 mb-2">Discharge At (Optional)</label>
-                        <input type="datetime-local" id="discharge_at" name="discharge_at" value="{{ old('discharge_at') }}" 
+                        <input type="datetime-local" id="discharge_at" name="discharge_at"
+                            value="{{ old('discharge_at') }}"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('discharge_at') border-red-500 @enderror">
                         @error('discharge_at')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
@@ -129,12 +126,11 @@
             <!-- Medical Information Section -->
             <div class="border-b border-slate-200 pb-6">
                 <h3 class="text-lg font-semibold text-slate-800 mb-4">Medical Information</h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Status -->
                     <div>
                         <label for="status" class="block text-sm font-semibold text-slate-700 mb-2">Status *</label>
-                        <select id="status" name="status" 
+                        <select id="status" name="status"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('status') border-red-500 @enderror"
                             required>
                             <option value="">Select Status</option>
@@ -147,24 +143,21 @@
                         @enderror
                     </div>
 
-                    <!-- Created By -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Created By</label>
                         <p class="text-sm text-slate-700">{{ auth()->user()->name ?? 'Unknown user' }}</p>
                     </div>
 
-                    <!-- Diagnosis -->
                     <div class="md:col-span-2">
                         <label for="diagnosis" class="block text-sm font-semibold text-slate-700 mb-2">Diagnosis (Optional)</label>
-                        <textarea id="diagnosis" name="diagnosis" rows="3" 
+                        <textarea id="diagnosis" name="diagnosis" rows="3"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                             placeholder="Enter diagnosis details...">{{ old('diagnosis') }}</textarea>
                     </div>
 
-                    <!-- Remarks -->
                     <div class="md:col-span-2">
                         <label for="remarks" class="block text-sm font-semibold text-slate-700 mb-2">Remarks (Optional)</label>
-                        <textarea id="remarks" name="remarks" rows="3" 
+                        <textarea id="remarks" name="remarks" rows="3"
                             class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                             placeholder="Enter additional remarks...">{{ old('remarks') }}</textarea>
                     </div>
@@ -173,15 +166,38 @@
 
             <!-- Form Actions -->
             <div class="flex gap-4 pt-6">
-                <button type="submit" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition duration-200">
+                <button type="submit"
+                    class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition duration-200">
                     Create Admission
                 </button>
-                <a href="{{ route('admissions.index') }}" class="flex-1 text-center bg-slate-200 text-slate-800 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 transition">
+                <a href="{{ route('admissions.index') }}"
+                    class="flex-1 text-center bg-slate-200 text-slate-800 font-semibold py-3 px-6 rounded-lg hover:bg-slate-300 transition">
                     Cancel
                 </a>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dischargeAt = document.getElementById('discharge_at');
+    const status = document.getElementById('status');
+
+    function syncStatusWithDischargeDate() {
+        if (dischargeAt.value) {
+            status.value = 'Discharged';
+           
+        } else {
+          
+        }
+    }
+
+    dischargeAt.addEventListener('change', syncStatusWithDischargeDate);
+    dischargeAt.addEventListener('input', syncStatusWithDischargeDate);
+
+    syncStatusWithDischargeDate();
+});
+</script>
 
 @endsection

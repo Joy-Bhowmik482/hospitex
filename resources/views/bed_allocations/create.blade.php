@@ -85,17 +85,6 @@
                         @enderror
                     </div>
 
-                    <!-- Released At (Optional) -->
-                    <div>
-                        <label for="released_at" class="block text-sm font-semibold text-slate-700 mb-2">Released At (Optional)</label>
-                        <input type="datetime-local" id="released_at" name="released_at" value="{{ old('released_at') }}" 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition @error('released_at') border-red-500 @enderror"
-                            placeholder="Leave empty if not releasing yet">
-                        @error('released_at')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                        @enderror
-                    </div>
-
                     <!-- Allocation Status -->
                     <div>
                         <label for="allocation_status" class="block text-sm font-semibold text-slate-700 mb-2">Status *</label>

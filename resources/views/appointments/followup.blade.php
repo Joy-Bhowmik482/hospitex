@@ -123,7 +123,7 @@
 
                                 <!-- Next Follow-up -->
                                 <td class="px-6 py-4 text-sm text-slate-700">
-                                    @if(isset($appointment->next_followup_date))
+                                    @if($appointment->next_followup_date)
                                         {{ $appointment->next_followup_date->format('d M Y') }}
                                     @else
                                         <span class="text-slate-400">Not scheduled</span>
@@ -149,6 +149,7 @@
                                            class="inline-block bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-1.5 px-3 rounded-md transition text-xs">
                                             👁️ View
                                         </a>
+
                                         <form action="{{ route('appointments.changeStatus', $appointment) }}" method="POST" class="inline-block">
                                             @csrf
                                             <input type="hidden" name="status" value="Completed">
@@ -158,10 +159,6 @@
                                                 ✔️ Complete
                                             </button>
                                         </form>
-                                        <button onclick="window.print()"
-                                                class="inline-block bg-green-50 hover:bg-green-100 text-green-700 font-semibold py-1.5 px-3 rounded-md transition text-xs">
-                                            🖨️ Print
-                                        </button>
                                     </div>
                                 </td>
 
@@ -175,7 +172,7 @@
             <!-- Pagination Footer -->
             <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex items-center justify-between">
                 <p class="text-sm text-slate-600">
-                    Showing <span class="font-semibold text-slate-800">{{ $appointments->count() }}</span> follow-ups
+                    Showing <span class="font-semibold text-slate-800">{{ $appointments->total() }}</span> follow-ups
                 </p>
                 {{ $appointments->links() }}
             </div>
@@ -198,11 +195,5 @@
     @endif
 
 </div>
-
-<style>
-    @media print {
-        .no-print { display: none !important; }
-    }
-</style>
 
 @endsection
